@@ -400,6 +400,7 @@
 		F6B0B175190C18B300B443D3 /* DAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B173190C18B300B443D3 /* DAC.cpp */; };
 		F6B0B178190C211300B443D3 /* Footswitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B176190C211300B443D3 /* Footswitch.cpp */; };
 		F6B0B17B190C255300B443D3 /* Opto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B179190C255300B443D3 /* Opto.cpp */; };
+		F6B0B17E190C626E00B443D3 /* MIDI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B17C190C626E00B443D3 /* MIDI.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -816,6 +817,8 @@
 		F6B0B177190C211300B443D3 /* Footswitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Footswitch.h; sourceTree = "<group>"; };
 		F6B0B179190C255300B443D3 /* Opto.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Opto.cpp; sourceTree = "<group>"; };
 		F6B0B17A190C255300B443D3 /* Opto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opto.h; sourceTree = "<group>"; };
+		F6B0B17C190C626E00B443D3 /* MIDI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MIDI.cpp; sourceTree = "<group>"; };
+		F6B0B17D190C626E00B443D3 /* MIDI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDI.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -2107,6 +2110,8 @@
 				F6B0B179190C255300B443D3 /* Opto.cpp */,
 				F6B0B17A190C255300B443D3 /* Opto.h */,
 				F697E5DC190BA32300477901 /* main.cpp */,
+				F6B0B17C190C626E00B443D3 /* MIDI.cpp */,
+				F6B0B17D190C626E00B443D3 /* MIDI.h */,
 				F697E5E1190BA32300477901 /* Makefile */,
 				F697E623190BA32300477901 /* CV2.ino */,
 				F697E5E3190BA32300477901 /* Sketchbook */,
@@ -2361,6 +2366,7 @@
 				AA2A140426092133AA00005D /* Printable.h in Sources */,
 				AA2A140426092133AA00005E /* Reset.cpp in Sources */,
 				AA2A140426092133AA00005F /* Reset.h in Sources */,
+				F6B0B17E190C626E00B443D3 /* MIDI.cpp in Sources */,
 				AA2A140426092133AA000060 /* RingBuffer.cpp in Sources */,
 				AA2A140426092133AA000061 /* RingBuffer.h in Sources */,
 				AA2A140426092133AA000062 /* Server.h in Sources */,

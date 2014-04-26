@@ -3,6 +3,7 @@
 #include "DAC.h"
 #include "Footswitch.h"
 #include "Opto.h"
+#include "MIDI.h"
 
 #define OPTO_1 24
 #define OPTO_2 25
@@ -35,11 +36,11 @@ Footswitch fsw1(FSW_1, FSW_LED1);
 Footswitch fsw2(FSW_2, FSW_LED2);
 Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
+MIDI midi;
 
 void setup()
 {
 	Serial.begin(115200);
-	Serial1.begin(31250);
 	
 	display.setup();
 	dac5V.setup();
@@ -47,6 +48,7 @@ void setup()
 	fsw1.setup();
 	fsw2.setup();
 	fsw3.setup();
+	midi.setup();
 	
 	for (uint8_t i=0; i<6; i++)
 		optos[i].setup();
@@ -70,6 +72,7 @@ void loop()
 	fsw1.loop(usNow);
 	fsw2.loop(usNow);
 	fsw3.loop(usNow);
+	midi.loop(usNow);
     
     if (usNow - t > 600000)
     {
