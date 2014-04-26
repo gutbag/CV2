@@ -1,26 +1,8 @@
-//
-// EmbedExperiment1
-//
-// Description of the project
-// Developed with [embedXcode](http://embedXcode.weebly.com)
-//
-// Author	 	Mark Lamb
-// 				Mark Lamb
-//
-// Date			20/04/2014 12:24
-// Version		<#version#>
-//
-// Copyright	© Mark Lamb, 2014
-// License		<#license#>
-//
-// See			ReadMe.txt for references
-//
-
-// Core library for code-sense
-
 #include "Arduino.h"
-#include <SPI.h>
 #include "Display.h"
+#include "DAC.h"
+#include "Footswitch.h"
+#include "Opto.h"
 
 #define OPTO_1 24
 #define OPTO_2 25
@@ -43,116 +25,38 @@
 #define D_SPARE_2 50
 #define D_SPARE_3 51
 
-#define CS_PIN 10
+#define CS_PIN_5V_DAC 10
+#define CS_PIN_9V_DAC 4
 
 Display display;
-
-void allSegmentsOff();
+DAC dac5V(CS_PIN_5V_DAC);
+DAC dac9V(CS_PIN_9V_DAC);
+Footswitch fsw1(FSW_1, FSW_LED1);
+Footswitch fsw2(FSW_2, FSW_LED2);
+Footswitch fsw3(FSW_3, FSW_LED3);
+Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
 
 void setup()
 {
-    Serial.begin(115200);
-    Serial1.begin(31250);
-    
-    Serial.println("some output");
-    
-    // optos
-    pinMode(OPTO_1, OUTPUT);
-    digitalWrite(OPTO_1, LOW);
-    pinMode(OPTO_2, OUTPUT);
-    digitalWrite(OPTO_2, LOW);
-    pinMode(OPTO_3, OUTPUT);
-    digitalWrite(OPTO_3, LOW);
-    pinMode(OPTO_4, OUTPUT);
-    digitalWrite(OPTO_4, LOW);
-    pinMode(OPTO_5, OUTPUT);
-    digitalWrite(OPTO_5, LOW);
-    pinMode(OPTO_6, OUTPUT);
-    digitalWrite(OPTO_6, LOW);
-    
-    display.setup();
-    
-    pinMode(PATCH_DOWN_SW, INPUT_PULLUP);
-    pinMode(PATCH_UP_SW, INPUT_PULLUP);
-    
-    pinMode(FSW_1, INPUT_PULLUP);
-    pinMode(FSW_2, INPUT_PULLUP);
-    pinMode(FSW_3, INPUT_PULLUP);
-    
-    // LED pins input for now
-    pinMode(FSW_LED1, INPUT_PULLUP);
-    pinMode(FSW_LED2, INPUT_PULLUP);
-    pinMode(FSW_LED3, INPUT_PULLUP);
-    
-    pinMode(D_SPARE_1, INPUT_PULLUP);
-    pinMode(D_SPARE_2, INPUT_PULLUP);
-    pinMode(D_SPARE_3, INPUT_PULLUP);
-
-    pinMode(CS_PIN, OUTPUT);
-    digitalWrite(CS_PIN, HIGH);
-    SPI.begin();
-    SPI.setClockDivider(84);
-    SPI.setDataMode(SPI_MODE3);
-    SPI.setBitOrder(MSBFIRST);
-}
-
-void loopOptos()
-{
-    digitalWrite(OPTO_2, LOW);
-    delay(1000);
-    digitalWrite(OPTO_2, HIGH);
-    delay(1000);
-}
-//
-//void loop()
-//{
-//    if (digitalRead(PATCH_DOWN_SW) == LOW)
-//        display.setDelay(50 * 1000);
-//    else if (digitalRead(PATCH_UP_SW) == LOW)
-//        display.setDelay(500 * 1000);
-//    else
-//        display.setDelay(200 * 1000);
-//    
-//    display.loop();
-//}
-
-void on(byte channel, byte note, byte velocity)
-{
-	Serial1.write(0x90 | (channel-1));
-	Serial1.write(note);
-	Serial1.write(velocity);
-}
-
-void off(byte channel, byte note, byte velocity)
-{
-	Serial1.write(0x80 | (channel-1));
-	Serial1.write(note);
-	Serial1.write(velocity);
-}
-
-
-void loopMIDI()
-{
-//    Serial1.write(0xAA);
-//    Serial1.write(0x55);
-    
-    on(1, 48, 0x45);
-    delay(1000);
-    off(1, 48, 0);
-    delay(1000);
-    
-    size_t n = Serial1.available();
-    if (n > 0)
-    {
-        Serial.print("got ");
-        Serial.println(n);
-        char buf[32];
-        Serial1.readBytes(buf, n);
-        for (int i=0; i<n; i++)
-        {
-            Serial.print(buf[i], HEX);
-        }
-    }
+	Serial.begin(115200);
+	Serial1.begin(31250);
+	
+	display.setup();
+	dac5V.setup();
+	dac9V.setup();
+	fsw1.setup();
+	fsw2.setup();
+	fsw3.setup();
+	
+	for (uint8_t i=0; i<6; i++)
+		optos[i].setup();
+	
+	pinMode(PATCH_DOWN_SW, INPUT_PULLUP);
+	pinMode(PATCH_UP_SW, INPUT_PULLUP);
+	
+	pinMode(D_SPARE_1, INPUT_PULLUP);
+	pinMode(D_SPARE_2, INPUT_PULLUP);
+	pinMode(D_SPARE_3, INPUT_PULLUP);
 }
 
 char c[] = {'?', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'C', 'd', 'e', 'f', 'E', 'r', 'r', ' ', '-', '_'};
@@ -163,6 +67,9 @@ void loop()
 {
     long usNow = micros();
     display.loop(usNow);
+	fsw1.loop(usNow);
+	fsw2.loop(usNow);
+	fsw3.loop(usNow);
     
     if (usNow - t > 600000)
     {

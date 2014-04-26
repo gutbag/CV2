@@ -86,15 +86,13 @@ void Display::setup()
     pinMode(DIG_4, OUTPUT);
     digitalWrite(DIG_4, HIGH);
     
-    //allSegmentsOff();
-    
     pinMode(LED_12, OUTPUT);
     digitalWrite(LED_12, LOW);
     pinMode(LED_3, OUTPUT);
     digitalWrite(LED_3, LOW);
 }
 
-void Display::loop(long usNow)
+void Display::loop(const unsigned long usNow)
 {
     if ((usNow - usLastChange) >= 3000)
     {
@@ -153,3 +151,12 @@ void Display::setDigit(const uint8_t digitIndex, const byte value)
     }
 }
 
+void Display::setColon(const boolean state)
+{
+	digitalWrite(LED_12, state ? HIGH : LOW);
+}
+
+void Display::setApostophe(const boolean state)
+{
+	digitalWrite(LED_3, state ? HIGH : LOW);
+}

@@ -397,6 +397,9 @@
 		F627E636190BA3DB00477901 /* Display.h in Sources */ = {isa = PBXBuildFile; fileRef = F697E636190BA3DB00477901 /* Display.h */; };
 		F697E5DD190BA32300477901 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E5DC190BA32300477901 /* main.cpp */; };
 		F697E637190BA3DB00477901 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E635190BA3DB00477901 /* Display.cpp */; };
+		F6B0B175190C18B300B443D3 /* DAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B173190C18B300B443D3 /* DAC.cpp */; };
+		F6B0B178190C211300B443D3 /* Footswitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B176190C211300B443D3 /* Footswitch.cpp */; };
+		F6B0B17B190C255300B443D3 /* Opto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B179190C255300B443D3 /* Opto.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -807,6 +810,12 @@
 		F697E623190BA32300477901 /* CV2.ino */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = CV2.ino; sourceTree = "<group>"; };
 		F697E635190BA3DB00477901 /* Display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Display.cpp; sourceTree = "<group>"; };
 		F697E636190BA3DB00477901 /* Display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Display.h; sourceTree = "<group>"; };
+		F6B0B173190C18B300B443D3 /* DAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DAC.cpp; sourceTree = "<group>"; };
+		F6B0B174190C18B300B443D3 /* DAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAC.h; sourceTree = "<group>"; };
+		F6B0B176190C211300B443D3 /* Footswitch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Footswitch.cpp; sourceTree = "<group>"; };
+		F6B0B177190C211300B443D3 /* Footswitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Footswitch.h; sourceTree = "<group>"; };
+		F6B0B179190C255300B443D3 /* Opto.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Opto.cpp; sourceTree = "<group>"; };
+		F6B0B17A190C255300B443D3 /* Opto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opto.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -2089,8 +2098,14 @@
 		F697E5DB190BA32300477901 /* CV2 */ = {
 			isa = PBXGroup;
 			children = (
+				F6B0B173190C18B300B443D3 /* DAC.cpp */,
+				F6B0B174190C18B300B443D3 /* DAC.h */,
 				F697E635190BA3DB00477901 /* Display.cpp */,
 				F697E636190BA3DB00477901 /* Display.h */,
+				F6B0B176190C211300B443D3 /* Footswitch.cpp */,
+				F6B0B177190C211300B443D3 /* Footswitch.h */,
+				F6B0B179190C255300B443D3 /* Opto.cpp */,
+				F6B0B17A190C255300B443D3 /* Opto.h */,
 				F697E5DC190BA32300477901 /* main.cpp */,
 				F697E5E1190BA32300477901 /* Makefile */,
 				F697E623190BA32300477901 /* CV2.ino */,
@@ -2305,6 +2320,7 @@
 				AA2A140426092133AA000027 /* wiring.c in Sources */,
 				AA2A140426092133AA000028 /* wiring_analog.c in Sources */,
 				AA2A140426092133AA000029 /* wiring_digital.c in Sources */,
+				F6B0B175190C18B300B443D3 /* DAC.cpp in Sources */,
 				AA2A140426092133AA00002A /* wiring_private.h in Sources */,
 				AA2A140426092133AA00002B /* wiring_pulse.c in Sources */,
 				AA2A140426092133AA00002C /* wiring_shift.c in Sources */,
@@ -2319,6 +2335,7 @@
 				AA2A140426092133AA00003B /* pins_arduino.h in Sources */,
 				AA2A140426092133AA00003D /* pins_arduino.h in Sources */,
 				AA2A140426092133AA00003F /* pins_arduino.h in Sources */,
+				F6B0B17B190C255300B443D3 /* Opto.cpp in Sources */,
 				AA2A140426092133AA000041 /* pins_arduino.h in Sources */,
 				AA2A140426092133AA000043 /* pins_arduino.h in Sources */,
 				AA2A140426092133AA000045 /* pins_arduino.h in Sources */,
@@ -2538,6 +2555,7 @@
 				AA2A140426092133AA00014D /* SPI.cpp in Sources */,
 				AA2A140426092133AA00014E /* SPI.h in Sources */,
 				AA2A140426092133AA00014F /* Squawk.cpp in Sources */,
+				F6B0B178190C211300B443D3 /* Footswitch.cpp in Sources */,
 				AA2A140426092133AA000150 /* Squawk.h in Sources */,
 				AA2A140426092133AA000151 /* SquawkSD.cpp in Sources */,
 				AA2A140426092133AA000152 /* SquawkSD.h in Sources */,
