@@ -21,12 +21,26 @@
 # List application Arduino/chipKIT/Digispark/Energia/Maple/Microduino/Teensy/Wiring libraries here
 # default = 0 = none
 #
-APP_LIBS_LIST = 0
+# ARDUINO = Wire Wire Audio Bridge EEPROM Esplora Ethernet 
+#	Firmata GSM LiquidCrystal Robot_Control Robot_Motor 
+#	RobotIRremote Scheduler SD Servo SoftwareSerial SpacebrewYun SPI 
+#	Stepper Temboo TFT USBHost WiFi 
+#
+# ARDUINO = Wire Wire Audio Bridge EEPROM Esplora Ethernet 
+#	Firmata GSM LiquidCrystal Robot_Control Robot_Motor 
+#	RobotIRremote Scheduler SD Servo SoftwareSerial SpacebrewYun SPI 
+#	Stepper Temboo TFT USBHost WiFi 
+#
+APP_LIBS_LIST = SPI
 
 # List user's libraries here 
 # default = 0 = none
 #
-USER_LIBS_LIST = 0
+
+#
+
+#
+USER_LIBS_LIST = Display
 
 # List core, application and user's libraries to be excluded
 # For example, WiFi may crash on Arduino 1.0.2, Esplora on Arduino 1.0.3, Firmata on Teensy 3.0,
@@ -48,7 +62,7 @@ USER_LIBS_LIST = 0
 # BOARD_PORT is optional
 # If not defined, BOARD_PORT = /dev/tty.usb* (default)
 #
-#BOARD_PORT = /dev/tty.usbmodem*
+BOARD_PORT = /dev/tty.usbmodem1411
 
 # Xcode takes SKETCHBOOK_DIR from preferences.txt
 # If not defined, each IDE has its own SKETCHBOOK_DIR (default)
@@ -59,7 +73,7 @@ USER_LIBS_LIST = 0
 # SERIAL_BAUDRATE for the serial console, 9600 by default
 # Uncomment and specify another speed
 #
-#SERIAL_BAUDRATE = 19200
+SERIAL_BAUDRATE = 115200
 
 
 # Miscellaneous
@@ -71,10 +85,12 @@ CURRENT_DIR   := $(shell echo '$(CURRENT_DIR)' | sed 's/ /\\\ /g')
 
 # C-compliant project name
 #
-PROJECT_NAME_AS_IDENTIFIER = CV2
+PROJECT_NAME_AS_IDENTIFIER = EmbedExperiment1
 
 MAKEFILE_PATH  = $(CURRENT_DIR)/Makefiles
 UTILITIES_PATH = $(CURRENT_DIR)/Utilities
 
 include $(MAKEFILE_PATH)/Step1.mk
+
+
 
