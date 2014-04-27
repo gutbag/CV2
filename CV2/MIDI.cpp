@@ -22,7 +22,7 @@ void MIDI::loop(const unsigned long usNow)
 	int n = Serial1.available();
 	if (n > 0)
 	{
-		if enough space left in buffer, read the bytes
-		else, shuffle down
+//		if enough space left in buffer, read the bytes
+//		else, shuffle down
 	}
 }

@@ -401,6 +401,8 @@
 		F6B0B178190C211300B443D3 /* Footswitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B176190C211300B443D3 /* Footswitch.cpp */; };
 		F6B0B17B190C255300B443D3 /* Opto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B179190C255300B443D3 /* Opto.cpp */; };
 		F6B0B17E190C626E00B443D3 /* MIDI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B17C190C626E00B443D3 /* MIDI.cpp */; };
+		F6C94D90190D779600F83CA6 /* CVOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C94D8E190D779600F83CA6 /* CVOutput.cpp */; };
+		F6C94D93190DAC0300F83CA6 /* Patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C94D91190DAC0300F83CA6 /* Patch.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -819,6 +821,10 @@
 		F6B0B17A190C255300B443D3 /* Opto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opto.h; sourceTree = "<group>"; };
 		F6B0B17C190C626E00B443D3 /* MIDI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MIDI.cpp; sourceTree = "<group>"; };
 		F6B0B17D190C626E00B443D3 /* MIDI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDI.h; sourceTree = "<group>"; };
+		F6C94D8E190D779600F83CA6 /* CVOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVOutput.cpp; sourceTree = "<group>"; };
+		F6C94D8F190D779600F83CA6 /* CVOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVOutput.h; sourceTree = "<group>"; };
+		F6C94D91190DAC0300F83CA6 /* Patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patch.cpp; sourceTree = "<group>"; };
+		F6C94D92190DAC0300F83CA6 /* Patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Patch.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -2101,6 +2107,8 @@
 		F697E5DB190BA32300477901 /* CV2 */ = {
 			isa = PBXGroup;
 			children = (
+				F6C94D8E190D779600F83CA6 /* CVOutput.cpp */,
+				F6C94D8F190D779600F83CA6 /* CVOutput.h */,
 				F6B0B173190C18B300B443D3 /* DAC.cpp */,
 				F6B0B174190C18B300B443D3 /* DAC.h */,
 				F697E635190BA3DB00477901 /* Display.cpp */,
@@ -2109,6 +2117,8 @@
 				F6B0B177190C211300B443D3 /* Footswitch.h */,
 				F6B0B179190C255300B443D3 /* Opto.cpp */,
 				F6B0B17A190C255300B443D3 /* Opto.h */,
+				F6C94D91190DAC0300F83CA6 /* Patch.cpp */,
+				F6C94D92190DAC0300F83CA6 /* Patch.h */,
 				F697E5DC190BA32300477901 /* main.cpp */,
 				F6B0B17C190C626E00B443D3 /* MIDI.cpp */,
 				F6B0B17D190C626E00B443D3 /* MIDI.h */,
@@ -2424,6 +2434,7 @@
 				AA2A140426092133AA0000A9 /* HttpClient.cpp in Sources */,
 				AA2A140426092133AA0000AA /* HttpClient.h in Sources */,
 				AA2A140426092133AA0000AB /* Mailbox.cpp in Sources */,
+				F6C94D90190D779600F83CA6 /* CVOutput.cpp in Sources */,
 				AA2A140426092133AA0000AC /* Mailbox.h in Sources */,
 				AA2A140426092133AA0000AD /* Process.cpp in Sources */,
 				AA2A140426092133AA0000AE /* Process.h in Sources */,
@@ -2567,6 +2578,7 @@
 				AA2A140426092133AA000152 /* SquawkSD.h in Sources */,
 				AA2A140426092133AA000154 /* Adafruit_GFX.cpp in Sources */,
 				AA2A140426092133AA000155 /* Adafruit_GFX.h in Sources */,
+				F6C94D93190DAC0300F83CA6 /* Patch.cpp in Sources */,
 				AA2A140426092133AA000156 /* RobotTextManager.cpp in Sources */,
 				AA2A140426092133AA000157 /* RobotTextManager.h in Sources */,
 				AA2A140426092133AA000158 /* scripts_Hello_User.h in Sources */,

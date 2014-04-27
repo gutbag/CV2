@@ -4,6 +4,7 @@
 #include "Footswitch.h"
 #include "Opto.h"
 #include "MIDI.h"
+#include "CVOutput.h"
 
 #define OPTO_1 24
 #define OPTO_2 25
@@ -32,6 +33,26 @@
 Display display;
 DAC dac5V(CS_PIN_5V_DAC);
 DAC dac9V(CS_PIN_9V_DAC);
+CVOutput cvOutputs5V[8] =
+{
+	{dac5V, 0},
+	{dac5V, 1},
+	{dac5V, 2},
+	{dac5V, 3},
+	{dac5V, 4},
+	{dac5V, 5},
+	{dac5V, 6},
+	{dac5V, 7}
+};
+CVOutput cvOutputs9V[6] =
+{
+	{dac9V, 0},
+	{dac9V, 1},
+	{dac9V, 2},
+	{dac9V, 3},
+	{dac9V, 4},
+	{dac9V, 5}
+};
 Footswitch fsw1(FSW_1, FSW_LED1);
 Footswitch fsw2(FSW_2, FSW_LED2);
 Footswitch fsw3(FSW_3, FSW_LED3);
@@ -50,8 +71,14 @@ void setup()
 	fsw3.setup();
 	midi.setup();
 	
-	for (uint8_t i=0; i<6; i++)
+	for (uint8_t i=0; i<(sizeof(optos)/sizeof(Opto)); i++)
 		optos[i].setup();
+	
+	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
+		cvOutputs5V[i].setup();
+	
+	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
+		cvOutputs9V[i].setup();
 	
 	pinMode(PATCH_DOWN_SW, INPUT_PULLUP);
 	pinMode(PATCH_UP_SW, INPUT_PULLUP);
