@@ -395,6 +395,7 @@
 		AA2A140426092133AA0001FD /* led.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FD /* led.h */; };
 		F627E623190BA32300477901 /* CV2.ino in Sources */ = {isa = PBXBuildFile; fileRef = F697E623190BA32300477901 /* CV2.ino */; };
 		F627E636190BA3DB00477901 /* Display.h in Sources */ = {isa = PBXBuildFile; fileRef = F697E636190BA3DB00477901 /* Display.h */; };
+		F631555E190ECBF400707EB7 /* LFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F631555C190ECBF400707EB7 /* LFO.cpp */; };
 		F697E5DD190BA32300477901 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E5DC190BA32300477901 /* main.cpp */; };
 		F697E637190BA3DB00477901 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E635190BA3DB00477901 /* Display.cpp */; };
 		F6B0B175190C18B300B443D3 /* DAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B173190C18B300B443D3 /* DAC.cpp */; };
@@ -792,6 +793,10 @@
 		AAAA140426092133AA0001FB /* evk1105.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = evk1105.h; sourceTree = "<group>"; };
 		AAAA140426092133AA0001FC /* led.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = led.c; sourceTree = "<group>"; };
 		AAAA140426092133AA0001FD /* led.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = led.h; sourceTree = "<group>"; };
+		F631555B190EC2A300707EB7 /* ValueProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueProvider.h; sourceTree = "<group>"; };
+		F631555C190ECBF400707EB7 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
+		F631555D190ECBF400707EB7 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
+		F631555F190ECFB400707EB7 /* ValueConsumer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueConsumer.h; sourceTree = "<group>"; };
 		F697E5D9190BA32300477901 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		F697E5DC190BA32300477901 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F697E5E1190BA32300477901 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -2107,6 +2112,8 @@
 		F697E5DB190BA32300477901 /* CV2 */ = {
 			isa = PBXGroup;
 			children = (
+				F631555F190ECFB400707EB7 /* ValueConsumer.h */,
+				F631555B190EC2A300707EB7 /* ValueProvider.h */,
 				F6C94D8E190D779600F83CA6 /* CVOutput.cpp */,
 				F6C94D8F190D779600F83CA6 /* CVOutput.h */,
 				F6B0B173190C18B300B443D3 /* DAC.cpp */,
@@ -2115,6 +2122,8 @@
 				F697E636190BA3DB00477901 /* Display.h */,
 				F6B0B176190C211300B443D3 /* Footswitch.cpp */,
 				F6B0B177190C211300B443D3 /* Footswitch.h */,
+				F631555C190ECBF400707EB7 /* LFO.cpp */,
+				F631555D190ECBF400707EB7 /* LFO.h */,
 				F6B0B179190C255300B443D3 /* Opto.cpp */,
 				F6B0B17A190C255300B443D3 /* Opto.h */,
 				F6C94D91190DAC0300F83CA6 /* Patch.cpp */,
@@ -2610,6 +2619,7 @@
 				AA2A140426092133AA00017B /* FatStructs.h in Sources */,
 				AA2A140426092133AA00017C /* Sd2Card.cpp in Sources */,
 				AA2A140426092133AA00017D /* Sd2Card.h in Sources */,
+				F631555E190ECBF400707EB7 /* LFO.cpp in Sources */,
 				AA2A140426092133AA00017E /* Sd2PinMap.h in Sources */,
 				AA2A140426092133AA00017F /* SdFat.h in Sources */,
 				AA2A140426092133AA000180 /* SdFatmainpage.h in Sources */,

@@ -5,6 +5,7 @@
 #include "Opto.h"
 #include "MIDI.h"
 #include "CVOutput.h"
+#include "LFO.h"
 
 #define OPTO_1 24
 #define OPTO_2 25
@@ -58,6 +59,7 @@ Footswitch fsw2(FSW_2, FSW_LED2);
 Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
 MIDI midi;
+LFO lfo;
 
 void setup()
 {
@@ -70,6 +72,7 @@ void setup()
 	fsw2.setup();
 	fsw3.setup();
 	midi.setup();
+	lfo.setup();
 	
 	for (uint8_t i=0; i<(sizeof(optos)/sizeof(Opto)); i++)
 		optos[i].setup();
@@ -86,6 +89,8 @@ void setup()
 	pinMode(D_SPARE_1, INPUT_PULLUP);
 	pinMode(D_SPARE_2, INPUT_PULLUP);
 	pinMode(D_SPARE_3, INPUT_PULLUP);
+	
+	//cvOutputs5V[0].setValueProvider(&lfo);
 }
 
 char c[] = {'?', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'C', 'd', 'e', 'f', 'E', 'r', 'r', ' ', '-', '_'};
@@ -100,6 +105,7 @@ void loop()
 	fsw2.loop(usNow);
 	fsw3.loop(usNow);
 	midi.loop(usNow);
+	lfo.loop(usNow);
     
     if (usNow - t > 600000)
     {
