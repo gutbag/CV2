@@ -1,5 +1,6 @@
 #include "CVOutput.h"
 #include "DAC.h"
+#include "ValueProvider.h"
 
 CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput)
 : dac(aDac),

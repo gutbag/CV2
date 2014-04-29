@@ -5,6 +5,7 @@
 
 class ValueProvider
 {
+public:
 	virtual uint16_t getMinimum() = 0;
 	virtual uint16_t getMaximum() = 0;
 	virtual uint16_t getValue() = 0;

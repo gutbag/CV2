@@ -6,6 +6,7 @@
 #include "MIDI.h"
 #include "CVOutput.h"
 #include "LFO.h"
+#include "Patch.h"
 
 #define OPTO_1 24
 #define OPTO_2 25
@@ -60,6 +61,7 @@ Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
 MIDI midi;
 LFO lfo;
+Patch patch;
 
 void setup()
 {

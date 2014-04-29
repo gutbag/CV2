@@ -830,6 +830,7 @@
 		F6C94D8F190D779600F83CA6 /* CVOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVOutput.h; sourceTree = "<group>"; };
 		F6C94D91190DAC0300F83CA6 /* Patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patch.cpp; sourceTree = "<group>"; };
 		F6C94D92190DAC0300F83CA6 /* Patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Patch.h; sourceTree = "<group>"; };
+		F6F53B691910500E005409AC /* MIDIListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIListener.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -2129,6 +2130,7 @@
 				F6C94D91190DAC0300F83CA6 /* Patch.cpp */,
 				F6C94D92190DAC0300F83CA6 /* Patch.h */,
 				F697E5DC190BA32300477901 /* main.cpp */,
+				F6F53B691910500E005409AC /* MIDIListener.h */,
 				F6B0B17C190C626E00B443D3 /* MIDI.cpp */,
 				F6B0B17D190C626E00B443D3 /* MIDI.h */,
 				F697E5E1190BA32300477901 /* Makefile */,
