@@ -27,7 +27,6 @@ uint16_t LFO::getValue()
 
 void LFO::setup()
 {
-	Serial1.begin(31250);
 }
 
 void LFO::loop(const unsigned long usNow)

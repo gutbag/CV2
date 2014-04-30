@@ -62,7 +62,7 @@ USER_LIBS_LIST = Display DAC Footswitch Opto MIDI CVOutput LFO
 # BOARD_PORT is optional
 # If not defined, BOARD_PORT = /dev/tty.usb* (default)
 #
-BOARD_PORT = /dev/tty.usbmodem1411
+BOARD_PORT = /dev/tty.usbmodem1421
 
 # Xcode takes SKETCHBOOK_DIR from preferences.txt
 # If not defined, each IDE has its own SKETCHBOOK_DIR (default)

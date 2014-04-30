@@ -93,6 +93,8 @@ void setup()
 	pinMode(D_SPARE_3, INPUT_PULLUP);
 	
 	//cvOutputs5V[0].setValueProvider(&lfo);
+	
+	midi.setListener(&patch);
 }
 
 char c[] = {'?', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'C', 'd', 'e', 'f', 'E', 'r', 'r', ' ', '-', '_'};

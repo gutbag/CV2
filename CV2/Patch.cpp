@@ -15,8 +15,7 @@ void Patch::processMessage(const char* pMessage)
 void Patch::printControlChange(const char* pMessage)
 {
 	Serial.print("Control Change, No: ");
-	Serial.print(pMessage[1]);
+	Serial.print(pMessage[1], DEC);
 	Serial.print(" Val: ");
-	Serial.println(pMessage[2]);
+	Serial.println(pMessage[2], DEC);
 }
-
