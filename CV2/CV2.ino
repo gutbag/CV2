@@ -33,6 +33,7 @@
 #define CS_PIN_9V_DAC 4
 
 Display display;
+MIDI midi;
 DAC dac5V(CS_PIN_5V_DAC);
 DAC dac9V(CS_PIN_9V_DAC);
 CVOutput cvOutputs5V[8] =
@@ -59,7 +60,6 @@ Footswitch fsw1(FSW_1, FSW_LED1);
 Footswitch fsw2(FSW_2, FSW_LED2);
 Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
-MIDI midi;
 LFO lfo;
 Patch patch;
 
@@ -68,12 +68,12 @@ void setup()
 	Serial.begin(115200);
 	
 	display.setup();
+	midi.setup();
 	dac5V.setup();
-	dac9V.setup();
+//	dac9V.setup();
 	fsw1.setup();
 	fsw2.setup();
 	fsw3.setup();
-	midi.setup();
 	lfo.setup();
 	
 	for (uint8_t i=0; i<(sizeof(optos)/sizeof(Opto)); i++)
@@ -82,8 +82,8 @@ void setup()
 	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
 		cvOutputs5V[i].setup();
 	
-	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
-		cvOutputs9V[i].setup();
+//	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
+//		cvOutputs9V[i].setup();
 	
 	pinMode(PATCH_DOWN_SW, INPUT_PULLUP);
 	pinMode(PATCH_UP_SW, INPUT_PULLUP);
@@ -93,8 +93,6 @@ void setup()
 	pinMode(D_SPARE_3, INPUT_PULLUP);
 	
 	//cvOutputs5V[0].setValueProvider(&lfo);
-	
-	midi.setListener(&patch);
 }
 
 char c[] = {'?', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'C', 'd', 'e', 'f', 'E', 'r', 'r', ' ', '-', '_'};
@@ -111,6 +109,13 @@ void loop()
 	midi.loop(usNow);
 	lfo.loop(usNow);
     
+	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
+		cvOutputs5V[i].loop(usNow);
+	
+//	dac5V.setOutput(0, 0xc0);
+	//	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
+	//		cvOutputs9V[i].loop(usNow);
+
     if (usNow - t > 600000)
     {
         i++;
@@ -120,5 +125,4 @@ void loop()
         display.set(&c[i]);
         t = usNow;
     }
-    
 }

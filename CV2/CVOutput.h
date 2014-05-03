@@ -2,11 +2,13 @@
 #define __CV2__CVOutput__
 
 #include <Arduino.h>
+#include "MIDIListener.h"
 
 class DAC;
 class ValueProvider;
+class MIDI;
 
-class CVOutput
+class CVOutput : public MIDIListener
 {
 public:
 	CVOutput(DAC& aDac, const uint8_t anOutput);
@@ -16,6 +18,7 @@ public:
 	void setValueProvider(ValueProvider* aValueProvider);
 	void setMinimum(const uint8_t value);
 	void setMaximum(const uint8_t value);
+	void processMessage(const char* pMessage);
 private:
 	DAC& dac;
 	uint8_t output;
@@ -24,6 +27,7 @@ private:
 	uint8_t maximum;
 	ValueProvider* pProvider;
 	uint16_t lastProviderValue;
+	boolean dirty;
 };
 
 #endif /* defined(__CV2__CVOutput__) */
