@@ -25,7 +25,7 @@ Display& Display::instance()
 }
 
 Display::Display()
-: usLastChange(0), digitIndex(0)
+: usLastChange(0), digitIndex(0), colonFlasher(100000, 200000), apostropheFlasher(80000, 100000)
 {
     charMap['?'] = 0xCB;
 
@@ -59,8 +59,11 @@ Display::Display()
     charMap['e'] = charMap['E'];
     charMap['F'] = 0x8E;
     charMap['f'] = charMap['F'];
-    charMap['r'] = 0x0A;
+	charMap['I'] = charMap['1']; // for now
+ 	charMap['L'] = 0x1C;
+	charMap['r'] = 0x0A;
     charMap['R'] = charMap['r'];
+	charMap['S'] = charMap['5']; // for now
 	
 	if (pInstance == NULL)
 		pInstance = this;
@@ -100,6 +103,9 @@ void Display::setup()
     digitalWrite(LED_12, LOW);
     pinMode(LED_3, OUTPUT);
     digitalWrite(LED_3, LOW);
+	
+	colonFlasher.setup();
+	apostropheFlasher.setup();
 }
 
 void Display::loop(const unsigned long usNow)
@@ -115,6 +121,13 @@ void Display::loop(const unsigned long usNow)
         
         usLastChange = usNow;
     }
+	
+	colonFlasher.loop(usNow);
+	apostropheFlasher.loop(usNow);
+
+	// TODO: only set if changed
+	setColon(colonFlasher.getState());
+	setApostophe(apostropheFlasher.getState());
 }
 
 // display the 4 chars from s
@@ -161,12 +174,33 @@ void Display::setDigit(const uint8_t digitIndex, const byte value)
     }
 }
 
+void Display::setDecimalPoint(const unsigned int which, const boolean state)
+{
+	if (which < sizeof(digits))
+	{
+		if (state)
+			digits[which] |= 1;
+		else
+			digits[which] &= 0xfe;
+	}
+}
+
 void Display::setColon(const boolean state)
 {
 	digitalWrite(LED_12, state ? HIGH : LOW);
 }
 
+void Display::flashColon()
+{
+	colonFlasher.flash();
+}
+
 void Display::setApostophe(const boolean state)
 {
 	digitalWrite(LED_3, state ? HIGH : LOW);
+}
+
+void Display::flashApostrophe()
+{
+	apostropheFlasher.flash();
 }

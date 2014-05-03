@@ -1,5 +1,6 @@
 #include "MIDI.h"
 #include "MIDIListener.h"
+#include "Display.h"
 
 static MIDI* pInstance = NULL;
 
@@ -48,6 +49,7 @@ void MIDI::loop(const unsigned long usNow)
 		else
 		{
 			// TODO: not enough space in buffer - do what?
+			Display::instance().set("Err!");
 		}
 	}
 }
@@ -114,8 +116,12 @@ void MIDI::processBuffer()
 				break;
 			default:
 				Serial.println("no listener");
+				Display::instance().set("LIS?");
+				readIndex += 3; // TODO: consume message - length??
 				break;
 		}
+		
+		Display::instance().flashColon();
 	}
 	
 	shuffleBuffer();

@@ -77,6 +77,8 @@ void setup()
 	fsw2.setup();
 	fsw3.setup();
 	lfo.setup();
+	
+	displayTest.enable(false);
 	displayTest.setup();
 	
 	for (uint8_t i=0; i<(sizeof(optos)/sizeof(Opto)); i++)

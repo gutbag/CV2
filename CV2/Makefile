@@ -40,7 +40,7 @@ APP_LIBS_LIST = SPI
 #
 
 #
-USER_LIBS_LIST = Display DAC Footswitch Opto MIDI CVOutput LFO DisplayTest
+USER_LIBS_LIST = Display DAC Footswitch Opto MIDI CVOutput LFO DisplayTest Flasher
 
 # List core, application and user's libraries to be excluded
 # For example, WiFi may crash on Arduino 1.0.2, Esplora on Arduino 1.0.3, Firmata on Teensy 3.0,
@@ -62,7 +62,7 @@ USER_LIBS_LIST = Display DAC Footswitch Opto MIDI CVOutput LFO DisplayTest
 # BOARD_PORT is optional
 # If not defined, BOARD_PORT = /dev/tty.usb* (default)
 #
-BOARD_PORT = /dev/tty.usbmodem1411
+BOARD_PORT = /dev/tty.usbmodem1421
 
 # Xcode takes SKETCHBOOK_DIR from preferences.txt
 # If not defined, each IDE has its own SKETCHBOOK_DIR (default)

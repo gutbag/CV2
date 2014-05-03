@@ -10,9 +10,12 @@ public:
 	virtual ~DisplayTest();
 	void setup();
 	void loop(unsigned long usNow);
+	void enable(boolean state);
 private:
-	unsigned long lastUpdateUs;
+	unsigned long lastCharUpdateUs;
+	unsigned long lastDpUpdateUs;
 	unsigned int charIndex;
+	boolean enabled;
 };
 
 #endif /* defined(__CV2__DisplayTest__) */
