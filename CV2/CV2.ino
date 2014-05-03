@@ -7,6 +7,7 @@
 #include "CVOutput.h"
 #include "LFO.h"
 #include "Patch.h"
+#include "DisplayTest.h"
 
 #define OPTO_1 24
 #define OPTO_2 25
@@ -62,6 +63,7 @@ Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
 LFO lfo;
 Patch patch;
+DisplayTest displayTest;
 
 void setup()
 {
@@ -75,6 +77,7 @@ void setup()
 	fsw2.setup();
 	fsw3.setup();
 	lfo.setup();
+	displayTest.setup();
 	
 	for (uint8_t i=0; i<(sizeof(optos)/sizeof(Opto)); i++)
 		optos[i].setup();
@@ -95,10 +98,6 @@ void setup()
 	//cvOutputs5V[0].setValueProvider(&lfo);
 }
 
-char c[] = {'?', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'C', 'd', 'e', 'f', 'E', 'r', 'r', ' ', '-', '_'};
-int i = 0;
-unsigned long t = 0;
-
 void loop()
 {
     long usNow = micros();
@@ -108,6 +107,7 @@ void loop()
 	fsw3.loop(usNow);
 	midi.loop(usNow);
 	lfo.loop(usNow);
+	displayTest.loop(usNow);
     
 	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
 		cvOutputs5V[i].loop(usNow);
@@ -115,14 +115,4 @@ void loop()
 //	dac5V.setOutput(0, 0xc0);
 	//	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
 	//		cvOutputs9V[i].loop(usNow);
-
-    if (usNow - t > 600000)
-    {
-        i++;
-        if (i > sizeof(c)-4)
-            i=0;
-        
-        display.set(&c[i]);
-        t = usNow;
-    }
 }

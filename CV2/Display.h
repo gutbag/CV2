@@ -3,6 +3,7 @@
 class Display
 {
 public:
+	static Display& instance();
 	Display();
 	virtual ~Display() {}
 	void setup();

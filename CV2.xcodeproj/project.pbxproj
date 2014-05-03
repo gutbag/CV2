@@ -393,6 +393,7 @@
 		AA2A140426092133AA0001FB /* evk1105.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FB /* evk1105.h */; };
 		AA2A140426092133AA0001FC /* led.c in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FC /* led.c */; };
 		AA2A140426092133AA0001FD /* led.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FD /* led.h */; };
+		F6244F131914EA2400FBCC5F /* DisplayTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F111914EA2400FBCC5F /* DisplayTest.cpp */; };
 		F627E623190BA32300477901 /* CV2.ino in Sources */ = {isa = PBXBuildFile; fileRef = F697E623190BA32300477901 /* CV2.ino */; };
 		F627E636190BA3DB00477901 /* Display.h in Sources */ = {isa = PBXBuildFile; fileRef = F697E636190BA3DB00477901 /* Display.h */; };
 		F631555E190ECBF400707EB7 /* LFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F631555C190ECBF400707EB7 /* LFO.cpp */; };
@@ -793,6 +794,8 @@
 		AAAA140426092133AA0001FB /* evk1105.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = evk1105.h; sourceTree = "<group>"; };
 		AAAA140426092133AA0001FC /* led.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = led.c; sourceTree = "<group>"; };
 		AAAA140426092133AA0001FD /* led.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = led.h; sourceTree = "<group>"; };
+		F6244F111914EA2400FBCC5F /* DisplayTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayTest.cpp; sourceTree = "<group>"; };
+		F6244F121914EA2400FBCC5F /* DisplayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayTest.h; sourceTree = "<group>"; };
 		F631555B190EC2A300707EB7 /* ValueProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueProvider.h; sourceTree = "<group>"; };
 		F631555C190ECBF400707EB7 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
 		F631555D190ECBF400707EB7 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
@@ -2121,6 +2124,8 @@
 				F6B0B174190C18B300B443D3 /* DAC.h */,
 				F697E635190BA3DB00477901 /* Display.cpp */,
 				F697E636190BA3DB00477901 /* Display.h */,
+				F6244F111914EA2400FBCC5F /* DisplayTest.cpp */,
+				F6244F121914EA2400FBCC5F /* DisplayTest.h */,
 				F6B0B176190C211300B443D3 /* Footswitch.cpp */,
 				F6B0B177190C211300B443D3 /* Footswitch.h */,
 				F631555C190ECBF400707EB7 /* LFO.cpp */,
@@ -2387,6 +2392,7 @@
 				AA2A140426092133AA00005D /* Printable.h in Sources */,
 				AA2A140426092133AA00005E /* Reset.cpp in Sources */,
 				AA2A140426092133AA00005F /* Reset.h in Sources */,
+				F6244F131914EA2400FBCC5F /* DisplayTest.cpp in Sources */,
 				F6B0B17E190C626E00B443D3 /* MIDI.cpp in Sources */,
 				AA2A140426092133AA000060 /* RingBuffer.cpp in Sources */,
 				AA2A140426092133AA000061 /* RingBuffer.h in Sources */,

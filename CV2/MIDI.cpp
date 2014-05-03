@@ -12,7 +12,8 @@ MIDI::MIDI()
 : writeIndex(0),
   readIndex(0)
 {
-	pInstance = this;
+	if (pInstance == NULL)
+		pInstance = this;
 	
 	for (unsigned int ch=0; ch<16; ch++)
 		for (unsigned int i=0; i<128; i++)

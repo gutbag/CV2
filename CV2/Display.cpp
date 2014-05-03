@@ -17,6 +17,13 @@ static const uint8_t SEG_DP = 31;
 static const uint8_t LED_12 = 30;
 static const uint8_t LED_3 = 13;
 
+static Display* pInstance = NULL;
+
+Display& Display::instance()
+{
+	return *pInstance;
+}
+
 Display::Display()
 : usLastChange(0), digitIndex(0)
 {
@@ -54,6 +61,9 @@ Display::Display()
     charMap['f'] = charMap['F'];
     charMap['r'] = 0x0A;
     charMap['R'] = charMap['r'];
+	
+	if (pInstance == NULL)
+		pInstance = this;
 }
 
 void Display::setup()
