@@ -14,6 +14,7 @@ public:
 private:
 	static const uint8_t RANGE = 1;
 	uint8_t csPin;
+	uint8_t values[8];
 };
 
 #endif /* defined(__CV2__DAC__) */

@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include "Flasher.h"
+#include "MIDIListener.h"
 
-class Display
+class Display : public MIDIListener
 {
 public:
 	static Display& instance();
@@ -15,6 +16,7 @@ public:
 	void flashColon();
 	void setApostophe(const boolean state);
 	void flashApostrophe();
+	void processMessage(const char* pMessage);
     
 private:
 	byte charMap[128]; // TODO: make const?

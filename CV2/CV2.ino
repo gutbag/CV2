@@ -33,8 +33,8 @@
 #define CS_PIN_5V_DAC 10
 #define CS_PIN_9V_DAC 4
 
-Display display;
 MIDI midi;
+Display display;
 DAC dac5V(CS_PIN_5V_DAC);
 DAC dac9V(CS_PIN_9V_DAC);
 CVOutput cvOutputs5V[8] =
@@ -97,7 +97,7 @@ void setup()
 	pinMode(D_SPARE_2, INPUT_PULLUP);
 	pinMode(D_SPARE_3, INPUT_PULLUP);
 	
-	//cvOutputs5V[0].setValueProvider(&lfo);
+	cvOutputs5V[0].setValueProvider(&lfo);
 }
 
 void loop()

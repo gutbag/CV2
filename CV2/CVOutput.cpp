@@ -2,6 +2,8 @@
 #include "DAC.h"
 #include "ValueProvider.h"
 #include "MIDI.h"
+#include "MIDIMessages.h"
+#include "LFO.h"
 
 CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput)
 : dac(aDac),
@@ -24,8 +26,10 @@ void CVOutput::setup()
 	dac.setOutput(output, value);
 	
 	// TODO: can't use output alone - will clash with 9V CVs
-	MIDI::instance().setListener(this, output, 0xb0, 0);
-	MIDI::instance().setListener(this, output, 0xb0, 1);
+	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MIN_CC);
+	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MAX_CC);
+	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_FIXED_CC);
+	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_LFO_CC);
 }
 
 void CVOutput::setValueProvider(ValueProvider* aValueProvider)
@@ -37,13 +41,23 @@ void CVOutput::loop(const unsigned int usNow)
 {
 	if (pProvider != NULL)
 	{
-		uint16_t pValue = pProvider->getValue();
+		uint16_t providerValue = pProvider->getValue();
 		
-		if (pValue != lastProviderValue) // TODO: not enough - min and max might have changed!!!
+		if (dirty || providerValue != lastProviderValue)
 		{
-			// TODO: get value and scale
-			// if resulting value different from H/W, set it
-			lastProviderValue = pValue;
+			// get value and scale
+			// TODO: check map impl - do custom version?
+			// TODO: handle min > max
+			long value = map(providerValue, pProvider->getMinimum(), pProvider->getMaximum(),
+							 minimum, maximum);
+			
+			dac.setOutput(output, value);
+			
+			lastProviderValue = providerValue;
+			dirty = false;
+			
+//			Serial.print("CV1: ");
+//			Serial.println(value, DEC);
 		}
 	}
 	else // use minimum value if it's changed
@@ -90,13 +104,21 @@ void CVOutput::processMessage(const char* pMessage)
 	{
 		switch (pMessage[1])
 		{
-			case 0: // min
+			case CV_OUTPUT_MIN_CC:
 				setMinimum(pMessage[2] * 2);
 				break;
-			case 1: // max
+			case CV_OUTPUT_MAX_CC:
 				setMaximum(pMessage[2] * 2);
 				break;
-			defaut:
+			case CV_OUTPUT_SOURCE_FIXED_CC:
+				pProvider = NULL;
+				dirty = true;
+				break;
+			case CV_OUTPUT_SOURCE_LFO_CC:
+				pProvider = &LFO::instance();
+				dirty = true;
+				break;
+			default:
 				break;
 		}
 	}

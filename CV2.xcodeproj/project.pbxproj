@@ -799,6 +799,7 @@
 		F6244F121914EA2400FBCC5F /* DisplayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayTest.h; sourceTree = "<group>"; };
 		F6244F141914F6F000FBCC5F /* Flasher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Flasher.cpp; sourceTree = "<group>"; };
 		F6244F151914F6F000FBCC5F /* Flasher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flasher.h; sourceTree = "<group>"; };
+		F6244F1A1915852100FBCC5F /* MIDIMessages.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIMessages.h; sourceTree = "<group>"; };
 		F631555B190EC2A300707EB7 /* ValueProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueProvider.h; sourceTree = "<group>"; };
 		F631555C190ECBF400707EB7 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
 		F631555D190ECBF400707EB7 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
@@ -2143,6 +2144,7 @@
 				F6F53B691910500E005409AC /* MIDIListener.h */,
 				F6B0B17C190C626E00B443D3 /* MIDI.cpp */,
 				F6B0B17D190C626E00B443D3 /* MIDI.h */,
+				F6244F1A1915852100FBCC5F /* MIDIMessages.h */,
 				F697E5E1190BA32300477901 /* Makefile */,
 				F697E623190BA32300477901 /* CV2.ino */,
 				F697E5E3190BA32300477901 /* Sketchbook */,

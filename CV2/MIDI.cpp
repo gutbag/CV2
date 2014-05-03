@@ -54,20 +54,17 @@ void MIDI::loop(const unsigned long usNow)
 	}
 }
 
-void MIDI::setListener(MIDIListener* pAListener, const uint8_t channel, const uint8_t message, const uint8_t controllerNumber)
+void MIDI::setCCListener(MIDIListener* pAListener, const uint8_t channel, const uint8_t controllerNumber)
 {
-	if ((message & 0xf0) == 0xb0) // only handling Control Change currently
+	if (controllerNumber < 128)
 	{
-		if (controllerNumber < 128)
-		{
-//			Serial.print("MIDI::setListener 0x");
-//			Serial.print((unsigned long)pAListener, HEX);
-//			Serial.print(" ");
-//			Serial.print(channel, DEC);
-//			Serial.print(" ");
-//			Serial.println(controllerNumber, DEC);
-			listeners[channel][controllerNumber] = pAListener;
-		}
+//		Serial.print("MIDI::setCCListener 0x");
+//		Serial.print((unsigned long)pAListener, HEX);
+//		Serial.print(" ");
+//		Serial.print(channel, DEC);
+//		Serial.print(" ");
+//		Serial.println(controllerNumber, DEC);
+		listeners[channel][controllerNumber] = pAListener;
 	}
 }
 

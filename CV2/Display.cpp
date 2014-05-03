@@ -1,4 +1,6 @@
 #include "Display.h"
+#include "MIDI.h"
+#include "MIDIMessages.h"
 
 static const uint8_t DIG_1 = 44;
 static const uint8_t DIG_2 = 42;
@@ -25,7 +27,7 @@ Display& Display::instance()
 }
 
 Display::Display()
-: usLastChange(0), digitIndex(0), colonFlasher(100000, 200000), apostropheFlasher(80000, 100000)
+: usLastChange(0), digitIndex(0), colonFlasher(80000, 100000), apostropheFlasher(80000, 100000)
 {
     charMap['?'] = 0xCB;
 
@@ -67,6 +69,8 @@ Display::Display()
 	
 	if (pInstance == NULL)
 		pInstance = this;
+	
+	MIDI::instance().setCCListener(this, 0, DISPLAY_RESET_CC);
 }
 
 void Display::setup()
@@ -204,3 +208,25 @@ void Display::flashApostrophe()
 {
 	apostropheFlasher.flash();
 }
+
+void Display::processMessage(const char* pMessage)
+{
+//	Serial.print("Display Message: ");
+//	Serial.print(pMessage[0], HEX);
+//	Serial.print(" No: ");
+//	Serial.print(pMessage[1], DEC);
+//	Serial.print(" Val: ");
+//	Serial.println(pMessage[2], DEC);
+	
+	if ((*pMessage & 0xf0) == 0xb0) // Control Change
+	{
+		if (pMessage[1] == DISPLAY_RESET_CC) // TODO: change back to switch?
+		{
+			set("    ");
+		}
+		else
+		{
+		}
+	}
+}
+
