@@ -8,6 +8,7 @@
 #include "LFO.h"
 #include "Patch.h"
 #include "DisplayTest.h"
+#include "Expression.h"
 
 #define OPTO_1 24
 #define OPTO_2 25
@@ -33,8 +34,12 @@
 #define CS_PIN_5V_DAC 10
 #define CS_PIN_9V_DAC 4
 
+#define EXPR_1_PIN A3
+#define EXPR_2_PIN A11
+
 MIDI midi;
 Display display;
+DisplayTest displayTest;
 DAC dac5V(CS_PIN_5V_DAC);
 DAC dac9V(CS_PIN_9V_DAC);
 CVOutput cvOutputs5V[8] =
@@ -63,7 +68,8 @@ Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
 LFO lfo;
 Patch patch;
-DisplayTest displayTest;
+Expression expr1(EXPR_1_PIN, 0);
+Expression expr2(EXPR_2_PIN, 1);
 
 void setup()
 {
@@ -77,6 +83,8 @@ void setup()
 	fsw2.setup();
 	fsw3.setup();
 	lfo.setup();
+	expr1.setup();
+	expr2.setup();
 	
 	displayTest.enable(false);
 	displayTest.setup();
@@ -97,19 +105,21 @@ void setup()
 	pinMode(D_SPARE_2, INPUT_PULLUP);
 	pinMode(D_SPARE_3, INPUT_PULLUP);
 	
-	cvOutputs5V[0].setValueProvider(&lfo);
+//	cvOutputs5V[0].setValueProvider(&lfo);
 }
 
 void loop()
 {
     long usNow = micros();
     display.loop(usNow);
+	displayTest.loop(usNow);
 	fsw1.loop(usNow);
 	fsw2.loop(usNow);
 	fsw3.loop(usNow);
 	midi.loop(usNow);
 	lfo.loop(usNow);
-	displayTest.loop(usNow);
+	expr1.loop(usNow);
+	expr2.loop(usNow);
     
 	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
 		cvOutputs5V[i].loop(usNow);

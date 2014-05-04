@@ -209,6 +209,13 @@ void Display::flashApostrophe()
 	apostropheFlasher.flash();
 }
 
+void Display::clear()
+{
+	set("    ");
+	for (unsigned int i=0; i<4; i++)
+		setDecimalPoint(i, false);
+}
+
 void Display::processMessage(const char* pMessage)
 {
 //	Serial.print("Display Message: ");
@@ -222,7 +229,7 @@ void Display::processMessage(const char* pMessage)
 	{
 		if (pMessage[1] == DISPLAY_RESET_CC) // TODO: change back to switch?
 		{
-			set("    ");
+			clear();
 		}
 		else
 		{

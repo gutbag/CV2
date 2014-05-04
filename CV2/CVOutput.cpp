@@ -4,6 +4,7 @@
 #include "MIDI.h"
 #include "MIDIMessages.h"
 #include "LFO.h"
+#include "Expression.h"
 
 CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput)
 : dac(aDac),
@@ -30,6 +31,7 @@ void CVOutput::setup()
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MAX_CC);
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_FIXED_CC);
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_LFO_CC);
+	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_EXPR_CC);
 }
 
 void CVOutput::setValueProvider(ValueProvider* aValueProvider)
@@ -48,6 +50,7 @@ void CVOutput::loop(const unsigned int usNow)
 			// get value and scale
 			// TODO: check map impl - do custom version?
 			// TODO: handle min > max
+			// TODO: store provider min/max when changed
 			long value = map(providerValue, pProvider->getMinimum(), pProvider->getMaximum(),
 							 minimum, maximum);
 			
@@ -93,12 +96,12 @@ void CVOutput::setMaximum(const uint8_t value)
 
 void CVOutput::processMessage(const char* pMessage)
 {
-//	Serial.print("Message: ");
-//	Serial.print(pMessage[0], HEX);
-//	Serial.print(" No: ");
-//	Serial.print(pMessage[1], DEC);
-//	Serial.print(" Val: ");
-//	Serial.println(pMessage[2], DEC);
+	Serial.print("Message: ");
+	Serial.print(pMessage[0], HEX);
+	Serial.print(" No: ");
+	Serial.print(pMessage[1], DEC);
+	Serial.print(" Val: ");
+	Serial.println(pMessage[2], DEC);
 	
 	if ((*pMessage & 0xf0) == 0xb0) // Control Change
 	{
@@ -118,6 +121,13 @@ void CVOutput::processMessage(const char* pMessage)
 				pProvider = &LFO::instance();
 				dirty = true;
 				break;
+			case CV_OUTPUT_SOURCE_EXPR_CC:
+			{
+				uint8_t exprIndex = pMessage[2] == 1 ? 0 : 1;
+				pProvider = &Expression::instance(exprIndex);
+				dirty = true;
+				break;
+			}
 			default:
 				break;
 		}

@@ -17,6 +17,7 @@ public:
 	void setApostophe(const boolean state);
 	void flashApostrophe();
 	void processMessage(const char* pMessage);
+	void clear();
     
 private:
 	byte charMap[128]; // TODO: make const?

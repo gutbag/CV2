@@ -395,6 +395,7 @@
 		AA2A140426092133AA0001FD /* led.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FD /* led.h */; };
 		F6244F131914EA2400FBCC5F /* DisplayTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F111914EA2400FBCC5F /* DisplayTest.cpp */; };
 		F6244F161914F6F000FBCC5F /* Flasher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F141914F6F000FBCC5F /* Flasher.cpp */; };
+		F6244F1D1916347000FBCC5F /* Expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F1B1916347000FBCC5F /* Expression.cpp */; };
 		F627E623190BA32300477901 /* CV2.ino in Sources */ = {isa = PBXBuildFile; fileRef = F697E623190BA32300477901 /* CV2.ino */; };
 		F627E636190BA3DB00477901 /* Display.h in Sources */ = {isa = PBXBuildFile; fileRef = F697E636190BA3DB00477901 /* Display.h */; };
 		F631555E190ECBF400707EB7 /* LFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F631555C190ECBF400707EB7 /* LFO.cpp */; };
@@ -800,6 +801,8 @@
 		F6244F141914F6F000FBCC5F /* Flasher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Flasher.cpp; sourceTree = "<group>"; };
 		F6244F151914F6F000FBCC5F /* Flasher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flasher.h; sourceTree = "<group>"; };
 		F6244F1A1915852100FBCC5F /* MIDIMessages.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIMessages.h; sourceTree = "<group>"; };
+		F6244F1B1916347000FBCC5F /* Expression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Expression.cpp; sourceTree = "<group>"; };
+		F6244F1C1916347000FBCC5F /* Expression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
 		F631555B190EC2A300707EB7 /* ValueProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueProvider.h; sourceTree = "<group>"; };
 		F631555C190ECBF400707EB7 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
 		F631555D190ECBF400707EB7 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
@@ -2120,8 +2123,9 @@
 		F697E5DB190BA32300477901 /* CV2 */ = {
 			isa = PBXGroup;
 			children = (
-				F631555F190ECFB400707EB7 /* ValueConsumer.h */,
-				F631555B190EC2A300707EB7 /* ValueProvider.h */,
+				F697E61A190BA32300477901 /* About */,
+				F697E5E5190BA32300477901 /* Configurations */,
+				F697E623190BA32300477901 /* CV2.ino */,
 				F6C94D8E190D779600F83CA6 /* CVOutput.cpp */,
 				F6C94D8F190D779600F83CA6 /* CVOutput.h */,
 				F6B0B173190C18B300B443D3 /* DAC.cpp */,
@@ -2130,29 +2134,30 @@
 				F697E636190BA3DB00477901 /* Display.h */,
 				F6244F111914EA2400FBCC5F /* DisplayTest.cpp */,
 				F6244F121914EA2400FBCC5F /* DisplayTest.h */,
+				F6244F1B1916347000FBCC5F /* Expression.cpp */,
+				F6244F1C1916347000FBCC5F /* Expression.h */,
 				F6244F141914F6F000FBCC5F /* Flasher.cpp */,
 				F6244F151914F6F000FBCC5F /* Flasher.h */,
 				F6B0B176190C211300B443D3 /* Footswitch.cpp */,
 				F6B0B177190C211300B443D3 /* Footswitch.h */,
 				F631555C190ECBF400707EB7 /* LFO.cpp */,
 				F631555D190ECBF400707EB7 /* LFO.h */,
+				F697E5DC190BA32300477901 /* main.cpp */,
+				F697E5E1190BA32300477901 /* Makefile */,
+				F697E606190BA32300477901 /* Makefiles */,
+				F6B0B17C190C626E00B443D3 /* MIDI.cpp */,
+				F6B0B17D190C626E00B443D3 /* MIDI.h */,
+				F6F53B691910500E005409AC /* MIDIListener.h */,
+				F6244F1A1915852100FBCC5F /* MIDIMessages.h */,
 				F6B0B179190C255300B443D3 /* Opto.cpp */,
 				F6B0B17A190C255300B443D3 /* Opto.h */,
 				F6C94D91190DAC0300F83CA6 /* Patch.cpp */,
 				F6C94D92190DAC0300F83CA6 /* Patch.h */,
-				F697E5DC190BA32300477901 /* main.cpp */,
-				F6F53B691910500E005409AC /* MIDIListener.h */,
-				F6B0B17C190C626E00B443D3 /* MIDI.cpp */,
-				F6B0B17D190C626E00B443D3 /* MIDI.h */,
-				F6244F1A1915852100FBCC5F /* MIDIMessages.h */,
-				F697E5E1190BA32300477901 /* Makefile */,
-				F697E623190BA32300477901 /* CV2.ino */,
-				F697E5E3190BA32300477901 /* Sketchbook */,
 				AAAA140426092133AA000000 /* Resources */,
-				F697E5E5190BA32300477901 /* Configurations */,
-				F697E606190BA32300477901 /* Makefiles */,
-				F697E61A190BA32300477901 /* About */,
+				F697E5E3190BA32300477901 /* Sketchbook */,
 				F697E61C190BA32300477901 /* Utilities */,
+				F631555F190ECFB400707EB7 /* ValueConsumer.h */,
+				F631555B190EC2A300707EB7 /* ValueProvider.h */,
 			);
 			path = CV2;
 			sourceTree = "<group>";
@@ -2462,6 +2467,7 @@
 				AA2A140426092133AA0000AC /* Mailbox.h in Sources */,
 				AA2A140426092133AA0000AD /* Process.cpp in Sources */,
 				AA2A140426092133AA0000AE /* Process.h in Sources */,
+				F6244F1D1916347000FBCC5F /* Expression.cpp in Sources */,
 				AA2A140426092133AA0000AF /* YunClient.cpp in Sources */,
 				AA2A140426092133AA0000B0 /* YunClient.h in Sources */,
 				AA2A140426092133AA0000B1 /* YunServer.cpp in Sources */,

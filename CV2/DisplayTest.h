@@ -2,8 +2,9 @@
 #define __CV2__DisplayTest__
 
 #include <Arduino.h>
+#include "MIDIListener.h"
 
-class DisplayTest
+class DisplayTest : public MIDIListener
 {
 public:
 	DisplayTest();
@@ -11,6 +12,7 @@ public:
 	void setup();
 	void loop(unsigned long usNow);
 	void enable(boolean state);
+	void processMessage(const char* pMessage);
 private:
 	unsigned long lastCharUpdateUs;
 	unsigned long lastDpUpdateUs;
