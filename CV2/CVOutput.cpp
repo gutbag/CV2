@@ -29,9 +29,7 @@ void CVOutput::setup()
 	// TODO: can't use output alone - will clash with 9V CVs
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MIN_CC);
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MAX_CC);
-	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_FIXED_CC);
-	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_LFO_CC);
-	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_EXPR_CC);
+	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_CC);
 }
 
 void CVOutput::setValueProvider(ValueProvider* aValueProvider)
@@ -113,19 +111,30 @@ void CVOutput::processMessage(const char* pMessage)
 			case CV_OUTPUT_MAX_CC:
 				setMaximum(pMessage[2] * 2);
 				break;
-			case CV_OUTPUT_SOURCE_FIXED_CC:
-				pProvider = NULL;
-				dirty = true;
-				break;
-			case CV_OUTPUT_SOURCE_LFO_CC:
-				pProvider = &LFO::instance();
-				dirty = true;
-				break;
-			case CV_OUTPUT_SOURCE_EXPR_CC:
+			case CV_OUTPUT_SOURCE_CC:
 			{
-				uint8_t exprIndex = pMessage[2] == 1 ? 0 : 1;
-				pProvider = &Expression::instance(exprIndex);
-				dirty = true;
+				uint8_t sourceType = pMessage[2];
+				switch (sourceType)
+				{
+				case CV_OUTPUT_SOURCE_FIXED_VALUE:
+					pProvider = NULL;
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_LFO_VALUE:
+					pProvider = &LFO::instance();
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_EXPR1_VALUE:
+					pProvider = &Expression::instance(0);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_EXPR2_VALUE:
+					pProvider = &Expression::instance(1);
+					dirty = true;
+					break;
+				default:
+					break;
+				}
 				break;
 			}
 			default:
