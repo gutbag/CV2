@@ -63,9 +63,11 @@ Display::Display()
     charMap['f'] = charMap['F'];
 	charMap['I'] = charMap['1']; // for now
  	charMap['L'] = 0x1C;
+ 	charMap['o'] = 0x3A;
 	charMap['r'] = 0x0A;
     charMap['R'] = charMap['r'];
 	charMap['S'] = charMap['5']; // for now
+	charMap['t'] = 0x1E;
 	
 	if (pInstance == NULL)
 		pInstance = this;
