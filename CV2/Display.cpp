@@ -61,9 +61,12 @@ Display::Display()
     charMap['e'] = charMap['E'];
     charMap['F'] = 0x8E;
     charMap['f'] = charMap['F'];
+    charMap['h'] = 0x2E;
 	charMap['I'] = charMap['1']; // for now
  	charMap['L'] = 0x1C;
+ 	charMap['n'] = 0x2A;
  	charMap['o'] = 0x3A;
+	charMap['P'] = 0xCE;
 	charMap['r'] = 0x0A;
     charMap['R'] = charMap['r'];
 	charMap['S'] = charMap['5']; // for now

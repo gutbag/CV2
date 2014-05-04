@@ -106,6 +106,8 @@ void setup()
 	pinMode(D_SPARE_3, INPUT_PULLUP);
 	
 //	cvOutputs5V[0].setValueProvider(&lfo);
+	
+	display.set("-P01");
 }
 
 void loop()
