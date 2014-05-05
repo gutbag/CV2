@@ -13,9 +13,13 @@ CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel
   value(0),
   minimum(0),
   maximum(255),
+  sideChainMinimum(0),
+  sideChainMaximum(255),
   pProvider(NULL),
   lastProviderValue(~0),
-  dirty(false)
+  pSideChainProvider(NULL),
+  dirty(false),
+  sideChainMode(MIN)
 {
 }
 
@@ -30,46 +34,92 @@ void CVOutput::setup()
 	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_MIN_CC);
 	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_MAX_CC);
 	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_SOURCE_CC);
+	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_SIDE_CHAIN_SOURCE_CC);
+	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_SIDE_CHAIN_MIN_CC);
+	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_SIDE_CHAIN_MAX_CC);
+	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_SIDE_CHAIN_MODE_CC);
+	
+	// temp !!!!!!!
+//	minimum = 51;
+//	maximum = 153;
+//	pProvider = &LFO::instance();
+//	pSideChainProvider = &Expression::instance(0);
 }
 
 void CVOutput::loop(const unsigned int usNow)
 {
+	uint8_t newValue = minimum;
+	
 	if (pProvider != NULL)
 	{
 		uint16_t providerValue = pProvider->getValue();
-		
-		if (dirty || providerValue != lastProviderValue)
-		{
-			// get value and scale
-			// TODO: check map impl - do custom version?
-			// TODO: handle min > max
-			// TODO: store provider min/max when changed
-			long value = map(providerValue, pProvider->getMinimum(), pProvider->getMaximum(),
+		newValue = map(providerValue, pProvider->getMinimum(), pProvider->getMaximum(),
 							 minimum, maximum);
-			
-			dac.setOutput(output, value);
-			
-			lastProviderValue = providerValue;
-			dirty = false;
-			
-//			Serial.print("CV1: ");
-//			Serial.println(value, DEC);
-		}
 	}
-	else // use minimum value if it's changed
+	
+	if (pSideChainProvider != NULL)
 	{
-		if (dirty)
+		switch (sideChainMode)
 		{
-//			Serial.print("output: ");
-//			Serial.println(output, DEC);
-//			Serial.print("loop setting: ");
-//			Serial.println(minimum, HEX);
-			dac.setOutput(output, minimum);
-			dirty = false;
-			//dac.setOutput(0, minimum);
+			case MIN:
+				if (sideChainMinimum != minimum)
+				{
+					uint8_t sideValue = map(pSideChainProvider->getValue(),
+											pSideChainProvider->getMinimum(),
+											pSideChainProvider->getMaximum(),
+											sideChainMinimum, minimum - 1);
+					newValue -= (sideValue - sideChainMinimum);
+				}
+				break;
+			case MAX:
+				if (sideChainMaximum != maximum)
+				{
+					uint8_t sideValue = map(pSideChainProvider->getValue(),
+											pSideChainProvider->getMinimum(),
+											pSideChainProvider->getMaximum(),
+											maximum + 1, sideChainMaximum);
+										
+					newValue += (sideValue - maximum);
+				}
+				break;
+			case RANGE:
+				// TODO:
+				break;
 		}
 	}
+	
+	dac.setOutput(output, newValue);
 }
+
+//void CVOutput::loop(const unsigned int usNow)
+//{
+//	if (pProvider != NULL)
+//	{
+//		uint16_t providerValue = pProvider->getValue();
+//		
+//		if (dirty || providerValue != lastProviderValue)
+//		{
+//			// get value and scale
+//			// TODO: check map impl - do custom version?
+//			// TODO: store provider min/max when changed
+//			long value = map(providerValue, pProvider->getMinimum(), pProvider->getMaximum(),
+//							 minimum, maximum);
+//			
+//			dac.setOutput(output, value);
+//			
+//			lastProviderValue = providerValue;
+//			dirty = false;
+//		}
+//	}
+//	else // use minimum value if it's changed
+//	{
+//		if (dirty)
+//		{
+//			dac.setOutput(output, minimum);
+//			dirty = false;
+//		}
+//	}
+//}
 
 void CVOutput::setMinimum(const uint8_t value)
 {
@@ -107,7 +157,6 @@ void CVOutput::processCCMessage(const uint8_t channel,
 			setMaximum(value * 2);
 			break;
 		case CV_OUTPUT_SOURCE_CC:
-		{
 			switch (value)
 			{
 				case CV_OUTPUT_SOURCE_FIXED_VALUE:
@@ -130,7 +179,50 @@ void CVOutput::processCCMessage(const uint8_t channel,
 					break;
 			}
 			break;
-		}
+		case CV_OUTPUT_SIDE_CHAIN_SOURCE_CC:
+			switch (value)
+			{
+			case CV_OUTPUT_SIDE_CHAIN_SOURCE_LFO_VALUE:
+				pSideChainProvider = &LFO::instance();
+				dirty = true;
+				break;
+			case CV_OUTPUT_SIDE_CHAIN_SOURCE_EXPR1_VALUE:
+				pSideChainProvider = &Expression::instance(0);
+				dirty = true;
+				break;
+			case CV_OUTPUT_SIDE_CHAIN_SOURCE_EXPR2_VALUE:
+				pSideChainProvider = &Expression::instance(1);
+				dirty = true;
+				break;
+			default:
+				break;
+			}
+			break;
+		case CV_OUTPUT_SIDE_CHAIN_MIN_CC:
+			sideChainMinimum = value * 2;
+			break;
+		case CV_OUTPUT_SIDE_CHAIN_MAX_CC:
+			sideChainMaximum = value * 2;
+			break;
+		case CV_OUTPUT_SIDE_CHAIN_MODE_CC:
+			switch (value)
+			{
+				case CV_OUTPUT_SIDE_CHAIN_MODE_MIN_VALUE:
+					sideChainMode = MIN;
+					dirty = true;
+					break;
+				case CV_OUTPUT_SIDE_CHAIN_MODE_MAX_VALUE:
+					sideChainMode = MAX;
+					dirty = true;
+					break;
+				case CV_OUTPUT_SIDE_CHAIN_MODE_RANGE_VALUE:
+					sideChainMode = RANGE;
+					dirty = true;
+					break;
+				default:
+					break;
+			}
+			break;
 		default:
 			break;
 	}

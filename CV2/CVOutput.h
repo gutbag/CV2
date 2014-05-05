@@ -28,9 +28,14 @@ private:
 	uint8_t value;
 	uint8_t minimum;
 	uint8_t maximum;
+	uint8_t sideChainMinimum;
+	uint8_t sideChainMaximum;
 	ValueProvider* pProvider;
 	uint16_t lastProviderValue;
+	ValueProvider* pSideChainProvider;
 	boolean dirty;
+	enum SideChainMode {MIN, MAX, RANGE};
+	SideChainMode sideChainMode;
 };
 
 #endif /* defined(__CV2__CVOutput__) */
