@@ -1,5 +1,5 @@
 #include "MIDI.h"
-#include "MIDIListener.h"
+#include "MIDICCListener.h"
 #include "Display.h"
 
 static MIDI* pInstance = NULL;
@@ -54,7 +54,7 @@ void MIDI::loop(const unsigned long usNow)
 	}
 }
 
-void MIDI::setCCListener(MIDIListener* pAListener, const uint8_t channel, const uint8_t controllerNumber)
+void MIDI::setCCListener(MIDICCListener* pAListener, const uint8_t channel, const uint8_t controllerNumber)
 {
 	if (controllerNumber < 128)
 	{
@@ -97,7 +97,7 @@ void MIDI::processBuffer()
 			case 0xb0: // Control Change
 			{
 				uint8_t controllerNumber = pBuffer[1] & 0x7f;
-				MIDIListener* pListener = listeners[channel][controllerNumber];
+				MIDICCListener* pListener = listeners[channel][controllerNumber];
 				if (pListener != NULL)
 				{
 //					Serial.print("MIDI::processBuffer CC 0x");
@@ -106,7 +106,7 @@ void MIDI::processBuffer()
 //					Serial.print(channel, DEC);
 //					Serial.print(" ");
 //					Serial.println(controllerNumber, DEC);
-					pListener->processMessage(pBuffer);
+					pListener->processCCMessage(pBuffer[0] & 0x0f, pBuffer[1], pBuffer[2]);
 				}
 				readIndex += 3;
 			}

@@ -2,9 +2,9 @@
 #define __CV2__LFO__
 
 #include "ValueProvider.h"
-#include "MIDIListener.h"
+#include "MIDICCListener.h"
 
-class LFO : public ValueProvider, public MIDIListener
+class LFO : public ValueProvider, public MIDICCListener
 {
 public:
 	static LFO& instance();
@@ -16,7 +16,9 @@ public:
 	void setup();
 	void loop(const unsigned long usNow);
 	void setFrequency(const unsigned long f);
-	void processMessage(const char* pMessage);
+	void processCCMessage(const uint8_t channel,
+						  const uint8_t controllerNumber,
+						  const uint8_t value);
 private:
 	static const float fMin;
 	static const float fMax;

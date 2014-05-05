@@ -26,7 +26,7 @@ void CVOutput::setup()
 {
 	dac.setOutput(output, value);
 	
-	// TODO: can't use output alone - will clash with 9V CVs
+	// TODO: can't use output alone as channel - will clash with 9V CVs
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MIN_CC);
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MAX_CC);
 	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_CC);
@@ -92,30 +92,29 @@ void CVOutput::setMaximum(const uint8_t value)
 //	Serial.println(maximum, HEX);
 }
 
-void CVOutput::processMessage(const char* pMessage)
+void CVOutput::processCCMessage(const uint8_t channel,
+							   const uint8_t controllerNumber,
+							   const uint8_t value)
 {
-	Serial.print("Message: ");
-	Serial.print(pMessage[0], HEX);
-	Serial.print(" No: ");
-	Serial.print(pMessage[1], DEC);
-	Serial.print(" Val: ");
-	Serial.println(pMessage[2], DEC);
+	//	Serial.print("CVOutput Message, ch: ");
+	//	Serial.print(channel, DEC);
+	//	Serial.print(" No: ");
+	//	Serial.print(controllerNumber, DEC);
+	//	Serial.print(" Val: ");
+	//	Serial.println(pvalue, DEC);
 	
-	if ((*pMessage & 0xf0) == 0xb0) // Control Change
+	switch (controllerNumber)
 	{
-		switch (pMessage[1])
+		case CV_OUTPUT_MIN_CC:
+			setMinimum(value * 2);
+			break;
+		case CV_OUTPUT_MAX_CC:
+			setMaximum(value * 2);
+			break;
+		case CV_OUTPUT_SOURCE_CC:
 		{
-			case CV_OUTPUT_MIN_CC:
-				setMinimum(pMessage[2] * 2);
-				break;
-			case CV_OUTPUT_MAX_CC:
-				setMaximum(pMessage[2] * 2);
-				break;
-			case CV_OUTPUT_SOURCE_CC:
+			switch (value)
 			{
-				uint8_t sourceType = pMessage[2];
-				switch (sourceType)
-				{
 				case CV_OUTPUT_SOURCE_FIXED_VALUE:
 					pProvider = NULL;
 					dirty = true;
@@ -134,11 +133,10 @@ void CVOutput::processMessage(const char* pMessage)
 					break;
 				default:
 					break;
-				}
-				break;
 			}
-			default:
-				break;
+			break;
 		}
+		default:
+			break;
 	}
 }

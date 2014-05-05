@@ -2,9 +2,9 @@
 #define __CV2__DisplayTest__
 
 #include <Arduino.h>
-#include "MIDIListener.h"
+#include "MIDICCListener.h"
 
-class DisplayTest : public MIDIListener
+class DisplayTest : public MIDICCListener
 {
 public:
 	DisplayTest();
@@ -12,7 +12,9 @@ public:
 	void setup();
 	void loop(unsigned long usNow);
 	void enable(boolean state);
-	void processMessage(const char* pMessage);
+	void processCCMessage(const uint8_t channel,
+						  const uint8_t controllerNumber,
+						  const uint8_t value);
 private:
 	unsigned long lastCharUpdateUs;
 	unsigned long lastDpUpdateUs;

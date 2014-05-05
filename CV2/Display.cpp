@@ -221,24 +221,24 @@ void Display::clear()
 		setDecimalPoint(i, false);
 }
 
-void Display::processMessage(const char* pMessage)
+void Display::processCCMessage(const uint8_t channel,
+							  const uint8_t controllerNumber,
+							  const uint8_t value)
 {
-//	Serial.print("Display Message: ");
-//	Serial.print(pMessage[0], HEX);
+//	Serial.print("Display Message, ch: ");
+//	Serial.print(channel, DEC);
 //	Serial.print(" No: ");
-//	Serial.print(pMessage[1], DEC);
+//	Serial.print(controllerNumber, DEC);
 //	Serial.print(" Val: ");
-//	Serial.println(pMessage[2], DEC);
+//	Serial.println(pvalue, DEC);
 	
-	if ((*pMessage & 0xf0) == 0xb0) // Control Change
+	switch (controllerNumber)
 	{
-		if (pMessage[1] == DISPLAY_RESET_CC) // TODO: change back to switch?
-		{
+		case DISPLAY_RESET_CC:
 			clear();
-		}
-		else
-		{
-		}
+			break;
+		default:
+			break;
 	}
 }
 

@@ -447,24 +447,23 @@ void LFO::setFrequency(const unsigned long freqStep)
 //	usBetweenSamples = 27700;
 }
 
-void LFO::processMessage(const char* pMessage)
+void LFO::processCCMessage(const uint8_t channel,
+							   const uint8_t controllerNumber,
+							   const uint8_t value)
 {
-	//	Serial.print("LFO Message: ");
-	//	Serial.print(pMessage[0], HEX);
+	//	Serial.print("LFO Message, ch: ");
+	//	Serial.print(channel, DEC);
 	//	Serial.print(" No: ");
-	//	Serial.print(pMessage[1], DEC);
+	//	Serial.print(controllerNumber, DEC);
 	//	Serial.print(" Val: ");
-	//	Serial.println(pMessage[2], DEC);
+	//	Serial.println(pvalue, DEC);
 	
-	if ((*pMessage & 0xf0) == 0xb0) // Control Change
+	switch (controllerNumber)
 	{
-		switch (pMessage[1])
-		{
-			case LFO_FREQUENCY_CC:
-				setFrequency(pMessage[2]);
-				break;
-			default:
-				break;
-		}
+		case LFO_FREQUENCY_CC:
+			setFrequency(value);
+			break;
+		default:
+			break;
 	}
 }

@@ -5,7 +5,7 @@
 //#include <HardwareSerial.h>
 #include "MIDIMessages.h"
 
-class MIDIListener;
+class MIDICCListener;
 
 class MIDI
 {
@@ -16,7 +16,7 @@ public:
 	virtual ~MIDI();
 	void setup();
 	void loop(const unsigned long usNow);
-	void setCCListener(MIDIListener* pAListener,
+	void setCCListener(MIDICCListener* pAListener,
 					   const uint8_t channel, const uint8_t controllerNumber);
 private:
 	static const unsigned int BUFFER_SIZE = 256;
@@ -28,7 +28,7 @@ private:
 	char buffer[BUFFER_SIZE];
 	unsigned int writeIndex;
 	unsigned readIndex;
-	MIDIListener* listeners[16][128]; // [channel][ctrl no]
+	MIDICCListener* listeners[16][128]; // [channel][ctrl no]
 };
 
 #endif /* defined(__CV2__MIDI__) */

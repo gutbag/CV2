@@ -1,7 +1,7 @@
 #ifndef __CV2__Patch__
 #define __CV2__Patch__
 
-#include "MIDIListener.h"
+#include "MIDIPCListener.h"
 
 class CVOutput;
 
@@ -11,12 +11,13 @@ class CVOutput;
  * Patch factory? 
  * need to store number of patches at start?
  */
-class Patch : public MIDIListener
+class Patch : public MIDIPCListener
 {
 public:
 	Patch();
 	virtual ~Patch();
-	void processMessage(const char* pMessage);
+	void processPCMessage(const uint8_t channel,
+								  const uint8_t programNumber);
 private:
 	void printControlChange(const char* pMessage);
 	void handleControlChange(const char* pMessage);

@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include "Flasher.h"
-#include "MIDIListener.h"
+#include "MIDICCListener.h"
 
-class Display : public MIDIListener
+class Display : public MIDICCListener
 {
 public:
 	static Display& instance();
@@ -16,7 +16,9 @@ public:
 	void flashColon();
 	void setApostophe(const boolean state);
 	void flashApostrophe();
-	void processMessage(const char* pMessage);
+	void processCCMessage(const uint8_t channel,
+								  const uint8_t controllerNumber,
+								  const uint8_t value);
 	void clear();
     
 private:
