@@ -32,11 +32,6 @@ void CVOutput::setup()
 	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_SOURCE_CC);
 }
 
-void CVOutput::setValueProvider(ValueProvider* aValueProvider)
-{
-	pProvider = aValueProvider;
-}
-
 void CVOutput::loop(const unsigned int usNow)
 {
 	if (pProvider != NULL)
