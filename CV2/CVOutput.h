@@ -11,7 +11,7 @@ class MIDI;
 class CVOutput : public MIDICCListener
 {
 public:
-	CVOutput(DAC& aDac, const uint8_t anOutput);
+	CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel);
 	virtual ~CVOutput();
 	void setup();
 	void loop(const unsigned int usNow);
@@ -24,6 +24,7 @@ public:
 private:
 	DAC& dac;
 	uint8_t output;
+	uint8_t midiChannel;
 	uint8_t value;
 	uint8_t minimum;
 	uint8_t maximum;

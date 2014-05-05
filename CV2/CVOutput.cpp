@@ -6,9 +6,10 @@
 #include "LFO.h"
 #include "Expression.h"
 
-CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput)
+CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel)
 : dac(aDac),
   output(anOutput),
+  midiChannel(aMidiChannel),
   value(0),
   minimum(0),
   maximum(255),
@@ -26,10 +27,9 @@ void CVOutput::setup()
 {
 	dac.setOutput(output, value);
 	
-	// TODO: can't use output alone as channel - will clash with 9V CVs
-	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MIN_CC);
-	MIDI::instance().setCCListener(this, output, CV_OUTPUT_MAX_CC);
-	MIDI::instance().setCCListener(this, output, CV_OUTPUT_SOURCE_CC);
+	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_MIN_CC);
+	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_MAX_CC);
+	MIDI::instance().setCCListener(this, midiChannel, CV_OUTPUT_SOURCE_CC);
 }
 
 void CVOutput::setValueProvider(ValueProvider* aValueProvider)

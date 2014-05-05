@@ -44,23 +44,23 @@ DAC dac5V(CS_PIN_5V_DAC);
 DAC dac9V(CS_PIN_9V_DAC);
 CVOutput cvOutputs5V[8] =
 {
-	{dac5V, 0},
-	{dac5V, 1},
-	{dac5V, 2},
-	{dac5V, 3},
-	{dac5V, 4},
-	{dac5V, 5},
-	{dac5V, 6},
-	{dac5V, 7}
+	{dac5V, 0, 0},
+	{dac5V, 1, 1},
+	{dac5V, 2, 2},
+	{dac5V, 3, 3},
+	{dac5V, 4, 4},
+	{dac5V, 5, 5},
+	{dac5V, 6, 6},
+	{dac5V, 7, 7}
 };
 CVOutput cvOutputs9V[6] =
 {
-	{dac9V, 0},
-	{dac9V, 1},
-	{dac9V, 2},
-	{dac9V, 3},
-	{dac9V, 4},
-	{dac9V, 5}
+	{dac9V, 0, 8},
+	{dac9V, 1, 9},
+	{dac9V, 2, 10},
+	{dac9V, 3, 11},
+	{dac9V, 4, 12},
+	{dac9V, 5, 13}
 };
 Footswitch fsw1(FSW_1, FSW_LED1);
 Footswitch fsw2(FSW_2, FSW_LED2);
