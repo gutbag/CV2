@@ -62,64 +62,78 @@ void CVOutput::loop(const unsigned int usNow)
 		switch (sideChainMode)
 		{
 			case MIN:
-				if (sideChainMinimum != minimum)
+				if (sideChainMinimum < minimum)
 				{
 					uint8_t sideValue = map(pSideChainProvider->getValue(),
 											pSideChainProvider->getMinimum(),
 											pSideChainProvider->getMaximum(),
-											sideChainMinimum, minimum - 1);
-					newValue -= (sideValue - sideChainMinimum);
+											minimum - 1, sideChainMinimum);
+					uint8_t maxForCalculation = pProvider != NULL ? maximum : minimum;
+					newValue = map(newValue,
+								   minimum,
+								   maxForCalculation,
+								   sideValue,
+								   maxForCalculation);
 				}
 				break;
 			case MAX:
-				if (sideChainMaximum != maximum)
+			{
+				// if fixed value, max is min
+				uint8_t maxForCalculation = pProvider != NULL ? maximum : minimum;
+				if (sideChainMaximum > maxForCalculation)
 				{
 					uint8_t sideValue = map(pSideChainProvider->getValue(),
 											pSideChainProvider->getMinimum(),
 											pSideChainProvider->getMaximum(),
-											maximum + 1, sideChainMaximum);
-										
-					newValue += (sideValue - maximum);
+											maxForCalculation + 1, sideChainMaximum);
+					
+					newValue = map(newValue,
+								   minimum,
+								   maxForCalculation,
+								   minimum,
+								   sideValue);
 				}
 				break;
+			}
 			case RANGE:
-				// TODO:
+			{
+				uint8_t maxForCalculation = pProvider != NULL ? maximum : minimum;
+				uint16_t sideChainValue = pSideChainProvider->getValue();
+				uint16_t sideChainMinimum = pSideChainProvider->getMinimum();
+				uint16_t sideChainMaximum = pSideChainProvider->getMaximum();
+				
+				uint16_t newMax = map(sideChainValue,
+									  sideChainMinimum,
+									  sideChainMaximum,
+									  maxForCalculation + 1, sideChainMaximum);
+				uint8_t newMin = map(sideChainValue,
+									 sideChainMinimum,
+									 sideChainMaximum,
+										sideChainMinimum, minimum - 1);
+				newValue = map(sideChainValue,
+							   sideChainMinimum,
+							   sideChainMaximum,
+							   newMin,
+							   newMax);
 				break;
+			}
+//			case RANGE:
+//			{
+//				uint16_t range = (pSideChainProvider->getMaximum() - minimum) +
+//				(maximum - pSideChainProvider->getMinimum());
+//				uint8_t sideValue = map(pSideChainProvider->getValue(),
+//										pSideChainProvider->getMinimum(),
+//										pSideChainProvider->getMaximum(),
+//										0, range);
+//				uint8_t midPoint = ((maximum - minimum) + 1) / 2 + minimum;
+//				newValue += sideValue;
+//				break;
+//			}
 		}
 	}
 	
 	dac.setOutput(output, newValue);
 }
-
-//void CVOutput::loop(const unsigned int usNow)
-//{
-//	if (pProvider != NULL)
-//	{
-//		uint16_t providerValue = pProvider->getValue();
-//		
-//		if (dirty || providerValue != lastProviderValue)
-//		{
-//			// get value and scale
-//			// TODO: check map impl - do custom version?
-//			// TODO: store provider min/max when changed
-//			long value = map(providerValue, pProvider->getMinimum(), pProvider->getMaximum(),
-//							 minimum, maximum);
-//			
-//			dac.setOutput(output, value);
-//			
-//			lastProviderValue = providerValue;
-//			dirty = false;
-//		}
-//	}
-//	else // use minimum value if it's changed
-//	{
-//		if (dirty)
-//		{
-//			dac.setOutput(output, minimum);
-//			dirty = false;
-//		}
-//	}
-//}
 
 void CVOutput::setMinimum(const uint8_t value)
 {
@@ -182,6 +196,10 @@ void CVOutput::processCCMessage(const uint8_t channel,
 		case CV_OUTPUT_SIDE_CHAIN_SOURCE_CC:
 			switch (value)
 			{
+			case CV_OUTPUT_SIDE_CHAIN_SOURCE_NONE_VALUE:
+				pSideChainProvider = NULL;
+				dirty = true;
+				break;
 			case CV_OUTPUT_SIDE_CHAIN_SOURCE_LFO_VALUE:
 				pSideChainProvider = &LFO::instance();
 				dirty = true;
