@@ -41,7 +41,7 @@ Footswitch fsw2(FSW_2, FSW_LED2);
 Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
 LFO lfo;
-Patch patch;
+Patch patch(PATCH_DOWN_SW, PATCH_UP_SW);
 Expression expr1(EXPR_1_PIN, 0);
 Expression expr2(EXPR_2_PIN, 1);
 
@@ -72,8 +72,7 @@ void setup()
 //	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
 //		cvOutputs9V[i].setup();
 	
-	pinMode(PATCH_DOWN_SW, INPUT_PULLUP);
-	pinMode(PATCH_UP_SW, INPUT_PULLUP);
+	patch.setup();
 	
 	pinMode(D_SPARE_1, INPUT_PULLUP);
 	pinMode(D_SPARE_2, INPUT_PULLUP);
@@ -101,4 +100,6 @@ void loop()
 //	dac5V.setOutput(0, 0xc0);
 	//	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
 	//		cvOutputs9V[i].loop(usNow);
+	
+	patch.loop(usNow);
 }

@@ -2,7 +2,6 @@
 #define __CV2__MIDI__
 
 #include <Arduino.h>
-//#include <HardwareSerial.h>
 #include "MIDIMessages.h"
 
 class MIDICCListener;
@@ -11,7 +10,6 @@ class MIDI
 {
 public:
 	static MIDI& instance();
-//	MIDI(HardwareSerial& aPort);
 	MIDI();
 	virtual ~MIDI();
 	void setup();
@@ -24,7 +22,6 @@ private:
 	void processBuffer();
 	void shuffleBuffer();
 	
-//	HardwareSerial& port;
 	char buffer[BUFFER_SIZE];
 	unsigned int writeIndex;
 	unsigned readIndex;

@@ -242,3 +242,8 @@ void Display::processCCMessage(const uint8_t channel,
 	}
 }
 
+uint8_t Display::getControllerValue(const uint8_t controllerNumber)
+{
+	return 0x80; // nothing to save
+}
+

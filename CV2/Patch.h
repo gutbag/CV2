@@ -2,8 +2,7 @@
 #define __CV2__Patch__
 
 #include "MIDIPCListener.h"
-
-class CVOutput;
+#include "Switch.h"
 
 /**
  * Knows how to read values from EEPROM and set all object settings?????
@@ -14,15 +13,15 @@ class CVOutput;
 class Patch : public MIDIPCListener
 {
 public:
-	Patch();
+	Patch(const uint8_t aDownPin, const uint8_t anUpPin);
 	virtual ~Patch();
 	void processPCMessage(const uint8_t channel,
 								  const uint8_t programNumber);
+	void setup();
+	void loop(const unsigned long usNow);
 private:
-	void printControlChange(const char* pMessage);
-	void handleControlChange(const char* pMessage);
-	
-	CVOutput* outputs;
+	Switch downSwitch;
+	Switch upSwitch;
 };
 
 #endif /* defined(__CV2__Patch__) */

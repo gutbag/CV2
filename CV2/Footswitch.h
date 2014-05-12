@@ -2,8 +2,9 @@
 #define __CV2__Footswitch__
 
 #include <Arduino.h>
+#include "Switch.h"
 
-class Footswitch
+class Footswitch : public Switch
 {
 public:
 	Footswitch(const uint8_t aSwPin, const uint8_t anLedPin);
@@ -11,7 +12,6 @@ public:
 	void setup();
 	void loop(const unsigned long usNow);
 private:
-	uint8_t swPin;
 	uint8_t ledPin;
 };
 

@@ -15,10 +15,11 @@ public:
 	virtual uint16_t getValue();	
 	void setup();
 	void loop(const unsigned long usNow);
-	void setFrequency(const unsigned long f);
+	void setFrequency(const uint8_t aFreqStep);
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
+	uint8_t getControllerValue(const uint8_t controllerNumber);
 private:
 	static const float fMin;
 	static const float fMax;
@@ -26,6 +27,7 @@ private:
 	unsigned int sampleIndex;
 	unsigned long usLastSample;
 	unsigned long usBetweenSamples;
+	uint8_t freqStep;
 };
 
 #endif /* defined(__CV2__LFO__) */

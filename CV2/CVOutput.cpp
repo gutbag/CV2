@@ -16,10 +16,13 @@ CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel
   sideChainMinimum(0),
   sideChainMaximum(255),
   pProvider(NULL),
+  sourceTypeId(0),
   lastProviderValue(~0),
   pSideChainProvider(NULL),
+  sideChainSourceTypeId(0),
   dirty(false),
-  sideChainMode(MIN)
+  sideChainMode(MIN),
+  sideChainModeId(0)
 {
 }
 
@@ -54,7 +57,7 @@ void CVOutput::loop(const unsigned int usNow)
 	{
 		uint16_t providerValue = pProvider->getValue();
 		newValue = map(providerValue, pProvider->getMinimum(), pProvider->getMaximum(),
-							 minimum, maximum);
+					   minimum, maximum);
 	}
 	
 	if (pSideChainProvider != NULL)
@@ -109,7 +112,7 @@ void CVOutput::loop(const unsigned int usNow)
 				uint8_t newMin = map(sideChainValue,
 									 sideChainMinimum,
 									 sideChainMaximum,
-										sideChainMinimum, minimum - 1);
+									 sideChainMinimum, minimum - 1);
 				newValue = map(sideChainValue,
 							   sideChainMinimum,
 							   sideChainMaximum,
@@ -117,18 +120,6 @@ void CVOutput::loop(const unsigned int usNow)
 							   newMax);
 				break;
 			}
-//			case RANGE:
-//			{
-//				uint16_t range = (pSideChainProvider->getMaximum() - minimum) +
-//				(maximum - pSideChainProvider->getMinimum());
-//				uint8_t sideValue = map(pSideChainProvider->getValue(),
-//										pSideChainProvider->getMinimum(),
-//										pSideChainProvider->getMaximum(),
-//										0, range);
-//				uint8_t midPoint = ((maximum - minimum) + 1) / 2 + minimum;
-//				newValue += sideValue;
-//				break;
-//			}
 		}
 	}
 	
@@ -171,7 +162,8 @@ void CVOutput::processCCMessage(const uint8_t channel,
 			setMaximum(value * 2);
 			break;
 		case CV_OUTPUT_SOURCE_CC:
-			switch (value)
+			sourceTypeId = value;
+			switch (sourceTypeId)
 			{
 				case CV_OUTPUT_SOURCE_FIXED_VALUE:
 					pProvider = NULL;
@@ -194,7 +186,8 @@ void CVOutput::processCCMessage(const uint8_t channel,
 			}
 			break;
 		case CV_OUTPUT_SIDE_CHAIN_SOURCE_CC:
-			switch (value)
+			sideChainSourceTypeId = value;
+			switch (sideChainSourceTypeId)
 			{
 			case CV_OUTPUT_SIDE_CHAIN_SOURCE_NONE_VALUE:
 				pSideChainProvider = NULL;
@@ -223,7 +216,8 @@ void CVOutput::processCCMessage(const uint8_t channel,
 			sideChainMaximum = value * 2;
 			break;
 		case CV_OUTPUT_SIDE_CHAIN_MODE_CC:
-			switch (value)
+			sideChainModeId = value;
+			switch (sideChainModeId)
 			{
 				case CV_OUTPUT_SIDE_CHAIN_MODE_MIN_VALUE:
 					sideChainMode = MIN;
@@ -243,5 +237,30 @@ void CVOutput::processCCMessage(const uint8_t channel,
 			break;
 		default:
 			break;
+	}
+}
+
+uint8_t CVOutput::getControllerValue(const uint8_t controllerNumber)
+{
+	switch (controllerNumber)
+	{
+		case CV_OUTPUT_MIN_CC:
+			return minimum >> 1;
+		case CV_OUTPUT_MAX_CC:
+			return maximum >> 1;
+		case CV_OUTPUT_SOURCE_CC:
+			return sourceTypeId;
+		case CV_OUTPUT_SIDE_CHAIN_SOURCE_CC:
+			return sideChainSourceTypeId;
+		case CV_OUTPUT_SIDE_CHAIN_MIN_CC:
+			return sideChainMinimum >> 1;
+			break;
+		case CV_OUTPUT_SIDE_CHAIN_MAX_CC:
+			return sideChainMaximum >> 1;
+			break;
+		case CV_OUTPUT_SIDE_CHAIN_MODE_CC:
+			return sideChainModeId;
+		default:
+			return 0x80;
 	}
 }

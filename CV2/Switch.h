@@ -1,0 +1,18 @@
+#ifndef __CV2__Switch__
+#define __CV2__Switch__
+
+#include <Arduino.h>
+
+class Switch
+{
+public:
+	Switch(const uint8_t aPin);
+	virtual ~Switch();
+	void setup();
+	void loop(const unsigned long usNow);
+	
+private:
+	uint8_t pin;
+};
+
+#endif /* defined(__CV2__Switch__) */

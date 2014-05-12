@@ -377,7 +377,7 @@ LFO& LFO::instance()
 }
 
 LFO::LFO()
-: sampleIndex(0), usLastSample(0), usBetweenSamples(0)
+: sampleIndex(0), usLastSample(0), usBetweenSamples(0), freqStep(0)
 {
 	pInstance = this;
 	MIDI::instance().setCCListener(this, 0, LFO_FREQUENCY_CC);
@@ -421,8 +421,10 @@ void LFO::loop(const unsigned long usNow)
 	}
 }
 
-void LFO::setFrequency(const unsigned long freqStep)
+void LFO::setFrequency(const uint8_t aFreqStep)
 {
+	freqStep = aFreqStep;
+	
 	float f;
 	
 	if (freqStep == 0)
@@ -466,4 +468,9 @@ void LFO::processCCMessage(const uint8_t channel,
 		default:
 			break;
 	}
+}
+
+uint8_t LFO::getControllerValue(const uint8_t controllerNumber)
+{
+	return freqStep;
 }

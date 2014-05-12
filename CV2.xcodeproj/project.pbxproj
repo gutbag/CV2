@@ -398,7 +398,9 @@
 		F6244F1D1916347000FBCC5F /* Expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F1B1916347000FBCC5F /* Expression.cpp */; };
 		F627E623190BA32300477901 /* CV2.ino in Sources */ = {isa = PBXBuildFile; fileRef = F697E623190BA32300477901 /* CV2.ino */; };
 		F627E636190BA3DB00477901 /* Display.h in Sources */ = {isa = PBXBuildFile; fileRef = F697E636190BA3DB00477901 /* Display.h */; };
+		F63066531920078A00966B66 /* EEPROM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F63066511920078A00966B66 /* EEPROM.cpp */; };
 		F631555E190ECBF400707EB7 /* LFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F631555C190ECBF400707EB7 /* LFO.cpp */; };
+		F6748059192165D0009550BD /* Switch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6748057192165D0009550BD /* Switch.cpp */; };
 		F697E5DD190BA32300477901 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E5DC190BA32300477901 /* main.cpp */; };
 		F697E637190BA3DB00477901 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E635190BA3DB00477901 /* Display.cpp */; };
 		F6B0B175190C18B300B443D3 /* DAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B173190C18B300B443D3 /* DAC.cpp */; };
@@ -803,10 +805,15 @@
 		F6244F1A1915852100FBCC5F /* MIDIMessages.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIMessages.h; sourceTree = "<group>"; };
 		F6244F1B1916347000FBCC5F /* Expression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Expression.cpp; sourceTree = "<group>"; };
 		F6244F1C1916347000FBCC5F /* Expression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
+		F630664D191EDC3B00966B66 /* CV2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CV2.h; sourceTree = "<group>"; };
+		F63066511920078A00966B66 /* EEPROM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EEPROM.cpp; sourceTree = "<group>"; };
+		F63066521920078A00966B66 /* EEPROM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EEPROM.h; sourceTree = "<group>"; };
 		F631555B190EC2A300707EB7 /* ValueProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueProvider.h; sourceTree = "<group>"; };
 		F631555C190ECBF400707EB7 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
 		F631555D190ECBF400707EB7 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
 		F631555F190ECFB400707EB7 /* ValueConsumer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueConsumer.h; sourceTree = "<group>"; };
+		F6748057192165D0009550BD /* Switch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Switch.cpp; sourceTree = "<group>"; };
+		F6748058192165D0009550BD /* Switch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Switch.h; sourceTree = "<group>"; };
 		F697E5D9190BA32300477901 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		F697E5DC190BA32300477901 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F697E5E1190BA32300477901 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -2127,6 +2134,7 @@
 			children = (
 				F697E61A190BA32300477901 /* About */,
 				F697E5E5190BA32300477901 /* Configurations */,
+				F630664D191EDC3B00966B66 /* CV2.h */,
 				F697E623190BA32300477901 /* CV2.ino */,
 				F6C94D8E190D779600F83CA6 /* CVOutput.cpp */,
 				F6C94D8F190D779600F83CA6 /* CVOutput.h */,
@@ -2136,6 +2144,8 @@
 				F697E636190BA3DB00477901 /* Display.h */,
 				F6244F111914EA2400FBCC5F /* DisplayTest.cpp */,
 				F6244F121914EA2400FBCC5F /* DisplayTest.h */,
+				F63066511920078A00966B66 /* EEPROM.cpp */,
+				F63066521920078A00966B66 /* EEPROM.h */,
 				F6244F1B1916347000FBCC5F /* Expression.cpp */,
 				F6244F1C1916347000FBCC5F /* Expression.h */,
 				F6244F141914F6F000FBCC5F /* Flasher.cpp */,
@@ -2157,6 +2167,8 @@
 				F6B0B17A190C255300B443D3 /* Opto.h */,
 				F6C94D91190DAC0300F83CA6 /* Patch.cpp */,
 				F6C94D92190DAC0300F83CA6 /* Patch.h */,
+				F6748057192165D0009550BD /* Switch.cpp */,
+				F6748058192165D0009550BD /* Switch.h */,
 				AAAA140426092133AA000000 /* Resources */,
 				F697E5E3190BA32300477901 /* Sketchbook */,
 				F697E61C190BA32300477901 /* Utilities */,
@@ -2427,6 +2439,7 @@
 				AA2A140426092133AA00006F /* CDC.cpp in Sources */,
 				AA2A140426092133AA000070 /* HID.cpp in Sources */,
 				AA2A140426092133AA000071 /* USBAPI.h in Sources */,
+				F6748059192165D0009550BD /* Switch.cpp in Sources */,
 				AA2A140426092133AA000072 /* USBCore.cpp in Sources */,
 				AA2A140426092133AA000073 /* USBCore.h in Sources */,
 				AA2A140426092133AA000074 /* USBDesc.h in Sources */,
@@ -2639,6 +2652,7 @@
 				AA2A140426092133AA000173 /* Scheduler.cpp in Sources */,
 				AA2A140426092133AA000174 /* Scheduler.h in Sources */,
 				AA2A140426092133AA000177 /* File.cpp in Sources */,
+				F63066531920078A00966B66 /* EEPROM.cpp in Sources */,
 				AA2A140426092133AA000178 /* SD.cpp in Sources */,
 				AA2A140426092133AA000179 /* SD.h in Sources */,
 				AA2A140426092133AA00017B /* FatStructs.h in Sources */,

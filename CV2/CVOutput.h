@@ -21,6 +21,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
+	uint8_t getControllerValue(const uint8_t controllerNumber);
 private:
 	DAC& dac;
 	uint8_t output;
@@ -31,11 +32,14 @@ private:
 	uint8_t sideChainMinimum;
 	uint8_t sideChainMaximum;
 	ValueProvider* pProvider;
+	uint8_t sourceTypeId;
 	uint16_t lastProviderValue;
 	ValueProvider* pSideChainProvider;
+	uint8_t sideChainSourceTypeId;
 	boolean dirty;
 	enum SideChainMode {MIN, MAX, RANGE};
 	SideChainMode sideChainMode;
+	uint8_t sideChainModeId;
 };
 
 #endif /* defined(__CV2__CVOutput__) */
