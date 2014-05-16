@@ -67,10 +67,12 @@ Display::Display()
  	charMap['n'] = 0x2A;
  	charMap['o'] = 0x3A;
 	charMap['P'] = 0xCE;
+	charMap['p'] = charMap['P'];
 	charMap['r'] = 0x0A;
     charMap['R'] = charMap['r'];
 	charMap['S'] = charMap['5']; // for now
 	charMap['t'] = 0x1E;
+	charMap['u'] = 0x38;
 	
 	if (pInstance == NULL)
 		pInstance = this;
@@ -247,3 +249,7 @@ uint8_t Display::getControllerValue(const uint8_t controllerNumber)
 	return 0x80; // nothing to save
 }
 
+void Display::setPatchNumber(const uint8_t n)
+{
+	set(" P00");
+}

@@ -10,9 +10,12 @@ public:
 	virtual ~Switch();
 	void setup();
 	void loop(const unsigned long usNow);
-	
+	boolean isOn();
 private:
 	uint8_t pin;
+	boolean on;
+	unsigned long stableSinceUs;
+	int lastPinState;
 };
 
 #endif /* defined(__CV2__Switch__) */

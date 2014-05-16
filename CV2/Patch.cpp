@@ -1,7 +1,9 @@
 #include "Patch.h"
+#include "Switch.h"
+#include "Display.h"
 
-Patch::Patch(const uint8_t aDownPin, const uint8_t anUpPin)
-: downSwitch(aDownPin), upSwitch(anUpPin)
+Patch::Patch(Switch& aDownSwitch, Switch& anUpSwitch)
+: downSwitchTrigger(aDownSwitch), upSwitchTrigger(anUpSwitch), patchNumber(0)
 {
 	
 }
@@ -18,12 +20,23 @@ void Patch::processPCMessage(const uint8_t channel, const uint8_t programNumber)
 
 void Patch::setup()
 {
-	downSwitch.setup();
-	upSwitch.setup();
+	downSwitchTrigger.setup();
+	upSwitchTrigger.setup();
+	
+	Display::instance().setPatchNumber(patchNumber);
 }
 
 void Patch::loop(const unsigned long usNow)
 {
-	downSwitch.loop(usNow);
-	upSwitch.loop(usNow);
+	downSwitchTrigger.loop(usNow);
+	upSwitchTrigger.loop(usNow);
+	
+	if (downSwitchTrigger.triggered())
+	{
+		Display::instance().set("  dn");
+	}
+	else if (upSwitchTrigger.triggered())
+	{
+		Display::instance().set("  up");
+	}
 }

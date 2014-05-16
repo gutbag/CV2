@@ -2,7 +2,9 @@
 #define __CV2__Patch__
 
 #include "MIDIPCListener.h"
-#include "Switch.h"
+#include "SwitchTrigger.h"
+
+class Switch;
 
 /**
  * Knows how to read values from EEPROM and set all object settings?????
@@ -13,15 +15,16 @@
 class Patch : public MIDIPCListener
 {
 public:
-	Patch(const uint8_t aDownPin, const uint8_t anUpPin);
+	Patch(Switch& aDownSwitch, Switch& anUpSwitch);
 	virtual ~Patch();
 	void processPCMessage(const uint8_t channel,
 								  const uint8_t programNumber);
 	void setup();
 	void loop(const unsigned long usNow);
 private:
-	Switch downSwitch;
-	Switch upSwitch;
+	SwitchTrigger downSwitchTrigger;
+	SwitchTrigger upSwitchTrigger;
+	uint8_t patchNumber;
 };
 
 #endif /* defined(__CV2__Patch__) */

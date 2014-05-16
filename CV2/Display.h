@@ -11,6 +11,7 @@ public:
 	void setup();
 	void loop(const unsigned long usNow);
 	void set(const char* s);
+	void setPatchNumber(const uint8_t n);
 	void setDecimalPoint(const unsigned int which, const boolean state);
     void setColon(const boolean state);
 	void flashColon();

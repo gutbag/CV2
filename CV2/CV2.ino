@@ -9,6 +9,7 @@
 #include "Patch.h"
 #include "DisplayTest.h"
 #include "Expression.h"
+#include "Switch.h"
 #include "CV2.h"
 
 MIDI midi;
@@ -41,7 +42,9 @@ Footswitch fsw2(FSW_2, FSW_LED2);
 Footswitch fsw3(FSW_3, FSW_LED3);
 Opto optos[6] = {OPTO_1, OPTO_2, OPTO_3, OPTO_4, OPTO_5, OPTO_6};
 LFO lfo;
-Patch patch(PATCH_DOWN_SW, PATCH_UP_SW);
+Switch patchDownSwitch(PATCH_DOWN_SW);
+Switch patchUpSwitch(PATCH_UP_SW);
+Patch patch(patchDownSwitch, patchUpSwitch);
 Expression expr1(EXPR_1_PIN, 0);
 Expression expr2(EXPR_2_PIN, 1);
 
@@ -78,7 +81,7 @@ void setup()
 	pinMode(D_SPARE_2, INPUT_PULLUP);
 	pinMode(D_SPARE_3, INPUT_PULLUP);
 	
-	display.set("-P01");
+	//display.set("-P01");
 }
 
 void loop()
