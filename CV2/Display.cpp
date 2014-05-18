@@ -253,3 +253,8 @@ void Display::setPatchNumber(const uint8_t n)
 {
 	set(" P00");
 }
+
+void Display::setBrightness(const uint8_t value)
+{
+	
+}

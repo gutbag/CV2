@@ -1,6 +1,9 @@
 #ifndef CV2_MIDIMessages_h
 #define CV2_MIDIMessages_h
 
+const uint8_t MIDI_CONTROL_CHANGE = 0xb0;
+const uint8_t MIDI_PROGRAM_CHANGE = 0xc0;
+
 const uint8_t CV_OUTPUT_MIN_CC = 0;
 const uint8_t CV_OUTPUT_MAX_CC = 1;
 

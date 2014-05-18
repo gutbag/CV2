@@ -22,9 +22,17 @@ public:
 	void setup();
 	void loop(const unsigned long usNow);
 private:
+	void readEepromHeader();
+	void loadPatch(const uint8_t n);
 	SwitchTrigger downSwitchTrigger;
 	SwitchTrigger upSwitchTrigger;
 	uint8_t patchNumber;
+	class PatchInfo {
+	public:
+		PatchInfo() : address(0) {}
+		uint16_t address;
+	};
+	PatchInfo patchInfo[256]; // index is patch number
 };
 
 #endif /* defined(__CV2__Patch__) */

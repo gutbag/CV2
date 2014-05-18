@@ -10,6 +10,7 @@ public:
 	virtual ~Display() {}
 	void setup();
 	void loop(const unsigned long usNow);
+	void setBrightness(const uint8_t value);
 	void set(const char* s);
 	void setPatchNumber(const uint8_t n);
 	void setDecimalPoint(const unsigned int which, const boolean state);

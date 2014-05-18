@@ -1,5 +1,6 @@
 #include "MIDI.h"
 #include "MIDICCListener.h"
+#include "MIDIPCListener.h"
 #include "Display.h"
 
 static MIDI* pInstance = NULL;
@@ -18,7 +19,9 @@ MIDI::MIDI()
 	
 	for (unsigned int ch=0; ch<16; ch++)
 		for (unsigned int i=0; i<128; i++)
-			listeners[ch][i] = NULL;
+			ccListeners[ch][i] = NULL;
+	
+	pcListener = NULL;
 }
 
 MIDI::~MIDI()
@@ -64,8 +67,15 @@ void MIDI::setCCListener(MIDICCListener* pAListener, const uint8_t channel, cons
 //		Serial.print(channel, DEC);
 //		Serial.print(" ");
 //		Serial.println(controllerNumber, DEC);
-		listeners[channel][controllerNumber] = pAListener;
+		ccListeners[channel][controllerNumber] = pAListener;
 	}
+}
+
+void MIDI::setPCListener(MIDIPCListener* pAListener)
+{
+	//		Serial.print("MIDI::setPCListener 0x");
+	//		Serial.println((unsigned long)pAListener, HEX);
+	pcListener = pAListener;
 }
 
 /**
@@ -74,7 +84,10 @@ void MIDI::setCCListener(MIDICCListener* pAListener, const uint8_t channel, cons
  */
 void MIDI::processBuffer()
 {
-	while (writeIndex - readIndex >= 3) // at least one message in buffer
+	unsigned int numAvailable = writeIndex - readIndex;
+	boolean exitLoop = false;
+	
+	while ( ! exitLoop && numAvailable >= 2) // at least one message in buffer
 	{
 //		Serial.print("writeIndex=");
 //		Serial.print(writeIndex, DEC);
@@ -94,31 +107,67 @@ void MIDI::processBuffer()
 		
 		switch (message)
 		{
-			case 0xb0: // Control Change
-			{
-				uint8_t controllerNumber = pBuffer[1] & 0x7f;
-				MIDICCListener* pListener = listeners[channel][controllerNumber];
-				if (pListener != NULL)
+			case MIDI_CONTROL_CHANGE:
+				if (numAvailable > 2)
 				{
-//					Serial.print("MIDI::processBuffer CC 0x");
-//					Serial.print((unsigned long)pListener, HEX);
-//					Serial.print(" ");
-//					Serial.print(channel, DEC);
-//					Serial.print(" ");
-//					Serial.println(controllerNumber, DEC);
-					pListener->processCCMessage(pBuffer[0] & 0x0f, pBuffer[1], pBuffer[2]);
+					uint8_t controllerNumber = pBuffer[1] & 0x7f;
+					MIDICCListener* pListener = ccListeners[channel][controllerNumber];
+					if (pListener != NULL)
+					{
+//						Serial.print("MIDI::processBuffer CC 0x");
+//						Serial.print((unsigned long)pListener, HEX);
+//						Serial.print(" ");
+//						Serial.print(channel, DEC);
+//						Serial.print(" ");
+//						Serial.println(controllerNumber, DEC);
+						pListener->processCCMessage(channel, controllerNumber, pBuffer[2]);
+					}
+					readIndex += 3;
 				}
-				readIndex += 3;
+				else // not enough bytes for value
+				{
+					exitLoop = true;
+				}
+				break;
+			case MIDI_PROGRAM_CHANGE:
+			{
+				uint8_t patchNumber = pBuffer[1] & 0x7f;
+				if (pcListener != NULL)
+				{
+					//					Serial.print("MIDI::processBuffer PC 0x");
+					//					Serial.print((unsigned long)pListener, HEX);
+					//					Serial.print(" ");
+					//					Serial.print(channel, DEC);
+					//					Serial.print(" ");
+					//					Serial.println(patchNumber, DEC);
+					pcListener->processPCMessage(channel, patchNumber);
+				}
+				readIndex += 2;
 			}
 				break;
 			default:
-				Serial.println("no listener");
 				Display::instance().set("LIS?");
-				readIndex += 3; // TODO: consume message - length??
+
+				Serial.print("no listener ");
+				Serial.print(pBuffer[0], HEX);
+				Serial.print(" ");
+				Serial.print(pBuffer[1], HEX);
+				Serial.print(" ");
+				Serial.print(pBuffer[2], HEX);
+				Serial.print(" r ");
+				Serial.print(readIndex, DEC);
+				Serial.print(" w ");
+				Serial.println(writeIndex, DEC);
+				
+				// discard the rest - TODO: risky
+				readIndex = 0;
+				writeIndex = 0;
 				break;
 		}
 		
 		Display::instance().flashColon();
+		
+		numAvailable = writeIndex - readIndex;
 	}
 	
 	shuffleBuffer();
@@ -140,5 +189,3 @@ void MIDI::shuffleBuffer()
 	writeIndex = writeIndex - readIndex;
 	readIndex = 0;
 }
-
-
