@@ -73,6 +73,7 @@ Display::Display()
 	charMap['S'] = charMap['5']; // for now
 	charMap['t'] = 0x1E;
 	charMap['u'] = 0x38;
+	charMap['v'] = charMap['u'];
 	
 	if (pInstance == NULL)
 		pInstance = this;
@@ -246,12 +247,31 @@ void Display::processCCMessage(const uint8_t channel,
 
 uint8_t Display::getControllerValue(const uint8_t controllerNumber)
 {
-	return 0x80; // nothing to save
+	return DO_NOT_SAVE_VALUE; // nothing to save
+}
+
+// returns single char for LS nibble
+const char Display::toHexDigit(const uint8_t n)
+{
+	uint8_t nibble = n & 0x0f;
+	char baseChar = nibble < 10 ? '0' : 'A';
+	return baseChar + nibble;
 }
 
 void Display::setPatchNumber(const uint8_t n)
 {
-	set(" P00");
+	char high = toHexDigit(n >> 4);
+	char low = toHexDigit(n & 0x0f);
+	char patchNumber[] = {' ', 'P', high, low};
+	set(patchNumber);
+}
+
+void Display::displayError(const uint8_t errnum)
+{
+	char high = toHexDigit(errnum >> 4);
+	char low = toHexDigit(errnum & 0x0f);
+	char errDisplay[] = {'E', 'r', high, low};
+	set(errDisplay);
 }
 
 void Display::setBrightness(const uint8_t value)
