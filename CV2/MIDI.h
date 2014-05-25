@@ -19,7 +19,7 @@ public:
 					   const uint8_t channel, const uint8_t controllerNumber);
 	void setPCListener(MIDIPCListener* pAListener);
 	uint16_t processBuffer(const uint8_t* pBuffer, const uint16_t length, const boolean transmit = false);
-	unsigned int getMessageCount() const;
+	unsigned int getMessageCount(boolean reset);
 	void resetMessageCount();
 	boolean getListenerSettingMessages(uint8_t* buffer, const unsigned int maxLength, unsigned int& length);
 private:

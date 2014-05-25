@@ -15,6 +15,7 @@ private:
 	static EEPROM theInstance;
 	EEPROM();
 	virtual ~EEPROM();
+	uint8_t memory[2048]; // TODO: temp!!!!
 };
 
 #endif /* defined(__CV2__EEPROM__) */

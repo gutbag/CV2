@@ -1,0 +1,13 @@
+#ifndef CV2_Errors_h
+#define CV2_Errors_h
+
+#include <Arduino.h>
+
+enum {
+	PATCH_SAVE_BUFFER_TOO_SMALL,
+	PATCH_NUMBER_INVALID,
+	PATCH_READ_FROM_EEPROM_FAILED,
+	PATCH_READ_HEADER_FROM_EEPROM_FAILED
+};
+
+#endif

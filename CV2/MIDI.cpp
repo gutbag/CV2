@@ -119,16 +119,22 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 					MIDICCListener* pListener = ccListeners[channel][controllerNumber];
 					if (pListener != NULL)
 					{
-//						Serial.print("MIDI::processBuffer CC 0x");
-//						Serial.print((unsigned long)pListener, HEX);
-//						Serial.print(" ");
-//						Serial.print(channel, DEC);
-//						Serial.print(" ");
-//						Serial.println(controllerNumber, DEC);
+						if (1)
+						{
+							Serial.print("MIDI::processBuffer CC 0x");
+							Serial.print((unsigned long)pListener, HEX);
+							Serial.print(" ");
+							Serial.print(channel, DEC);
+							Serial.print(" ");
+							Serial.print(controllerNumber, DEC);
+							Serial.print(" ");
+							Serial.println(pBuffer[2], DEC);
+						}
 						pListener->processCCMessage(channel, controllerNumber, pBuffer[2]);
-						messageCount++;
 						if (transmit)
 							transmitCC(channel, controllerNumber, pBuffer[2]);
+						else // only inc for msgs received from MIDI IN - TODO: make this better
+							messageCount++;
 					}
 					i += 3;
 				}
@@ -197,9 +203,12 @@ void MIDI::shuffleBuffer()
 	readIndex = 0;
 }
 
-unsigned int MIDI::getMessageCount() const
+unsigned int MIDI::getMessageCount(boolean reset)
 {
-	return messageCount;
+	unsigned int count = messageCount;
+	if (reset)
+		messageCount = 0;
+	return count;
 }
 
 void MIDI::resetMessageCount()
@@ -209,9 +218,19 @@ void MIDI::resetMessageCount()
 
 void MIDI::transmitCC(const uint8_t channel, const uint8_t controllerNumber, const uint8_t value)
 {
-	Serial.write(channel | MIDI_CONTROL_CHANGE);
-	Serial.write(controllerNumber);
-	Serial.write(value);
+	if (1)
+	{
+		Serial.print("MIDI::transmitCC 0x");
+		Serial.print(channel | MIDI_CONTROL_CHANGE, HEX);
+		Serial.print(" ");
+		Serial.print(controllerNumber, DEC);
+		Serial.print(" ");
+		Serial.println(value, DEC);
+	}
+
+	Serial1.write(channel | MIDI_CONTROL_CHANGE);
+	Serial1.write(controllerNumber);
+	Serial1.write(value);
 }
 
 // return true if the buffer is complete

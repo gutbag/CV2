@@ -799,6 +799,7 @@
 		AAAA140426092133AA0001FB /* evk1105.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = evk1105.h; sourceTree = "<group>"; };
 		AAAA140426092133AA0001FC /* led.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = led.c; sourceTree = "<group>"; };
 		AAAA140426092133AA0001FD /* led.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = led.h; sourceTree = "<group>"; };
+		F61DD10A192E58CF00B66B1A /* Errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
 		F6244F111914EA2400FBCC5F /* DisplayTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayTest.cpp; sourceTree = "<group>"; };
 		F6244F121914EA2400FBCC5F /* DisplayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayTest.h; sourceTree = "<group>"; };
 		F6244F141914F6F000FBCC5F /* Flasher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Flasher.cpp; sourceTree = "<group>"; };
@@ -2150,6 +2151,7 @@
 				F6244F121914EA2400FBCC5F /* DisplayTest.h */,
 				F63066511920078A00966B66 /* EEPROM.cpp */,
 				F63066521920078A00966B66 /* EEPROM.h */,
+				F61DD10A192E58CF00B66B1A /* Errors.h */,
 				F6244F1B1916347000FBCC5F /* Expression.cpp */,
 				F6244F1C1916347000FBCC5F /* Expression.h */,
 				F6244F141914F6F000FBCC5F /* Flasher.cpp */,
