@@ -27,6 +27,7 @@ private:
 	
 	void shuffleBuffer();
 	void transmitCC(const uint8_t channel, const uint8_t controllerNumber, const uint8_t value);
+	void dumpBuffer(const uint8_t* buffer, const uint16_t length);
 	
 	char rxBuffer[BUFFER_SIZE];
 	unsigned int writeIndex;

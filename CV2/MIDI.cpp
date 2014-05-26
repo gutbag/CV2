@@ -19,8 +19,12 @@ MIDI::MIDI()
 		pInstance = this;
 	
 	for (unsigned int ch=0; ch<16; ch++)
+	{
 		for (unsigned int i=0; i<128; i++)
+		{
 			ccListeners[ch][i] = NULL;
+		}
+	}
 	
 	pcListener = NULL;
 }
@@ -92,9 +96,13 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 	boolean exitLoop = false;
 	unsigned int messageCountBefore = messageCount;
 	
+//	dumpBuffer(buffer, length);
+	
 	while ( ! exitLoop && length - i >= 2) // at least one message in buffer
 	{
-//		Serial.print("writeIndex=");
+//		Serial.print("length=");
+//		Serial.print(length, DEC);
+//		Serial.print(" writeIndex=");
 //		Serial.print(writeIndex, DEC);
 //		Serial.print(" readIndex=");
 //		Serial.println(readIndex, DEC);
@@ -119,7 +127,7 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 					MIDICCListener* pListener = ccListeners[channel][controllerNumber];
 					if (pListener != NULL)
 					{
-						if (1)
+						if (0)
 						{
 							Serial.print("MIDI::processBuffer CC 0x");
 							Serial.print((unsigned long)pListener, HEX);
@@ -130,11 +138,13 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 							Serial.print(" ");
 							Serial.println(pBuffer[2], DEC);
 						}
-						pListener->processCCMessage(channel, controllerNumber, pBuffer[2]);
 						if (transmit)
 							transmitCC(channel, controllerNumber, pBuffer[2]);
 						else // only inc for msgs received from MIDI IN - TODO: make this better
 							messageCount++;
+						
+						// must do this after the messageCount inc in case the listener uses it
+						pListener->processCCMessage(channel, controllerNumber, pBuffer[2]);
 					}
 					i += 3;
 				}
@@ -153,8 +163,8 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 //					Serial.print(channel, DEC);
 //					Serial.print(" ");
 //					Serial.println(patchNumber, DEC);
-					pcListener->processPCMessage(channel, patchNumber);
 					messageCount++;
+					pcListener->processPCMessage(channel, patchNumber);
 				}
 				i += 2;
 			}
@@ -174,7 +184,8 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 				Serial.println(writeIndex, DEC);
 				
 				// discard the rest - TODO: risky
-				i = length;
+				//i = length;
+				i+=3; // assume 3 for now - also risky
 				exitLoop = true;
 				break;
 		}
@@ -218,7 +229,7 @@ void MIDI::resetMessageCount()
 
 void MIDI::transmitCC(const uint8_t channel, const uint8_t controllerNumber, const uint8_t value)
 {
-	if (1)
+	if (0)
 	{
 		Serial.print("MIDI::transmitCC 0x");
 		Serial.print(channel | MIDI_CONTROL_CHANGE, HEX);
@@ -252,7 +263,7 @@ boolean MIDI::getListenerSettingMessages(uint8_t* buffer, const unsigned int max
 					buffer[length++] = i;
 					buffer[length++] = value;
 					
-					Serial.println(length, DEC);
+					//Serial.println(length, DEC);
 					
 					if (length >= maxLength - 3)
 					{
@@ -282,3 +293,25 @@ boolean MIDI::getListenerSettingMessages(uint8_t* buffer, const unsigned int max
 //	return true;
 //}
 
+void MIDI::dumpBuffer(const uint8_t* buffer, const uint16_t length)
+{
+	Serial.println("MIDI::dumpBuffer:");
+	Serial.print("  length ");
+	Serial.print(length, DEC);
+	Serial.println(":");
+	unsigned int i = 0;
+	while (i < length)
+	{
+		Serial.print(buffer[i++], HEX);
+		Serial.print(" ");
+		Serial.print(buffer[i++], DEC);
+		Serial.print(" 0x");
+		Serial.print(buffer[i++], HEX);
+		Serial.print(" | ");
+		if (i % (3*4) == 0)
+			Serial.println();
+		delay(10);
+	}
+	Serial.println("---");
+	
+}

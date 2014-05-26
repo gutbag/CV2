@@ -11,7 +11,9 @@
 #include "Expression.h"
 #include "Switch.h"
 #include "CV2.h"
+#include "EEPROM.h"
 
+EEPROM eeprom;
 MIDI midi;
 Display display;
 DisplayTest displayTest;

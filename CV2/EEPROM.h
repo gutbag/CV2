@@ -8,13 +8,15 @@ class EEPROM
 public:
 	static EEPROM& instance();
 	
-	unsigned int read(const uint16_t address, uint8_t* buffer, const uint16_t n);
-	unsigned int write(const uint16_t address, uint8_t* buffer, const uint16_t n);
-	
-private:
-	static EEPROM theInstance;
 	EEPROM();
 	virtual ~EEPROM();
+
+	unsigned int read(const uint16_t address, uint8_t* buffer, const uint16_t n);
+	unsigned int write(const uint16_t address, uint8_t* buffer, const uint16_t n);
+
+	void dump();
+
+private:
 	uint8_t memory[2048]; // TODO: temp!!!!
 };
 

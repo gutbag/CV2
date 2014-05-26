@@ -36,6 +36,7 @@ Display::Display()
         charMap[i] = charMap['?'];
         
     charMap['?'] = 0xCB;
+    charMap['!'] = 0x61;
     charMap[' '] = 0x00;
     charMap['-'] = 0x02;
     charMap['_'] = 0x10;

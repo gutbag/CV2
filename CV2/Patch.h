@@ -27,20 +27,23 @@ public:
 						  const uint8_t value);
 	uint8_t getControllerValue(const uint8_t controllerNumber);
 private:
+	static const uint8_t MAX_PATCHES = 168;
+	static const uint16_t MAX_PATCH_SIZE = 384; // space for the MIDI messages
+	static const uint16_t PATCH_START_ADDR = 0x400; // the first patch's MIDI msgs
+	
 	void readEepromHeader();
-	void loadPatch(const uint8_t n);
+	boolean loadPatch(const uint8_t n);
 	uint8_t getNextPatchNumber(const uint8_t currentPatchNumber, const boolean searchUp);
 	void save();
 	void copy();
 	void dumpEEPROMHeader();
+	void dumpBuffer(const uint8_t* buffer, const uint16_t length);
 	
 	SwitchTrigger downSwitchTrigger;
 	SwitchTrigger upSwitchTrigger;
 	uint8_t patchNumber;
 	uint8_t pendingPatchNumber;
-	static const uint8_t MAX_PATCHES = 168;
-	static const uint8_t MAX_PATCH_SIZE = 384; // space for the MIDI messages
-	static const uint8_t PATCH_START_ADDR = 0x400; // the first patch's MIDI msgs
+	
 	class PatchInfo {
 	public:
 		PatchInfo() : numCCMessages(0), checksum(0) {}
@@ -55,13 +58,14 @@ private:
 		PatchInfo patchInfo[MAX_PATCHES]; // index is patch number
 	};
 	EEPROMHeader eepromHeader;
-	typedef enum State {
+	
+	typedef enum {
 		IDLE,
 		WAIT_CONFIRM_SWITCH_CHANGE,
 		WAIT_CONFIRM_MIDI_CHANGE,
 		WAIT_CONFIRM_NEW,
 		WAIT_CONFIRM_COPY
-	};
+	} State;
 	State state;
 };
 
