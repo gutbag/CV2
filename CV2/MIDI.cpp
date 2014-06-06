@@ -13,7 +13,8 @@ MIDI& MIDI::instance()
 MIDI::MIDI()
 : writeIndex(0),
   readIndex(0),
-  messageCount(0)
+  messageCount(0),
+  lastTransmitMs(0)
 {
 	if (pInstance == NULL)
 		pInstance = this;
@@ -46,20 +47,43 @@ void MIDI::loop(const unsigned long usNow)
 	int n = Serial1.available();
 	if (n > 0)
 	{
-		int numFree = BUFFER_SIZE - writeIndex;
-		
-		if (n < numFree) // there's enough space in the buffer
+		if (0)
 		{
-			Serial1.readBytes(&rxBuffer[writeIndex], n);
-			writeIndex += n;
-			uint16_t bytesConsumed = processBuffer((uint8_t*)&rxBuffer[readIndex], writeIndex - readIndex);
-			readIndex += bytesConsumed;
-			shuffleBuffer();
+			Serial.print("MIDI::loop n ");
+			Serial.println(n, DEC);
 		}
-		else
+		
+		if (millis() - lastTransmitMs > IGNORE_RX_PERIOD_MS)
 		{
-			// TODO: not enough space in buffer - do what?
-			Display::instance().set("Err!");
+			int numFree = BUFFER_SIZE - writeIndex;
+			
+			if (n < numFree) // there's enough space in the buffer
+			{
+				Serial1.readBytes(&rxBuffer[writeIndex], n);
+				writeIndex += n;
+				uint16_t bytesConsumed = processBuffer((uint8_t*)&rxBuffer[readIndex], writeIndex - readIndex);
+				readIndex += bytesConsumed;
+				shuffleBuffer();
+			}
+			else
+			{
+				// TODO: not enough space in buffer - do what?
+				Display::instance().set("Err!");
+			}
+		}
+		else // ignore rx bytes - empty buffer
+		{
+			if (0)
+			{
+				Serial.print("MIDI::loop discarding ");
+				Serial.println(n, DEC);
+			}
+			
+			for (int i=0; i<n; i++)
+				Serial1.read();
+//			
+//			char tmpBuffer[BUFFER_SIZE];
+//			Serial1.readBytes(tmpBuffer, n);
 		}
 	}
 }
@@ -96,7 +120,7 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 	boolean exitLoop = false;
 	unsigned int messageCountBefore = messageCount;
 	
-//	dumpBuffer(buffer, length);
+	//dumpBuffer(buffer, length);
 	
 	while ( ! exitLoop && length - i >= 2) // at least one message in buffer
 	{
@@ -129,9 +153,9 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 					{
 						if (0)
 						{
-							Serial.print("MIDI::processBuffer CC 0x");
-							Serial.print((unsigned long)pListener, HEX);
-							Serial.print(" ");
+							Serial.print("MIDI::processBuffer (len ");
+							Serial.print(length);
+							Serial.print(") CC ");
 							Serial.print(channel, DEC);
 							Serial.print(" ");
 							Serial.print(controllerNumber, DEC);
@@ -141,7 +165,15 @@ uint16_t MIDI::processBuffer(const uint8_t* buffer, const uint16_t length, const
 						if (transmit)
 							transmitCC(channel, controllerNumber, pBuffer[2]);
 						else // only inc for msgs received from MIDI IN - TODO: make this better
+						{
 							messageCount++;
+							
+							if (0)
+							{
+								Serial.print("!");
+								Serial.println(messageCount, DEC);
+							}
+						}
 						
 						// must do this after the messageCount inc in case the listener uses it
 						pListener->processCCMessage(channel, controllerNumber, pBuffer[2]);
@@ -224,6 +256,7 @@ unsigned int MIDI::getMessageCount(boolean reset)
 
 void MIDI::resetMessageCount()
 {
+	Serial.println("MIDI::resetMessageCount");
 	messageCount = 0;
 }
 
@@ -242,6 +275,8 @@ void MIDI::transmitCC(const uint8_t channel, const uint8_t controllerNumber, con
 	Serial1.write(channel | MIDI_CONTROL_CHANGE);
 	Serial1.write(controllerNumber);
 	Serial1.write(value);
+	
+	lastTransmitMs = millis();
 }
 
 // return true if the buffer is complete

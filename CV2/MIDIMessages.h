@@ -19,6 +19,7 @@ const uint8_t DISPLAY_RESET_CC = 71;
 const uint8_t DISPLAY_TEST_CC = 72;
 const uint8_t PATCH_SAVE_CC = 73;
 const uint8_t PATCH_COPY_CC = 74;
+const uint8_t ERASE_PATCH = 75;
 
 // the values assigned to source types -  enum?
 const uint8_t CV_OUTPUT_SOURCE_FIXED_VALUE = 1;

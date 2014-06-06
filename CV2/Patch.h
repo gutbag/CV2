@@ -29,15 +29,21 @@ public:
 private:
 	static const uint8_t MAX_PATCHES = 168;
 	static const uint16_t MAX_PATCH_SIZE = 384; // space for the MIDI messages
+	static const uint16_t HEADER_START_ADDR = 0x0; // magic number here, followed by header
 	static const uint16_t PATCH_START_ADDR = 0x400; // the first patch's MIDI msgs
 	
 	void readEepromHeader();
 	boolean loadPatch(const uint8_t n);
 	uint8_t getNextPatchNumber(const uint8_t currentPatchNumber, const boolean searchUp);
+	uint8_t incPatchNumber(const uint8_t n, const boolean up);
+	uint8_t getNextFreePatchNumber(const uint8_t currentPatchNumber);
 	void save();
 	void copy();
+	void erase(const uint8_t value);
+	void initHeader();
 	void dumpEEPROMHeader();
 	void dumpBuffer(const uint8_t* buffer, const uint16_t length);
+	uint16_t calcChecksum(const uint8_t* buffer, const unsigned int length);
 	
 	SwitchTrigger downSwitchTrigger;
 	SwitchTrigger upSwitchTrigger;
@@ -52,11 +58,13 @@ private:
 	};
 	class EEPROMHeader {
 	public:
-		uint16_t checksum; // of header
+		uint16_t magicNumber;
+		uint16_t checksum; // of header, excluding this checksum member
 		uint8_t displayBrightness;
-		uint8_t selectedPatch;
+		//uint8_t selectedPatch;
 		PatchInfo patchInfo[MAX_PATCHES]; // index is patch number
 	};
+	static const uint16_t MAGIC_NUMBER = 0xf00d;
 	EEPROMHeader eepromHeader;
 	
 	typedef enum {

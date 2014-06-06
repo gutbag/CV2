@@ -24,6 +24,7 @@ public:
 	boolean getListenerSettingMessages(uint8_t* buffer, const unsigned int maxLength, unsigned int& length);
 private:
 	static const unsigned int BUFFER_SIZE = 256;
+	static const unsigned long IGNORE_RX_PERIOD_MS = 500;
 	
 	void shuffleBuffer();
 	void transmitCC(const uint8_t channel, const uint8_t controllerNumber, const uint8_t value);
@@ -35,6 +36,7 @@ private:
 	MIDICCListener* ccListeners[16][128]; // [channel][ctrl no]
 	MIDIPCListener* pcListener; // ignore channel for PC
 	unsigned int messageCount;
+	unsigned long lastTransmitMs;
 };
 
 #endif /* defined(__CV2__MIDI__) */

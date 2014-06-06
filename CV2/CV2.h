@@ -28,4 +28,6 @@
 #define EXPR_1_PIN A3
 #define EXPR_2_PIN A11
 
+#define EEPROM_WP 23
+
 #endif

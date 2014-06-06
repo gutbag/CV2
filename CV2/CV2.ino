@@ -54,6 +54,7 @@ void setup()
 {
 	Serial.begin(115200);
 	
+	eeprom.setup();
 	display.setup();
 	midi.setup();
 	dac5V.setup();
@@ -76,12 +77,15 @@ void setup()
 	
 //	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
 //		cvOutputs9V[i].setup();
-	
+
 	patch.setup();
 	
 	pinMode(D_SPARE_1, INPUT_PULLUP);
 	pinMode(D_SPARE_2, INPUT_PULLUP);
 	pinMode(D_SPARE_3, INPUT_PULLUP);
+	
+	// for now, enable permanently
+	eeprom.writeEnable(true);
 	
 	//display.set("-P01");
 }

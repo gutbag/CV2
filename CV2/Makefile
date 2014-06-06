@@ -31,7 +31,7 @@
 #	RobotIRremote Scheduler SD Servo SoftwareSerial SpacebrewYun SPI 
 #	Stepper Temboo TFT USBHost WiFi 
 #
-APP_LIBS_LIST = SPI
+APP_LIBS_LIST = SPI Wire
 
 # List user's libraries here 
 # default = 0 = none
