@@ -370,7 +370,7 @@ boolean Patch::loadPatch(const uint8_t n)
 {
 	boolean ok = true;
 	
-	if (0)
+	if (1)
 	{
 		Serial.print("Patch::loadPatch ");
 		Serial.print(n, HEX);
@@ -424,6 +424,50 @@ boolean Patch::loadPatch(const uint8_t n)
 	return ok;
 }
 
+/**
+ * Saves the header to EEPROM if the checksum has changed.
+ */
+void Patch::saveHeader()
+{
+	Serial.println("Patch::saveHeader");
+
+	uint16_t headerChecksum = calcHeaderChecksum();
+	
+	if (headerChecksum != eepromHeader.checksum) // need to save
+	{
+		eepromHeader.magicNumber = MAGIC_NUMBER;
+		eepromHeader.checksum = headerChecksum;
+		
+		if (1)
+		{
+			Serial.print("Patch::saveHeader header checksum ");
+			Serial.print(eepromHeader.checksum, HEX);
+			Serial.print(" to addr 0x");
+			Serial.print(HEADER_START_ADDR, HEX);
+			Serial.print(" from addr 0x");
+			Serial.print((unsigned long)((uint8_t*)&eepromHeader), HEX);
+			Serial.print(" length ");
+			Serial.println(sizeof(eepromHeader), DEC);
+		}
+		
+		uint16_t nWritten = EEPROM::instance().write(HEADER_START_ADDR, (uint8_t*)&eepromHeader, sizeof(eepromHeader));
+		if (nWritten != sizeof(eepromHeader))
+		{
+			Serial.print(" EEPROM write failed, length ");
+			Serial.println(sizeof(eepromHeader), DEC);
+			Serial.print(" nWritten ");
+			Serial.println(nWritten, DEC);
+			
+			Display::instance().displayError(HEADER_WRITE_TO_EEPROM_FAILED);
+			return;
+		}
+	}
+	else
+	{
+		Serial.println("Patch::saveHeader - checksum hasn't changed");
+	}
+}
+
 void Patch::save()
 {
 	Serial.println("Patch::save");
@@ -449,37 +493,7 @@ void Patch::save()
 	eepromHeader.patchInfo[patchNumber].numCCMessages = length / 3;
 	eepromHeader.patchInfo[patchNumber].checksum = calcChecksum(buffer, length);
 	
-	uint16_t headerChecksum = calcChecksum((uint8_t*)&(eepromHeader.displayBrightness), sizeof(eepromHeader) - sizeof(eepromHeader.checksum));
-	
-	if (headerChecksum != eepromHeader.checksum) // need to save the header as well
-	{
-		eepromHeader.magicNumber = MAGIC_NUMBER;
-		eepromHeader.checksum = headerChecksum;
-		
-		if (1)
-		{
-			Serial.print("Patch::save header checksum ");
-			Serial.print(eepromHeader.checksum, HEX);
-			Serial.print(" to addr 0x");
-			Serial.print(HEADER_START_ADDR, HEX);
-			Serial.print(" from addr 0x");
-			Serial.print((unsigned long)((uint8_t*)&eepromHeader), HEX);
-			Serial.print(" length ");
-			Serial.println(sizeof(eepromHeader), DEC);
-		}
-
-		nWritten = EEPROM::instance().write(HEADER_START_ADDR, (uint8_t*)&eepromHeader, sizeof(eepromHeader));
-		if (nWritten != sizeof(eepromHeader))
-		{
-			Serial.print(" EEPROM write failed, length ");
-			Serial.println(length, DEC);
-			Serial.print(" nWritten ");
-			Serial.println(nWritten, DEC);
-			
-			Display::instance().displayError(HEADER_WRITE_TO_EEPROM_FAILED);
-			return;
-		}
-	}
+	saveHeader();
 	
 	//dumpBuffer(buffer, length);
 	dumpEEPROMHeader();
@@ -582,9 +596,10 @@ void Patch::initHeader()
 
 void Patch::erase(const uint8_t value)
 {
-	if (value == 0x7f) // erase all
+	if (value == ERASE_ALL_VALUE) // erase all
 	{
-		Serial.println("Patch::erase");
+		Serial.println("Patch::erase ALL");
+		
 		uint8_t zero[] = {0, 0};
 		EEPROM::instance().write(HEADER_START_ADDR, zero, sizeof(zero));
 		
@@ -592,9 +607,17 @@ void Patch::erase(const uint8_t value)
 		patchNumber = 0;
 		loadPatch(patchNumber);
 	}
-	else // erase current patch
+	else if (value == ERASE_CURRENT_VALUE) // erase current patch
 	{
+		Serial.println("Patch::erase CURRENT");
 		
+		PatchInfo empty;
+		eepromHeader.patchInfo[patchNumber] = empty;
+		patchNumber = getNextPatchNumber(patchNumber, false);
+		//eepromHeader.checksum = calcHeaderChecksum();
+		saveHeader();
+		MIDI::instance().resetMessageCount();
+		loadPatch(patchNumber);
 	}
 }
 					 
@@ -629,4 +652,9 @@ uint16_t Patch::calcChecksum(const uint8_t* buffer, const unsigned int length)
 		checksum += buffer[i];
 	}
 	return checksum;
+}
+
+uint16_t Patch::calcHeaderChecksum()
+{
+	return calcChecksum((uint8_t*)&(eepromHeader.displayBrightness), sizeof(eepromHeader) - sizeof(eepromHeader.checksum));
 }

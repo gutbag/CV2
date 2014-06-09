@@ -37,6 +37,7 @@ private:
 	uint8_t getNextPatchNumber(const uint8_t currentPatchNumber, const boolean searchUp);
 	uint8_t incPatchNumber(const uint8_t n, const boolean up);
 	uint8_t getNextFreePatchNumber(const uint8_t currentPatchNumber);
+	void saveHeader();
 	void save();
 	void copy();
 	void erase(const uint8_t value);
@@ -44,6 +45,7 @@ private:
 	void dumpEEPROMHeader();
 	void dumpBuffer(const uint8_t* buffer, const uint16_t length);
 	uint16_t calcChecksum(const uint8_t* buffer, const unsigned int length);
+	uint16_t calcHeaderChecksum();
 	
 	SwitchTrigger downSwitchTrigger;
 	SwitchTrigger upSwitchTrigger;
