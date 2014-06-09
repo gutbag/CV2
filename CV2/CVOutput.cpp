@@ -5,6 +5,7 @@
 #include "MIDIMessages.h"
 #include "LFO.h"
 #include "Expression.h"
+#include "EnvelopeFollower.h"
 
 CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel)
 : dac(aDac),
@@ -179,6 +180,10 @@ void CVOutput::processCCMessage(const uint8_t channel,
 					break;
 				case CV_OUTPUT_SOURCE_EXPR2_VALUE:
 					pProvider = &Expression::instance(1);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_ENV_VALUE:
+					pProvider = &EnvelopeFollower::instance();
 					dirty = true;
 					break;
 				default:

@@ -401,6 +401,7 @@
 		F63066531920078A00966B66 /* EEPROM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F63066511920078A00966B66 /* EEPROM.cpp */; };
 		F631555E190ECBF400707EB7 /* LFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F631555C190ECBF400707EB7 /* LFO.cpp */; };
 		F6474F2A19256ADC0068AE70 /* SwitchTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6474F2819256ADC0068AE70 /* SwitchTrigger.cpp */; };
+		F6718CC31944FB08001E9B8E /* EnvelopeFollower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6718CC11944FB08001E9B8E /* EnvelopeFollower.cpp */; };
 		F6748059192165D0009550BD /* Switch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6748057192165D0009550BD /* Switch.cpp */; };
 		F697E5DD190BA32300477901 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E5DC190BA32300477901 /* main.cpp */; };
 		F697E637190BA3DB00477901 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E635190BA3DB00477901 /* Display.cpp */; };
@@ -817,6 +818,8 @@
 		F6474F2719256A840068AE70 /* Trigger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Trigger.h; sourceTree = "<group>"; };
 		F6474F2819256ADC0068AE70 /* SwitchTrigger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwitchTrigger.cpp; sourceTree = "<group>"; };
 		F6474F2919256ADC0068AE70 /* SwitchTrigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchTrigger.h; sourceTree = "<group>"; };
+		F6718CC11944FB08001E9B8E /* EnvelopeFollower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvelopeFollower.cpp; sourceTree = "<group>"; };
+		F6718CC21944FB08001E9B8E /* EnvelopeFollower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnvelopeFollower.h; sourceTree = "<group>"; };
 		F6748057192165D0009550BD /* Switch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Switch.cpp; sourceTree = "<group>"; };
 		F6748058192165D0009550BD /* Switch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Switch.h; sourceTree = "<group>"; };
 		F697E5D9190BA32300477901 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2151,6 +2154,8 @@
 				F6244F121914EA2400FBCC5F /* DisplayTest.h */,
 				F63066511920078A00966B66 /* EEPROM.cpp */,
 				F63066521920078A00966B66 /* EEPROM.h */,
+				F6718CC11944FB08001E9B8E /* EnvelopeFollower.cpp */,
+				F6718CC21944FB08001E9B8E /* EnvelopeFollower.h */,
 				F61DD10A192E58CF00B66B1A /* Errors.h */,
 				F6244F1B1916347000FBCC5F /* Expression.cpp */,
 				F6244F1C1916347000FBCC5F /* Expression.h */,
@@ -2706,6 +2711,7 @@
 				AA2A140426092133AA0001BB /* address.h in Sources */,
 				AA2A140426092133AA0001BC /* adk.cpp in Sources */,
 				AA2A140426092133AA0001BD /* adk.h in Sources */,
+				F6718CC31944FB08001E9B8E /* EnvelopeFollower.cpp in Sources */,
 				AA2A140426092133AA0001BE /* confdescparser.h in Sources */,
 				AA2A140426092133AA0001BF /* hid.h in Sources */,
 				AA2A140426092133AA0001C0 /* hid2.cpp in Sources */,

@@ -30,4 +30,6 @@
 
 #define EEPROM_WP 23
 
+#define LPF_ENV_IN A4
+
 #endif

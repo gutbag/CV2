@@ -12,6 +12,7 @@
 #include "Switch.h"
 #include "CV2.h"
 #include "EEPROM.h"
+#include "EnvelopeFollower.h"
 
 EEPROM eeprom;
 MIDI midi;
@@ -49,6 +50,7 @@ Switch patchUpSwitch(PATCH_UP_SW);
 Patch patch(patchDownSwitch, patchUpSwitch);
 Expression expr1(EXPR_1_PIN, 0);
 Expression expr2(EXPR_2_PIN, 1);
+EnvelopeFollower envelopeFollower(LPF_ENV_IN);
 
 void setup()
 {
@@ -65,6 +67,7 @@ void setup()
 	lfo.setup();
 	expr1.setup();
 	expr2.setup();
+	envelopeFollower.setup();
 	
 	displayTest.enable(false);
 	displayTest.setup();
@@ -102,6 +105,7 @@ void loop()
 	lfo.loop(usNow);
 	expr1.loop(usNow);
 	expr2.loop(usNow);
+	envelopeFollower.loop(usNow);
     
 	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
 		cvOutputs5V[i].loop(usNow);
