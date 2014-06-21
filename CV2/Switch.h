@@ -2,8 +2,9 @@
 #define __CV2__Switch__
 
 #include <Arduino.h>
+#include "OnOffStateProvider.h"
 
-class Switch
+class Switch : public OnOffStateProvider
 {
 public:
 	Switch(const uint8_t aPin);

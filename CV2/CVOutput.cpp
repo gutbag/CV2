@@ -6,6 +6,7 @@
 #include "LFO.h"
 #include "Expression.h"
 #include "EnvelopeFollower.h"
+#include "Ramp.h"
 
 CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel)
 : dac(aDac),
@@ -186,6 +187,10 @@ void CVOutput::processCCMessage(const uint8_t channel,
 					pProvider = &EnvelopeFollower::instance();
 					dirty = true;
 					break;
+				case CV_OUTPUT_SOURCE_RAMP_VALUE:
+					pProvider = &Ramp::instance();
+					dirty = true;
+					break;
 				default:
 					break;
 			}
@@ -266,6 +271,6 @@ uint8_t CVOutput::getControllerValue(const uint8_t controllerNumber)
 		case CV_OUTPUT_SIDE_CHAIN_MODE_CC:
 			return sideChainModeId;
 		default:
-			return 0x80;
+			return DO_NOT_SAVE_VALUE;
 	}
 }

@@ -399,6 +399,7 @@
 		F627E623190BA32300477901 /* CV2.ino in Sources */ = {isa = PBXBuildFile; fileRef = F697E623190BA32300477901 /* CV2.ino */; };
 		F627E636190BA3DB00477901 /* Display.h in Sources */ = {isa = PBXBuildFile; fileRef = F697E636190BA3DB00477901 /* Display.h */; };
 		F63066531920078A00966B66 /* EEPROM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F63066511920078A00966B66 /* EEPROM.cpp */; };
+		F630EECD19520D790035ADC8 /* TriggeredOnOff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F630EECB19520D790035ADC8 /* TriggeredOnOff.cpp */; };
 		F631555E190ECBF400707EB7 /* LFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F631555C190ECBF400707EB7 /* LFO.cpp */; };
 		F6474F2A19256ADC0068AE70 /* SwitchTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6474F2819256ADC0068AE70 /* SwitchTrigger.cpp */; };
 		F6718CC31944FB08001E9B8E /* EnvelopeFollower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6718CC11944FB08001E9B8E /* EnvelopeFollower.cpp */; };
@@ -409,6 +410,10 @@
 		F6B0B178190C211300B443D3 /* Footswitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B176190C211300B443D3 /* Footswitch.cpp */; };
 		F6B0B17B190C255300B443D3 /* Opto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B179190C255300B443D3 /* Opto.cpp */; };
 		F6B0B17E190C626E00B443D3 /* MIDI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B17C190C626E00B443D3 /* MIDI.cpp */; };
+		F6C49CD11952ECA700DA3DAD /* OnOffEdgeProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CCF1952ECA700DA3DAD /* OnOffEdgeProvider.cpp */; };
+		F6C49CD419531CE300DA3DAD /* Freeze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD219531CE300DA3DAD /* Freeze.cpp */; };
+		F6C49CD71953459700DA3DAD /* EnvelopeState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD51953459700DA3DAD /* EnvelopeState.cpp */; };
+		F6C49CDA19546BE900DA3DAD /* Ramp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD819546BE900DA3DAD /* Ramp.cpp */; };
 		F6C94D90190D779600F83CA6 /* CVOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C94D8E190D779600F83CA6 /* CVOutput.cpp */; };
 		F6C94D93190DAC0300F83CA6 /* Patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C94D91190DAC0300F83CA6 /* Patch.cpp */; };
 /* End PBXBuildFile section */
@@ -811,6 +816,8 @@
 		F630664D191EDC3B00966B66 /* CV2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CV2.h; sourceTree = "<group>"; };
 		F63066511920078A00966B66 /* EEPROM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EEPROM.cpp; sourceTree = "<group>"; };
 		F63066521920078A00966B66 /* EEPROM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EEPROM.h; sourceTree = "<group>"; };
+		F630EECB19520D790035ADC8 /* TriggeredOnOff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TriggeredOnOff.cpp; sourceTree = "<group>"; };
+		F630EECC19520D790035ADC8 /* TriggeredOnOff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggeredOnOff.h; sourceTree = "<group>"; };
 		F631555B190EC2A300707EB7 /* ValueProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueProvider.h; sourceTree = "<group>"; };
 		F631555C190ECBF400707EB7 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
 		F631555D190ECBF400707EB7 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
@@ -853,10 +860,19 @@
 		F6B0B17D190C626E00B443D3 /* MIDI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDI.h; sourceTree = "<group>"; };
 		F6B7BB051917CD7900B6CD71 /* MIDICCListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDICCListener.h; sourceTree = "<group>"; };
 		F6B7BB061917D12E00B6CD71 /* MIDIPCListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIPCListener.h; sourceTree = "<group>"; };
+		F6C49CCF1952ECA700DA3DAD /* OnOffEdgeProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OnOffEdgeProvider.cpp; sourceTree = "<group>"; };
+		F6C49CD01952ECA700DA3DAD /* OnOffEdgeProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnOffEdgeProvider.h; sourceTree = "<group>"; };
+		F6C49CD219531CE300DA3DAD /* Freeze.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Freeze.cpp; sourceTree = "<group>"; };
+		F6C49CD319531CE300DA3DAD /* Freeze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Freeze.h; sourceTree = "<group>"; };
+		F6C49CD51953459700DA3DAD /* EnvelopeState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvelopeState.cpp; sourceTree = "<group>"; };
+		F6C49CD61953459700DA3DAD /* EnvelopeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnvelopeState.h; sourceTree = "<group>"; };
+		F6C49CD819546BE900DA3DAD /* Ramp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ramp.cpp; sourceTree = "<group>"; };
+		F6C49CD919546BE900DA3DAD /* Ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ramp.h; sourceTree = "<group>"; };
 		F6C94D8E190D779600F83CA6 /* CVOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVOutput.cpp; sourceTree = "<group>"; };
 		F6C94D8F190D779600F83CA6 /* CVOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVOutput.h; sourceTree = "<group>"; };
 		F6C94D91190DAC0300F83CA6 /* Patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patch.cpp; sourceTree = "<group>"; };
 		F6C94D92190DAC0300F83CA6 /* Patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Patch.h; sourceTree = "<group>"; };
+		F6DC735E1950D12300552122 /* OnOffStateProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OnOffStateProvider.h; sourceTree = "<group>"; };
 		F6F53B691910500E005409AC /* MIDIListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIListener.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2156,6 +2172,8 @@
 				F63066521920078A00966B66 /* EEPROM.h */,
 				F6718CC11944FB08001E9B8E /* EnvelopeFollower.cpp */,
 				F6718CC21944FB08001E9B8E /* EnvelopeFollower.h */,
+				F6C49CD51953459700DA3DAD /* EnvelopeState.cpp */,
+				F6C49CD61953459700DA3DAD /* EnvelopeState.h */,
 				F61DD10A192E58CF00B66B1A /* Errors.h */,
 				F6244F1B1916347000FBCC5F /* Expression.cpp */,
 				F6244F1C1916347000FBCC5F /* Expression.h */,
@@ -2163,6 +2181,8 @@
 				F6244F151914F6F000FBCC5F /* Flasher.h */,
 				F6B0B176190C211300B443D3 /* Footswitch.cpp */,
 				F6B0B177190C211300B443D3 /* Footswitch.h */,
+				F6C49CD219531CE300DA3DAD /* Freeze.cpp */,
+				F6C49CD319531CE300DA3DAD /* Freeze.h */,
 				F631555C190ECBF400707EB7 /* LFO.cpp */,
 				F631555D190ECBF400707EB7 /* LFO.h */,
 				F697E5DC190BA32300477901 /* main.cpp */,
@@ -2174,15 +2194,22 @@
 				F6B7BB051917CD7900B6CD71 /* MIDICCListener.h */,
 				F6B7BB061917D12E00B6CD71 /* MIDIPCListener.h */,
 				F6244F1A1915852100FBCC5F /* MIDIMessages.h */,
+				F6DC735E1950D12300552122 /* OnOffStateProvider.h */,
+				F6C49CCF1952ECA700DA3DAD /* OnOffEdgeProvider.cpp */,
+				F6C49CD01952ECA700DA3DAD /* OnOffEdgeProvider.h */,
 				F6B0B179190C255300B443D3 /* Opto.cpp */,
 				F6B0B17A190C255300B443D3 /* Opto.h */,
 				F6C94D91190DAC0300F83CA6 /* Patch.cpp */,
 				F6C94D92190DAC0300F83CA6 /* Patch.h */,
+				F6C49CD819546BE900DA3DAD /* Ramp.cpp */,
+				F6C49CD919546BE900DA3DAD /* Ramp.h */,
 				F6748057192165D0009550BD /* Switch.cpp */,
 				F6748058192165D0009550BD /* Switch.h */,
 				F6474F2819256ADC0068AE70 /* SwitchTrigger.cpp */,
 				F6474F2919256ADC0068AE70 /* SwitchTrigger.h */,
 				F6474F2719256A840068AE70 /* Trigger.h */,
+				F630EECB19520D790035ADC8 /* TriggeredOnOff.cpp */,
+				F630EECC19520D790035ADC8 /* TriggeredOnOff.h */,
 				AAAA140426092133AA000000 /* Resources */,
 				F697E5E3190BA32300477901 /* Sketchbook */,
 				F697E61C190BA32300477901 /* Utilities */,
@@ -2579,6 +2606,7 @@
 				AA2A140426092133AA00010F /* GSM3ShieldV1ModemVerification.cpp in Sources */,
 				AA2A140426092133AA000110 /* GSM3ShieldV1ModemVerification.h in Sources */,
 				AA2A140426092133AA000111 /* GSM3ShieldV1MultiClientProvider.cpp in Sources */,
+				F6C49CD71953459700DA3DAD /* EnvelopeState.cpp in Sources */,
 				AA2A140426092133AA000112 /* GSM3ShieldV1MultiClientProvider.h in Sources */,
 				AA2A140426092133AA000113 /* GSM3ShieldV1MultiServerProvider.cpp in Sources */,
 				AA2A140426092133AA000114 /* GSM3ShieldV1MultiServerProvider.h in Sources */,
@@ -2593,6 +2621,7 @@
 				AA2A140426092133AA00011D /* GSM3ShieldV1VoiceProvider.cpp in Sources */,
 				AA2A140426092133AA00011E /* GSM3ShieldV1VoiceProvider.h in Sources */,
 				AA2A140426092133AA00011F /* GSM3SMSService.cpp in Sources */,
+				F630EECD19520D790035ADC8 /* TriggeredOnOff.cpp in Sources */,
 				AA2A140426092133AA000120 /* GSM3SMSService.h in Sources */,
 				AA2A140426092133AA000121 /* GSM3SoftSerial.cpp in Sources */,
 				AA2A140426092133AA000122 /* GSM3SoftSerial.h in Sources */,
@@ -2615,6 +2644,7 @@
 				AA2A140426092133AA00013A /* Fat16.h in Sources */,
 				AA2A140426092133AA00013B /* Fat16Config.h in Sources */,
 				AA2A140426092133AA00013C /* Fat16mainpage.h in Sources */,
+				F6C49CD419531CE300DA3DAD /* Freeze.cpp in Sources */,
 				AA2A140426092133AA00013D /* Fat16util.h in Sources */,
 				AA2A140426092133AA00013E /* FatStructs.h in Sources */,
 				AA2A140426092133AA00013F /* glcdfont.c in Sources */,
@@ -2623,6 +2653,7 @@
 				AA2A140426092133AA000142 /* keyboard.cpp in Sources */,
 				AA2A140426092133AA000143 /* lcd.cpp in Sources */,
 				AA2A140426092133AA000144 /* Melody.cpp in Sources */,
+				F6C49CDA19546BE900DA3DAD /* Ramp.cpp in Sources */,
 				AA2A140426092133AA000145 /* Motors.cpp in Sources */,
 				AA2A140426092133AA000146 /* Multiplexer.cpp in Sources */,
 				AA2A140426092133AA000147 /* Multiplexer.h in Sources */,
@@ -2671,6 +2702,7 @@
 				AA2A140426092133AA000178 /* SD.cpp in Sources */,
 				AA2A140426092133AA000179 /* SD.h in Sources */,
 				AA2A140426092133AA00017B /* FatStructs.h in Sources */,
+				F6C49CD11952ECA700DA3DAD /* OnOffEdgeProvider.cpp in Sources */,
 				AA2A140426092133AA00017C /* Sd2Card.cpp in Sources */,
 				AA2A140426092133AA00017D /* Sd2Card.h in Sources */,
 				F631555E190ECBF400707EB7 /* LFO.cpp in Sources */,

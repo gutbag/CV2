@@ -4,8 +4,10 @@
 #include <Arduino.h>
 #include "ValueProvider.h"
 #include "MIDICCListener.h"
+#include "OnOffStateProvider.h"
+#include "EnvelopeState.h"
 
-class EnvelopeFollower : public ValueProvider, public MIDICCListener
+class EnvelopeFollower : public ValueProvider, public MIDICCListener, public OnOffStateProvider
 {
 public:
 	static EnvelopeFollower& instance();
@@ -21,12 +23,15 @@ public:
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
 	uint8_t getControllerValue(const uint8_t controllerNumber);
+	boolean isOn();
+	EnvelopeState& getEnvelopeState();
 private:
 	static const unsigned long SAMPLE_PERIOD_US = 1000;
 	static EnvelopeFollower* theInstance;
 	int envPin;
 	uint16_t value;
 	unsigned long lastSampleUs;
+	EnvelopeState envState;
 };
 
 #endif /* defined(__CV2__EnvelopeFollower__) */

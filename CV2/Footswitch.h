@@ -7,7 +7,8 @@
 class Footswitch : public Switch
 {
 public:
-	Footswitch(const uint8_t aSwPin, const uint8_t anLedPin);
+	static Footswitch& instance(const uint8_t index);
+	Footswitch(const uint8_t instanceIndex, const uint8_t aSwPin, const uint8_t anLedPin);
 	virtual ~Footswitch();
 	void setup();
 	void loop(const unsigned long usNow);

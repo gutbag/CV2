@@ -8,9 +8,9 @@
 #define OPTO_5 16
 #define OPTO_6 17
 
-#define FSW_1 46
-#define FSW_2 47
-#define FSW_3 48
+#define FSW_1 48
+#define FSW_2 46
+#define FSW_3 47
 #define FSW_LED1 36
 #define FSW_LED2 34
 #define FSW_LED3 32

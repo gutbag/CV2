@@ -49,7 +49,7 @@ boolean SwitchTrigger::triggered()
 	return returnState;
 }
 
-void SwitchTrigger::triggerOnToOff(const boolean state)
-{
-	triggerOffToOnState = ! state;
-}
+//void SwitchTrigger::triggerOnToOff(const boolean state)
+//{
+//	triggerOffToOnState = ! state;
+//}

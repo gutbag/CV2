@@ -6,8 +6,10 @@
 #include "Errors.h"
 
 Patch::Patch(Switch& aDownSwitch, Switch& anUpSwitch)
-: downSwitchTrigger(aDownSwitch),
-  upSwitchTrigger(anUpSwitch),
+//: downSwitchTrigger(aDownSwitch),
+//upSwitchTrigger(anUpSwitch),
+: downSwitchEdgeProvider(&aDownSwitch),
+  upSwitchEdgeProvider(&anUpSwitch),
   patchNumber(0),
   pendingPatchNumber(0),
   state(IDLE)
@@ -85,8 +87,10 @@ uint8_t Patch::getControllerValue(const uint8_t controllerNumber)
 
 void Patch::setup()
 {
-	downSwitchTrigger.setup();
-	upSwitchTrigger.setup();
+//	downSwitchTrigger.setup();
+//	upSwitchTrigger.setup();
+	downSwitchEdgeProvider.setup();
+	upSwitchEdgeProvider.setup();
 	
 	MIDI::instance().setPCListener(this);
 	MIDI::instance().setCCListener(this, 0, PATCH_SAVE_CC);
@@ -114,10 +118,15 @@ void Patch::setup()
 
 void Patch::loop(const unsigned long usNow)
 {
-	downSwitchTrigger.loop(usNow);
-	boolean downPressed = downSwitchTrigger.triggered();
-	upSwitchTrigger.loop(usNow);
-	boolean upPressed = upSwitchTrigger.triggered();
+//	downSwitchTrigger.loop(usNow);
+//	boolean downPressed = downSwitchTrigger.triggered();
+//	upSwitchTrigger.loop(usNow);
+//	boolean upPressed = upSwitchTrigger.triggered();
+	
+	downSwitchEdgeProvider.loop(usNow);
+	boolean downPressed = downSwitchEdgeProvider.getEdge() == OnOffEdgeProvider::OFF_ON;
+	upSwitchEdgeProvider.loop(usNow);
+	boolean upPressed = upSwitchEdgeProvider.getEdge() == OnOffEdgeProvider::OFF_ON;
 	
 	switch (state)
 	{
@@ -478,7 +487,11 @@ void Patch::save()
 	unsigned int length = 0;
 	
 	boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
-	// TODO: do something with gotAll
+	if ( ! gotAll)
+	{
+		Display::instance().displayError(PATCH_SAVE_BUFFER_TOO_SMALL);
+		return;
+	}
 				
 	uint16_t address = PATCH_START_ADDR + patchNumber * MAX_PATCH_SIZE;
 		

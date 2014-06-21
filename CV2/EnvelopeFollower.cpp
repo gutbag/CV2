@@ -9,7 +9,7 @@ EnvelopeFollower& EnvelopeFollower::instance()
 }
 
 EnvelopeFollower::EnvelopeFollower(const int anEnvPin)
-: envPin(anEnvPin), value(0), lastSampleUs(0)
+: envPin(anEnvPin), value(0), lastSampleUs(0), envState(*this)
 {
 	theInstance = this;
 }
@@ -19,9 +19,14 @@ EnvelopeFollower::~EnvelopeFollower()
 	
 }
 
+EnvelopeState& EnvelopeFollower::getEnvelopeState()
+{
+	return envState;
+}
+
 void EnvelopeFollower::setup()
 {
-	
+	envState.setup();
 }
 
 void EnvelopeFollower::loop(const unsigned long usNow)
@@ -30,6 +35,7 @@ void EnvelopeFollower::loop(const unsigned long usNow)
 	{
 		value = analogRead(envPin);
 		lastSampleUs = usNow;
+		envState.loop(usNow);
 	}
 }
 

@@ -3,7 +3,8 @@
 
 #include "MIDIPCListener.h"
 #include "MIDICCListener.h"
-#include "SwitchTrigger.h"
+//#include "SwitchTrigger.h"
+#include "OnOffEdgeProvider.h"
 
 class Switch;
 
@@ -47,8 +48,10 @@ private:
 	uint16_t calcChecksum(const uint8_t* buffer, const unsigned int length);
 	uint16_t calcHeaderChecksum();
 	
-	SwitchTrigger downSwitchTrigger;
-	SwitchTrigger upSwitchTrigger;
+//	SwitchTrigger downSwitchTrigger;
+//	SwitchTrigger upSwitchTrigger;
+	OnOffEdgeProvider downSwitchEdgeProvider;
+	OnOffEdgeProvider upSwitchEdgeProvider;
 	uint8_t patchNumber;
 	uint8_t pendingPatchNumber;
 	

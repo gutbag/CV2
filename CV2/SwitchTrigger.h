@@ -11,7 +11,7 @@ class SwitchTrigger : public Trigger
 public:
 	SwitchTrigger(Switch& aSwitch);
 	virtual ~SwitchTrigger();
-	void triggerOnToOff(const boolean state);
+	//void triggerOnToOff(const boolean state);
 	void setup();
 	void loop(const unsigned long usNow);
 	boolean triggered();
