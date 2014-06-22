@@ -40,7 +40,28 @@ APP_LIBS_LIST = SPI Wire
 #
 
 #
-USER_LIBS_LIST = Display DAC Footswitch Opto MIDI CVOutput LFO DisplayTest Flasher Expression EEPROM  Switch SwitchTrigger Patch EnvelopeFollower TriggeredOnOff OnOffEdgeProvider Freeze EnvelopeState Ramp
+USER_LIBS_LIST = \
+	Display DAC \
+	Footswitch \
+	Opto \
+	MIDI \
+	CVOutput \
+	LFO \
+	DisplayTest \
+	Flasher \
+	Expression \
+	EEPROM  \
+	Switch \
+	SwitchTrigger \
+	Patch \
+	EnvelopeFollower \
+	TriggeredOnOff \
+	OnOffEdgeProvider \
+	Freeze \
+	EnvelopeState \
+	Ramp \
+	Noise \
+	RateOfChangeLimiter
 
 # List core, application and user's libraries to be excluded
 # For example, WiFi may crash on Arduino 1.0.2, Esplora on Arduino 1.0.3, Firmata on Teensy 3.0,

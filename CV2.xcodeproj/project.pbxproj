@@ -414,6 +414,7 @@
 		F6C49CD419531CE300DA3DAD /* Freeze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD219531CE300DA3DAD /* Freeze.cpp */; };
 		F6C49CD71953459700DA3DAD /* EnvelopeState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD51953459700DA3DAD /* EnvelopeState.cpp */; };
 		F6C49CDA19546BE900DA3DAD /* Ramp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD819546BE900DA3DAD /* Ramp.cpp */; };
+		F6C49CDD1955F1D700DA3DAD /* Noise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CDB1955F1D700DA3DAD /* Noise.cpp */; };
 		F6C94D90190D779600F83CA6 /* CVOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C94D8E190D779600F83CA6 /* CVOutput.cpp */; };
 		F6C94D93190DAC0300F83CA6 /* Patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C94D91190DAC0300F83CA6 /* Patch.cpp */; };
 /* End PBXBuildFile section */
@@ -821,7 +822,6 @@
 		F631555B190EC2A300707EB7 /* ValueProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueProvider.h; sourceTree = "<group>"; };
 		F631555C190ECBF400707EB7 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
 		F631555D190ECBF400707EB7 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
-		F631555F190ECFB400707EB7 /* ValueConsumer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValueConsumer.h; sourceTree = "<group>"; };
 		F6474F2719256A840068AE70 /* Trigger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Trigger.h; sourceTree = "<group>"; };
 		F6474F2819256ADC0068AE70 /* SwitchTrigger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwitchTrigger.cpp; sourceTree = "<group>"; };
 		F6474F2919256ADC0068AE70 /* SwitchTrigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchTrigger.h; sourceTree = "<group>"; };
@@ -868,6 +868,8 @@
 		F6C49CD61953459700DA3DAD /* EnvelopeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnvelopeState.h; sourceTree = "<group>"; };
 		F6C49CD819546BE900DA3DAD /* Ramp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ramp.cpp; sourceTree = "<group>"; };
 		F6C49CD919546BE900DA3DAD /* Ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ramp.h; sourceTree = "<group>"; };
+		F6C49CDB1955F1D700DA3DAD /* Noise.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Noise.cpp; sourceTree = "<group>"; };
+		F6C49CDC1955F1D700DA3DAD /* Noise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Noise.h; sourceTree = "<group>"; };
 		F6C94D8E190D779600F83CA6 /* CVOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVOutput.cpp; sourceTree = "<group>"; };
 		F6C94D8F190D779600F83CA6 /* CVOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVOutput.h; sourceTree = "<group>"; };
 		F6C94D91190DAC0300F83CA6 /* Patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patch.cpp; sourceTree = "<group>"; };
@@ -2194,6 +2196,8 @@
 				F6B7BB051917CD7900B6CD71 /* MIDICCListener.h */,
 				F6B7BB061917D12E00B6CD71 /* MIDIPCListener.h */,
 				F6244F1A1915852100FBCC5F /* MIDIMessages.h */,
+				F6C49CDB1955F1D700DA3DAD /* Noise.cpp */,
+				F6C49CDC1955F1D700DA3DAD /* Noise.h */,
 				F6DC735E1950D12300552122 /* OnOffStateProvider.h */,
 				F6C49CCF1952ECA700DA3DAD /* OnOffEdgeProvider.cpp */,
 				F6C49CD01952ECA700DA3DAD /* OnOffEdgeProvider.h */,
@@ -2210,11 +2214,10 @@
 				F6474F2719256A840068AE70 /* Trigger.h */,
 				F630EECB19520D790035ADC8 /* TriggeredOnOff.cpp */,
 				F630EECC19520D790035ADC8 /* TriggeredOnOff.h */,
+				F631555B190EC2A300707EB7 /* ValueProvider.h */,
 				AAAA140426092133AA000000 /* Resources */,
 				F697E5E3190BA32300477901 /* Sketchbook */,
 				F697E61C190BA32300477901 /* Utilities */,
-				F631555F190ECFB400707EB7 /* ValueConsumer.h */,
-				F631555B190EC2A300707EB7 /* ValueProvider.h */,
 			);
 			path = CV2;
 			sourceTree = "<group>";
@@ -2589,6 +2592,7 @@
 				AA2A140426092133AA0000FE /* GSM3ShieldV1.h in Sources */,
 				AA2A140426092133AA0000FF /* GSM3ShieldV1AccessProvider.cpp in Sources */,
 				AA2A140426092133AA000100 /* GSM3ShieldV1AccessProvider.h in Sources */,
+				F6C49CDD1955F1D700DA3DAD /* Noise.cpp in Sources */,
 				AA2A140426092133AA000101 /* GSM3ShieldV1BandManagement.cpp in Sources */,
 				AA2A140426092133AA000102 /* GSM3ShieldV1BandManagement.h in Sources */,
 				AA2A140426092133AA000103 /* GSM3ShieldV1BaseProvider.cpp in Sources */,

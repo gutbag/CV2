@@ -15,6 +15,7 @@
 #include "EEPROM.h"
 #include "EnvelopeFollower.h"
 #include "Ramp.h"
+#include "Noise.h"
 
 EEPROM eeprom;
 MIDI midi;
@@ -51,6 +52,12 @@ Freeze freezes[2] = {
 	{OPTO_1, 0},
 	{OPTO_2, 1},
 };
+Opto optos[4] = {
+	{0, OPTO_3},
+	{1, OPTO_4},
+	{2, OPTO_5},
+	{3, OPTO_6}
+};
 LFO lfo;
 Switch patchDownSwitch(PATCH_DOWN_SW);
 Switch patchUpSwitch(PATCH_UP_SW);
@@ -59,6 +66,7 @@ Expression expr1(EXPR_1_PIN, 0);
 Expression expr2(EXPR_2_PIN, 1);
 EnvelopeFollower envelopeFollower(LPF_ENV_IN);
 Ramp ramp;
+Noise noise;
 
 void setup()
 {
@@ -78,6 +86,7 @@ void setup()
 	expr2.setup();
 	envelopeFollower.setup();
 	ramp.setup();
+	noise.setup();
 	
 	displayTest.enable(false);
 	displayTest.setup();
@@ -119,6 +128,7 @@ void loop()
 	expr2.loop(usNow);
 	envelopeFollower.loop(usNow);
 	ramp.loop(usNow);
+	noise.loop(usNow);
 	for (uint8_t i=0; i<2; i++)
 		freezes[i].loop(usNow);
 	for (uint8_t i=0; i<4; i++)

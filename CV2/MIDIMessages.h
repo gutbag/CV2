@@ -31,6 +31,11 @@ const uint8_t RAMP_CONTROL_TYPE_CC = 17;
 const uint8_t RAMP_TIME_CC = 18;
 const uint8_t RAMP_DIRECTION_CC = 19;
 
+const uint8_t NOISE_TRIGGER_MODE_CC = 20;
+const uint8_t NOISE_CONTROL_TYPE_CC = 21;
+const uint8_t NOISE_RATE_CC = 22;
+const uint8_t NOISE_SMOOTHING_CC = 23;
+
 const uint8_t DISPLAY_RESET_CC = 71;
 const uint8_t DISPLAY_TEST_CC = 72;
 const uint8_t PATCH_SAVE_CC = 73;
@@ -44,6 +49,7 @@ const uint8_t CV_OUTPUT_SOURCE_EXPR1_VALUE = 3;
 const uint8_t CV_OUTPUT_SOURCE_EXPR2_VALUE = 4;
 const uint8_t CV_OUTPUT_SOURCE_ENV_VALUE = 5;
 const uint8_t CV_OUTPUT_SOURCE_RAMP_VALUE = 6;
+const uint8_t CV_OUTPUT_SOURCE_NOISE_VALUE = 7;
 
 const uint8_t CV_OUTPUT_SIDE_CHAIN_SOURCE_NONE_VALUE = 0;
 const uint8_t CV_OUTPUT_SIDE_CHAIN_SOURCE_LFO_VALUE = 1;

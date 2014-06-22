@@ -7,6 +7,7 @@
 #include "Expression.h"
 #include "EnvelopeFollower.h"
 #include "Ramp.h"
+#include "Noise.h"
 
 CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel)
 : dac(aDac),
@@ -189,6 +190,10 @@ void CVOutput::processCCMessage(const uint8_t channel,
 					break;
 				case CV_OUTPUT_SOURCE_RAMP_VALUE:
 					pProvider = &Ramp::instance();
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_NOISE_VALUE:
+					pProvider = &Noise::instance();
 					dirty = true;
 					break;
 				default:
