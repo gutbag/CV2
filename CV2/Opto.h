@@ -2,7 +2,8 @@
 #define __CV2__Opto__
 
 #include <Arduino.h>
-#include "TriggeredOnOff.h"
+
+class TriggeredOnOff;
 
 class Opto
 {
@@ -18,7 +19,7 @@ private:
 
 	uint8_t pin;
 	uint8_t onState;
-	TriggeredOnOff onOff;
+	TriggeredOnOff* onOff;
 };
 
 #endif /* defined(__CV2__Opto__) */

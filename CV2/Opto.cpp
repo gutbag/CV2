@@ -1,6 +1,7 @@
 #include "Opto.h"
 #include "OnOffStateProvider.h"
 #include "Footswitch.h"
+#include "TriggeredOnOff.h"
 
 static Opto* pInstances[4] = {NULL, NULL, NULL, NULL};
 
@@ -11,7 +12,7 @@ Opto& Opto::instance(const uint8_t index)
 
 
 Opto::Opto(const uint8_t instanceIndex, const uint8_t aPin)
-: pin(aPin), onState(false)
+: pin(aPin), onState(false), onOff(NULL)
 {
 	pInstances[instanceIndex] = this;
 }
@@ -39,15 +40,11 @@ void Opto::setup()
 //			break;
 //		}
 //	}
-	
-	onOff.setup();
 }
 
 void Opto::loop(const unsigned long usNow)
 {
-	onOff.loop(usNow);
-	
-	if (onOff.isOn())
+	if (onOff != NULL && onOff->isOn())
 		on();
 	else
 		off();

@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 #include "OnOffStateProvider.h"
-#include "TriggeredOnOff.h"
 #include "MIDICCListener.h"
 
 class EnvelopeFollower;
+class TriggeredOnOff;
 
 class EnvelopeState : public OnOffStateProvider, public MIDICCListener
 {
@@ -32,9 +32,7 @@ private:
 //	boolean lastOnState;
 
 	boolean onState;
-	TriggeredOnOff enable;
-	uint8_t triggerModeCCValue;
-	uint8_t controlTypeCCValue;
+	TriggeredOnOff* enable;
 };
 
 #endif /* defined(__CV2__EnvelopeState__) */

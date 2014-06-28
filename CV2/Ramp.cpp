@@ -2,6 +2,7 @@
 #include "MIDI.h"
 #include "Footswitch.h"
 #include "EnvelopeFollower.h"
+#include "TriggeredOnOff.h"
 
 static Ramp* pInstance = NULL;
 
@@ -14,8 +15,7 @@ Ramp::Ramp()
 : value(0),
   startAtMin(true),
   state(IDLE),
-  triggerModeCCValue(DO_NOT_SAVE_VALUE),
-  controlTypeCCValue(DO_NOT_SAVE_VALUE),
+  trigger(NULL),
   directionCCValue(DO_NOT_SAVE_VALUE),
   rampTimeCCValue(DO_NOT_SAVE_VALUE),
   lastValueUs(0),
@@ -47,19 +47,10 @@ uint16_t Ramp::getValue()
 
 void Ramp::setup()
 {
-	trigger.setup();
-	
-	// TEMP
-//	trigger.setMode(TriggeredOnOff::LEVEL_INV);
-//	trigger.setProvider(&Footswitch::instance(0));
-	
-	// default to FSW 1
-	trigger.setProvider(&Footswitch::instance(0));
-	
-	MIDI::instance().setCCListener(this, 0, RAMP_TRIGGER_MODE_CC);
-	MIDI::instance().setCCListener(this, 0, RAMP_CONTROL_TYPE_CC);
 	MIDI::instance().setCCListener(this, 0, RAMP_TIME_CC);
 	MIDI::instance().setCCListener(this, 0, RAMP_DIRECTION_CC);
+	
+	trigger = &TriggeredOnOff::instance(RAMP_TRIGGER_MIDI_CHANNEL);
 	
 	state = IDLE;
 	calcValueDelay();
@@ -68,8 +59,7 @@ void Ramp::setup()
 
 void Ramp::loop(const unsigned long usNow)
 {
-	trigger.loop(usNow);
-	boolean triggered = trigger.isOn();
+	boolean triggered = trigger != NULL ? trigger->isOn() : false;
 	
 	switch (state)
 	{
@@ -144,46 +134,6 @@ void Ramp::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
-		case RAMP_TRIGGER_MODE_CC:
-			triggerModeCCValue = value;
-			switch (triggerModeCCValue)
-			{
-			case RAMP_TRIGGER_MODE_LEVEL_NON_INV_VALUE:
-				trigger.setMode(TriggeredOnOff::LEVEL_NON_INV);
-				break;
-			case RAMP_TRIGGER_MODE_LEVEL_INV_VALUE:
-				trigger.setMode(TriggeredOnOff::LEVEL_INV);
-				break;
-			case RAMP_TRIGGER_MODE_EDGE_OFF_ON_VALUE:
-				trigger.setMode(TriggeredOnOff::EDGE_OFF_ON);
-				break;
-			case RAMP_TRIGGER_MODE_EDGE_ON_OFF_VALUE:
-				trigger.setMode(TriggeredOnOff::EDGE_ON_OFF);
-				break;
-			default:
-				break;
-			}
-			break;
-		case RAMP_CONTROL_TYPE_CC:
-			controlTypeCCValue = value;
-			switch (controlTypeCCValue)
-			{
-			case RAMP_CONTROL_FSW_1_VALUE:
-				trigger.setProvider(&Footswitch::instance(0));
-				break;
-			case RAMP_CONTROL_FSW_2_VALUE:
-				trigger.setProvider(&Footswitch::instance(1));
-				break;
-			case RAMP_CONTROL_FSW_3_VALUE:
-				trigger.setProvider(&Footswitch::instance(2));
-				break;
-			case RAMP_CONTROL_ENV_VALUE:
-				trigger.setProvider(&EnvelopeFollower::instance().getEnvelopeState());
-				break;
-			default:
-				break;
-			}
-			break;
 		case RAMP_DIRECTION_CC:
 			directionCCValue = value;
 			switch (directionCCValue)
@@ -214,10 +164,6 @@ uint8_t Ramp::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
-		case RAMP_TRIGGER_MODE_CC:
-			return triggerModeCCValue;
-		case RAMP_CONTROL_TYPE_CC:
-			return controlTypeCCValue;
 		case RAMP_DIRECTION_CC:
 			return directionCCValue;
 		case RAMP_TIME_CC:

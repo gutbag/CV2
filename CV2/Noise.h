@@ -5,6 +5,8 @@
 #include "ValueProvider.h"
 #include "MIDICCListener.h"
 
+class TriggeredOnOff;
+
 class Noise : public ValueProvider, public MIDICCListener
 {
 public:
@@ -24,8 +26,10 @@ private:
 	uint16_t value;
 	unsigned long lastValueUs;
 	unsigned long valueDelayUs;
+	uint8_t amplitude;
 	uint8_t rateCCValue;
 	uint8_t amplitudeCCValue;
+	TriggeredOnOff* enable;
 };
 
 #endif /* defined(__CV2__Noise__) */

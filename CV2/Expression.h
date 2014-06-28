@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 #include "ValueProvider.h"
+#include "MIDICCListener.h"
+
+class TriggeredOnOff;
 
 class Expression : public ValueProvider
 {
@@ -18,6 +21,7 @@ public:
 private:
 	uint8_t pin;
 	uint16_t value;
+	TriggeredOnOff* enable;
 };
 
 #endif /* defined(__CV2__Expression__) */

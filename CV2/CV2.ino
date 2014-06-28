@@ -16,6 +16,7 @@
 #include "EnvelopeFollower.h"
 #include "Ramp.h"
 #include "Noise.h"
+#include "TriggeredOnOff.h"
 
 EEPROM eeprom;
 MIDI midi;
@@ -49,8 +50,8 @@ Footswitch footswitches[3] = {
 	{2, FSW_3, FSW_LED3}
 };
 Freeze freezes[2] = {
-	{OPTO_1, 0},
-	{OPTO_2, 1},
+	{OPTO_1, FREEZE_1_TRIGGER_MIDI_CHANNEL},
+	{OPTO_2, FREEZE_2_TRIGGER_MIDI_CHANNEL},
 };
 Opto optos[4] = {
 	{0, OPTO_3},
@@ -67,6 +68,17 @@ Expression expr2(EXPR_2_PIN, 1);
 EnvelopeFollower envelopeFollower(LPF_ENV_IN);
 Ramp ramp;
 Noise noise;
+TriggeredOnOff triggers[8] =
+{
+	FREEZE_1_TRIGGER_MIDI_CHANNEL,
+	FREEZE_2_TRIGGER_MIDI_CHANNEL,
+	ENV_STATE_TRIGGER_MIDI_CHANNEL,
+	EXPR_TRIGGER_MIDI_CHANNEL,
+	RAMP_TRIGGER_MIDI_CHANNEL,
+	NOISE_TRIGGER_MIDI_CHANNEL,
+	6, // unused
+	7 // unused
+};
 
 void setup()
 {
@@ -81,10 +93,14 @@ void setup()
 		footswitches[i].setup();
 	patchDownSwitch.setup();
 	patchUpSwitch.setup();
-	lfo.setup();
 	expr1.setup();
 	expr2.setup();
 	envelopeFollower.setup();
+	
+	for (uint8_t i=0; i<8; i++)
+		triggers[i].setup();
+
+	lfo.setup();
 	ramp.setup();
 	noise.setup();
 	
@@ -122,11 +138,13 @@ void loop()
 		footswitches[i].loop(usNow);
 	patchDownSwitch.loop(usNow);
 	patchUpSwitch.loop(usNow);
+	for (uint8_t i=0; i<8; i++)
+		triggers[i].loop(usNow);
 	midi.loop(usNow);
-	lfo.loop(usNow);
 	expr1.loop(usNow);
 	expr2.loop(usNow);
 	envelopeFollower.loop(usNow);
+	lfo.loop(usNow);
 	ramp.loop(usNow);
 	noise.loop(usNow);
 	for (uint8_t i=0; i<2; i++)

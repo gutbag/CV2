@@ -2,6 +2,7 @@
 #include "MIDI.h"
 #include "Footswitch.h"
 #include "EnvelopeFollower.h"
+#include "TriggeredOnOff.h"
 
 static Noise* pInstance = NULL;
 
@@ -14,8 +15,10 @@ Noise::Noise()
 : value(0),
   lastValueUs(0),
   valueDelayUs(1 * 1000 * 1000), // 1s
-  rateCCValue(0),
-  amplitudeCCValue(1)
+  amplitude(1),
+  rateCCValue(DO_NOT_SAVE_VALUE),
+  amplitudeCCValue(DO_NOT_SAVE_VALUE),
+  enable(NULL)
 {
 	pInstance = this;
 }
@@ -41,15 +44,15 @@ uint16_t Noise::getValue()
 
 void Noise::setup()
 {
-	MIDI::instance().setCCListener(this, 0, NOISE_TRIGGER_MODE_CC);
-	MIDI::instance().setCCListener(this, 0, NOISE_CONTROL_TYPE_CC);
 	MIDI::instance().setCCListener(this, 0, NOISE_RATE_CC);
 	MIDI::instance().setCCListener(this, 0, NOISE_SMOOTHING_CC);
+	
+	enable = &TriggeredOnOff::instance(NOISE_TRIGGER_MIDI_CHANNEL);
 }
 
 void Noise::loop(const unsigned long usNow)
 {
-	boolean triggered = true;
+	boolean triggered = enable != NULL ? enable->isOn() : true;
 	
 	if (triggered)
 	{
@@ -57,7 +60,7 @@ void Noise::loop(const unsigned long usNow)
 		{
 			// set the new range for random from the current value +/- 2*amplitudeCCValue
 			// constrain to actual min/max
-			int16_t maxDiff = (int16_t)(amplitudeCCValue << 1);
+			int16_t maxDiff = (int16_t)(amplitude << 1);
 			int16_t randMin = (int16_t)value - maxDiff;
 			if (randMin < getMinimum())
 				randMin = getMinimum();
@@ -103,10 +106,11 @@ void Noise::processCCMessage(const uint8_t channel,
 	{
 		case NOISE_RATE_CC:
 			rateCCValue = value;
-			valueDelayUs = value * 10 * 1000; // 10ms steps
+			valueDelayUs = rateCCValue * 10 * 1000; // 10ms steps
 			break;
 		case NOISE_SMOOTHING_CC:
 			amplitudeCCValue = value;
+			amplitude = amplitudeCCValue;
 			break;
 		default:
 			break;

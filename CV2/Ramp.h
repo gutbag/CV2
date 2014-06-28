@@ -4,7 +4,8 @@
 #include <Arduino.h>
 #include "ValueProvider.h"
 #include "MIDICCListener.h"
-#include "TriggeredOnOff.h"
+
+class TriggeredOnOff;
 
 class Ramp : public ValueProvider, public MIDICCListener
 {
@@ -29,9 +30,7 @@ private:
 	boolean startAtMin;
 	typedef enum {IDLE, RUNNING, FINISHED} State;
 	State state;
-	TriggeredOnOff trigger;
-	uint8_t triggerModeCCValue;
-	uint8_t controlTypeCCValue;
+	TriggeredOnOff* trigger;
 	uint8_t directionCCValue;
 	uint8_t rampTimeCCValue;
 	unsigned long lastValueUs;
