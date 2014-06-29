@@ -59,7 +59,10 @@ Opto optos[4] = {
 	{2, OPTO_5},
 	{3, OPTO_6}
 };
-LFO lfo;
+LFO lfos[2] = {
+	{0, 0},
+	{1, 1}
+};
 Switch patchDownSwitch(PATCH_DOWN_SW);
 Switch patchUpSwitch(PATCH_UP_SW);
 Patch patch(patchDownSwitch, patchUpSwitch);
@@ -76,8 +79,8 @@ TriggeredOnOff triggers[8] =
 	EXPR_TRIGGER_MIDI_CHANNEL,
 	RAMP_TRIGGER_MIDI_CHANNEL,
 	NOISE_TRIGGER_MIDI_CHANNEL,
-	6, // unused
-	7 // unused
+	LFO1_TRIGGER_MIDI_CHANNEL,
+	LFO2_TRIGGER_MIDI_CHANNEL
 };
 
 void setup()
@@ -100,7 +103,9 @@ void setup()
 	for (uint8_t i=0; i<8; i++)
 		triggers[i].setup();
 
-	lfo.setup();
+	for (uint8_t i=0; i<2; i++)
+		lfos[i].setup();
+
 	ramp.setup();
 	noise.setup();
 	
@@ -144,7 +149,8 @@ void loop()
 	expr1.loop(usNow);
 	expr2.loop(usNow);
 	envelopeFollower.loop(usNow);
-	lfo.loop(usNow);
+	for (uint8_t i=0; i<2; i++)
+		lfos[i].loop(usNow);
 	ramp.loop(usNow);
 	noise.loop(usNow);
 	for (uint8_t i=0; i<2; i++)

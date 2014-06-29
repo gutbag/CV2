@@ -1,9 +1,6 @@
 #include "LFO.h"
 #include "MIDI.h"
-
-const float LFO::fMin = 0.1;
-const float LFO::fMax = 2.0;
-const float LFO::hertzPerStep = (fMax - fMin) / 128.0;
+#include "TriggeredOnOff.h"
 
 static uint8_t sinSamples[] = {
 	0,
@@ -369,23 +366,36 @@ static uint8_t sinSamples[] = {
 	0
 };
 
-static LFO* pInstance = NULL;
-
-LFO& LFO::instance()
+typedef struct
 {
-	return *pInstance;
+	float fMin;
+	float fMax;
+} RangeValues;
+
+// ranges selected by CC value
+static const RangeValues rangeValues[] =
+{
+	{0.01, 0.05},
+	{0.05, 0.1},
+	{0.1, 1.0},
+	{1.0, 2.0}
+};
+
+static LFO* pInstances[2] = {NULL, NULL};
+
+LFO& LFO::instance(const uint8_t index)
+{
+	return *pInstances[index];
 }
 
-LFO::LFO()
-: sampleIndex(0), usLastSample(0), usBetweenSamples(0), freqStep(0)
+LFO::LFO(const uint8_t index, const uint8_t aMidiChannel)
+: sampleIndex(0), usLastSample(0), usBetweenSamples(0), freqStep(0), freqRange(0), enable(NULL), midiChannel(aMidiChannel)
 {
-	pInstance = this;
-	MIDI::instance().setCCListener(this, 0, LFO_FREQUENCY_CC);
+	pInstances[index] = this;
 }
 
 LFO::~LFO()
 {
-	
 }
 
 uint16_t LFO::getMinimum()
@@ -405,19 +415,30 @@ uint16_t LFO::getValue()
 
 void LFO::setup()
 {
-	setFrequency(0);
+	MIDI::instance().setCCListener(this, midiChannel, LFO_FREQUENCY_CC);
+	MIDI::instance().setCCListener(this, midiChannel, LFO_FREQUENCY_RANGE_CC);
+
+	enable = &TriggeredOnOff::instance(LFO1_TRIGGER_MIDI_CHANNEL);
+	enable->setDefaultOn(true); // default is on
+
+	setFrequencyRange(freqRange);
+	setFrequency(freqStep);
 }
 
 void LFO::loop(const unsigned long usNow)
 {
 	if (usNow - usLastSample >= usBetweenSamples)
 	{
+		boolean enabled = enable != NULL ? enable->isOn() : false;
 		
-		sampleIndex++;
-		if (sampleIndex > sizeof(sinSamples)) // TODO: sample width?
-			sampleIndex = 0;
-		
-		usLastSample = usNow;
+		if (enabled)
+		{
+			sampleIndex++;
+			if (sampleIndex > sizeof(sinSamples)) // TODO: sample width?
+				sampleIndex = 0;
+			
+			usLastSample = usNow;
+		}
 	}
 }
 
@@ -449,6 +470,21 @@ void LFO::setFrequency(const uint8_t aFreqStep)
 //	usBetweenSamples = 27700;
 }
 
+void LFO::setFrequencyRange(const uint8_t value)
+{
+	freqRange = value;
+	
+	uint8_t numRanges = sizeof(rangeValues) / sizeof(RangeValues);
+	
+	if (freqRange >= numRanges) // limit
+		freqRange = numRanges - 1;
+	
+	fMin = rangeValues[freqRange].fMin;
+	fMax = rangeValues[freqRange].fMax;
+	
+	hertzPerStep = (fMax - fMin) / 128.0;
+}
+
 void LFO::processCCMessage(const uint8_t channel,
 							   const uint8_t controllerNumber,
 							   const uint8_t value)
@@ -465,6 +501,10 @@ void LFO::processCCMessage(const uint8_t channel,
 		case LFO_FREQUENCY_CC:
 			setFrequency(value);
 			break;
+		case LFO_FREQUENCY_RANGE_CC:
+			setFrequencyRange(value);
+			setFrequency(freqStep);
+			break;
 		default:
 			break;
 	}
@@ -472,5 +512,14 @@ void LFO::processCCMessage(const uint8_t channel,
 
 uint8_t LFO::getControllerValue(const uint8_t controllerNumber)
 {
-	return freqStep;
+	switch (controllerNumber)
+	{
+		case LFO_FREQUENCY_CC:
+			return freqStep;
+		case LFO_FREQUENCY_RANGE_CC:
+			return freqRange;
+		default:
+			return DO_NOT_SAVE_VALUE;
+			break;
+	}
 }

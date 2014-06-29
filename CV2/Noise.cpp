@@ -48,13 +48,14 @@ void Noise::setup()
 	MIDI::instance().setCCListener(this, 0, NOISE_SMOOTHING_CC);
 	
 	enable = &TriggeredOnOff::instance(NOISE_TRIGGER_MIDI_CHANNEL);
+	enable->setDefaultOn(true);
 }
 
 void Noise::loop(const unsigned long usNow)
 {
-	boolean triggered = enable != NULL ? enable->isOn() : true;
+	boolean enabled = enable != NULL ? enable->isOn() : true;
 	
-	if (triggered)
+	if (enabled)
 	{
 		if (usNow - lastValueUs >= valueDelayUs) // time for a new value
 		{
@@ -106,7 +107,7 @@ void Noise::processCCMessage(const uint8_t channel,
 	{
 		case NOISE_RATE_CC:
 			rateCCValue = value;
-			valueDelayUs = rateCCValue * 10 * 1000; // 10ms steps
+			valueDelayUs = (127-rateCCValue) * 10 * 1000; // 10ms steps
 			break;
 		case NOISE_SMOOTHING_CC:
 			amplitudeCCValue = value;

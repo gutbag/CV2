@@ -172,8 +172,12 @@ void CVOutput::processCCMessage(const uint8_t channel,
 					pProvider = NULL;
 					dirty = true;
 					break;
-				case CV_OUTPUT_SOURCE_LFO_VALUE:
-					pProvider = &LFO::instance();
+				case CV_OUTPUT_SOURCE_LFO1_VALUE:
+					pProvider = &LFO::instance(0);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_LFO2_VALUE:
+					pProvider = &LFO::instance(1);
 					dirty = true;
 					break;
 				case CV_OUTPUT_SOURCE_EXPR1_VALUE:
@@ -208,8 +212,12 @@ void CVOutput::processCCMessage(const uint8_t channel,
 				pSideChainProvider = NULL;
 				dirty = true;
 				break;
-			case CV_OUTPUT_SIDE_CHAIN_SOURCE_LFO_VALUE:
-				pSideChainProvider = &LFO::instance();
+			case CV_OUTPUT_SIDE_CHAIN_SOURCE_LFO1_VALUE:
+				pSideChainProvider = &LFO::instance(0);
+				dirty = true;
+				break;
+			case CV_OUTPUT_SIDE_CHAIN_SOURCE_LFO2_VALUE:
+				pSideChainProvider = &LFO::instance(1);
 				dirty = true;
 				break;
 			case CV_OUTPUT_SIDE_CHAIN_SOURCE_EXPR1_VALUE:

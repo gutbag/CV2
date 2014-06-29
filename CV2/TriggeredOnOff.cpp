@@ -88,7 +88,6 @@ void TriggeredOnOff::setDefaultOn(const boolean state)
 	defaultOn = state;
 }
 
-
 boolean TriggeredOnOff::isOn()
 {
 	return on;
