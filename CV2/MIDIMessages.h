@@ -18,7 +18,7 @@ const uint8_t CV_OUTPUT_SIDE_CHAIN_MODE_CC = 8;
 const uint8_t TRIGGER_CONTROL_TYPE_CC = 9;
 const uint8_t TRIGGER_MODE_CC = 10;
 
-const uint8_t FREEZE_TRIGGER_MIDI_CHANNEL_CC = 11;
+const uint8_t FREEZE_TRIGGER_INSTANCE_CC = 11;
 
 
 // the MIDI channels associated with each trigger

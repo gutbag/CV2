@@ -7,7 +7,7 @@
 #include "TriggeredOnOff.h"
 
 Freeze::Freeze(const uint8_t aPin, const uint8_t aMidiChannel)
-: pin(aPin), midiChannel(aMidiChannel), onState(false), onOff(NULL)
+: pin(aPin), midiChannel(aMidiChannel), onState(false), onOff(NULL), triggerInstanceCCValue(0)
 {
 }
 
@@ -20,9 +20,8 @@ void Freeze::setup()
 	pinMode(pin, OUTPUT);
 	onState = true; // so that off works
 	off();
-	
-	onOff = &TriggeredOnOff::instance(midiChannel);
-	onOff->setDefaultOn(false); // default is off
+
+	MIDI::instance().setCCListener(this, midiChannel, FREEZE_TRIGGER_INSTANCE_CC);
 }
 
 void Freeze::loop(const unsigned long usNow)
@@ -54,5 +53,47 @@ void Freeze::off()
 	{
 		digitalWrite(pin, LOW);
 		onState = false;
+	}
+}
+
+void Freeze::processCCMessage(const uint8_t channel,
+						   const uint8_t controllerNumber,
+						   const uint8_t value)
+{
+	//	Serial.print("Freeze Message, ch: ");
+	//	Serial.print(channel, DEC);
+	//	Serial.print(" No: ");
+	//	Serial.print(controllerNumber, DEC);
+	//	Serial.print(" Val: ");
+	//	Serial.println(pvalue, DEC);
+	
+	switch (controllerNumber)
+	{
+		case FREEZE_TRIGGER_INSTANCE_CC:
+			triggerInstanceCCValue = value;
+			if (triggerInstanceCCValue != 0)
+			{
+				onOff = &TriggeredOnOff::instance(triggerInstanceCCValue - 1);
+				onOff->setDefaultOn(false); // default is off
+			}
+			else
+			{
+				onOff = NULL;
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+uint8_t Freeze::getControllerValue(const uint8_t controllerNumber)
+{
+	switch (controllerNumber)
+	{
+		case FREEZE_TRIGGER_INSTANCE_CC:
+			return triggerInstanceCCValue;
+		default:
+			return DO_NOT_SAVE_VALUE;
+			break;
 	}
 }
