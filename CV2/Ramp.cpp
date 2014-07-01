@@ -4,14 +4,14 @@
 #include "EnvelopeFollower.h"
 #include "TriggeredOnOff.h"
 
-static Ramp* pInstance = NULL;
+static Ramp* pInstances[2] = {NULL, NULL};
 
-Ramp& Ramp::instance()
+Ramp& Ramp::instance(const uint8_t index)
 {
-	return *pInstance;
+	return *pInstances[index];
 }
 
-Ramp::Ramp()
+Ramp::Ramp(const uint8_t index, const uint8_t aMidiChannel)
 : value(0),
   startAtMin(true),
   state(IDLE),
@@ -21,9 +21,11 @@ Ramp::Ramp()
   lastValueUs(0),
   valueDelayUs(0),
   startUs(0),
-  rampTimeUs(2 * 1000000)
+  rampTimeUs(2 * 1000000),
+  midiChannel(aMidiChannel),
+  triggerInstanceCCValue(DO_NOT_SAVE_VALUE)
 {
-	pInstance = this;
+	pInstances[index] = this;
 }
 
 Ramp::~Ramp()
@@ -47,10 +49,11 @@ uint16_t Ramp::getValue()
 
 void Ramp::setup()
 {
-	MIDI::instance().setCCListener(this, 0, RAMP_TIME_CC);
-	MIDI::instance().setCCListener(this, 0, RAMP_DIRECTION_CC);
+	MIDI::instance().setCCListener(this, midiChannel, RAMP_TIME_CC);
+	MIDI::instance().setCCListener(this, midiChannel, RAMP_DIRECTION_CC);
+	MIDI::instance().setCCListener(this, midiChannel, RAMP_TRIGGER_INSTANCE_CC);
 	
-	trigger = &TriggeredOnOff::instance(RAMP_TRIGGER_MIDI_CHANNEL);
+	//trigger = &TriggeredOnOff::instance(RAMP_TRIGGER_INSTANCE_CC);
 	
 	state = IDLE;
 	calcValueDelay();
@@ -134,6 +137,18 @@ void Ramp::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
+		case RAMP_TRIGGER_INSTANCE_CC:
+			triggerInstanceCCValue = value;
+			if (triggerInstanceCCValue != 0)
+			{
+				trigger = &TriggeredOnOff::instance(triggerInstanceCCValue - 1);
+				trigger->setDefaultOn(false); // default is off
+			}
+			else
+			{
+				trigger = NULL;
+			}
+			break;
 		case RAMP_DIRECTION_CC:
 			directionCCValue = value;
 			switch (directionCCValue)
@@ -164,6 +179,8 @@ uint8_t Ramp::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
+		case RAMP_TRIGGER_INSTANCE_CC:
+			return triggerInstanceCCValue;
 		case RAMP_DIRECTION_CC:
 			return directionCCValue;
 		case RAMP_TIME_CC:

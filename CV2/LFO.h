@@ -34,6 +34,7 @@ private:
 	uint8_t freqRange;
 	TriggeredOnOff* enable;
 	uint8_t midiChannel;
+	uint8_t triggerInstanceCCValue;
 };
 
 #endif /* defined(__CV2__LFO__) */

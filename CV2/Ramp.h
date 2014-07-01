@@ -10,8 +10,8 @@ class TriggeredOnOff;
 class Ramp : public ValueProvider, public MIDICCListener
 {
 public:
-	static Ramp& instance();
-	Ramp();
+	static Ramp& instance(const uint8_t index);
+	Ramp(const uint8_t index, const uint8_t aMidiChannel);
 	virtual ~Ramp();
 	virtual uint16_t getMinimum();
 	virtual uint16_t getMaximum();
@@ -37,6 +37,8 @@ private:
 	unsigned long valueDelayUs;
 	unsigned long startUs;
 	unsigned long rampTimeUs;
+	uint8_t midiChannel;
+	uint8_t triggerInstanceCCValue;
 };
 
 #endif /* defined(__CV2__Ramp__) */

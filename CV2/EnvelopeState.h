@@ -33,6 +33,7 @@ private:
 
 	boolean onState;
 	TriggeredOnOff* enable;
+	uint8_t triggerInstanceCCValue;
 };
 
 #endif /* defined(__CV2__EnvelopeState__) */

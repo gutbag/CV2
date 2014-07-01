@@ -389,7 +389,8 @@ LFO& LFO::instance(const uint8_t index)
 }
 
 LFO::LFO(const uint8_t index, const uint8_t aMidiChannel)
-: sampleIndex(0), usLastSample(0), usBetweenSamples(0), freqStep(0), freqRange(0), enable(NULL), midiChannel(aMidiChannel)
+: sampleIndex(0), usLastSample(0), usBetweenSamples(0), freqStep(0), freqRange(0), enable(NULL),
+midiChannel(aMidiChannel), triggerInstanceCCValue(DO_NOT_SAVE_VALUE)
 {
 	pInstances[index] = this;
 }
@@ -417,9 +418,10 @@ void LFO::setup()
 {
 	MIDI::instance().setCCListener(this, midiChannel, LFO_FREQUENCY_CC);
 	MIDI::instance().setCCListener(this, midiChannel, LFO_FREQUENCY_RANGE_CC);
+	MIDI::instance().setCCListener(this, midiChannel, LFO_TRIGGER_INSTANCE_CC);
 
-	enable = &TriggeredOnOff::instance(LFO1_TRIGGER_MIDI_CHANNEL);
-	enable->setDefaultOn(true); // default is on
+//	enable = &TriggeredOnOff::instance(LFO1_TRIGGER_MIDI_CHANNEL);
+//	enable->setDefaultOn(true); // default is on
 
 	setFrequencyRange(freqRange);
 	setFrequency(freqStep);
@@ -429,7 +431,7 @@ void LFO::loop(const unsigned long usNow)
 {
 	if (usNow - usLastSample >= usBetweenSamples)
 	{
-		boolean enabled = enable != NULL ? enable->isOn() : false;
+		boolean enabled = (enable == false) || (enable != NULL ? enable->isOn() : false);
 		
 		if (enabled)
 		{
@@ -498,6 +500,18 @@ void LFO::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
+		case LFO_TRIGGER_INSTANCE_CC:
+			triggerInstanceCCValue = value;
+			if (triggerInstanceCCValue != 0)
+			{
+				enable = &TriggeredOnOff::instance(triggerInstanceCCValue - 1);
+				enable->setDefaultOn(true); // default is on
+			}
+			else
+			{
+				enable = NULL;
+			}
+			break;
 		case LFO_FREQUENCY_CC:
 			setFrequency(value);
 			break;
@@ -514,6 +528,8 @@ uint8_t LFO::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
+		case LFO_TRIGGER_INSTANCE_CC:
+			return triggerInstanceCCValue;
 		case LFO_FREQUENCY_CC:
 			return freqStep;
 		case LFO_FREQUENCY_RANGE_CC:

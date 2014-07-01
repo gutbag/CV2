@@ -18,6 +18,8 @@
 #include "Noise.h"
 #include "TriggeredOnOff.h"
 
+#define ARRAYSIZE(x) (sizeof(x)/sizeof(x[0]))
+
 EEPROM eeprom;
 MIDI midi;
 Display display;
@@ -66,11 +68,19 @@ LFO lfos[2] = {
 Switch patchDownSwitch(PATCH_DOWN_SW);
 Switch patchUpSwitch(PATCH_UP_SW);
 Patch patch(patchDownSwitch, patchUpSwitch);
-Expression expr1(EXPR_1_PIN, 0);
-Expression expr2(EXPR_2_PIN, 1);
+Expression exprs[2] = {
+	{EXPR_1_PIN, 0, 0},
+	{EXPR_2_PIN, 1, 1}
+};
 EnvelopeFollower envelopeFollower(LPF_ENV_IN);
-Ramp ramp;
-Noise noise;
+Ramp ramps[2] = {
+	{0, 0},
+	{1, 1}
+};
+Noise noises[2] = {
+	{0, 0},
+	{1, 1}
+};
 TriggeredOnOff triggers[8] =
 {
 	FREEZE_1_TRIGGER_MIDI_CHANNEL,
@@ -92,36 +102,41 @@ void setup()
 	midi.setup();
 	dac5V.setup();
 //	dac9V.setup();
-	for (uint8_t i=0; i<3; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(footswitches); i++)
 		footswitches[i].setup();
 	patchDownSwitch.setup();
 	patchUpSwitch.setup();
-	expr1.setup();
-	expr2.setup();
+	
+	for (uint8_t i=0; i<ARRAYSIZE(exprs); i++)
+		exprs[i].setup();
+
 	envelopeFollower.setup();
 	
-	for (uint8_t i=0; i<8; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(triggers); i++)
 		triggers[i].setup();
 
-	for (uint8_t i=0; i<2; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(lfos); i++)
 		lfos[i].setup();
 
-	ramp.setup();
-	noise.setup();
+	for (uint8_t i=0; i<ARRAYSIZE(ramps); i++)
+		ramps[i].setup();
+	
+	for (uint8_t i=0; i<ARRAYSIZE(noises); i++)
+		noises[i].setup();
 	
 	displayTest.enable(false);
 	displayTest.setup();
 	
-	for (uint8_t i=0; i<2; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(freezes); i++)
 		freezes[i].setup();
 	
-	for (uint8_t i=0; i<4; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
 		optos[i].setup();
 	
-	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
+	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].setup();
 	
-//	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
+//	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
 //		cvOutputs9V[i].setup();
 
 	patch.setup();
@@ -139,29 +154,31 @@ void loop()
     long usNow = micros();
     display.loop(usNow);
 	displayTest.loop(usNow);
-	for (uint8_t i=0; i<3; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(footswitches); i++)
 		footswitches[i].loop(usNow);
 	patchDownSwitch.loop(usNow);
 	patchUpSwitch.loop(usNow);
-	for (uint8_t i=0; i<8; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(triggers); i++)
 		triggers[i].loop(usNow);
 	midi.loop(usNow);
-	expr1.loop(usNow);
-	expr2.loop(usNow);
+	for (uint8_t i=0; i<ARRAYSIZE(exprs); i++)
+		exprs[i].loop(usNow);
 	envelopeFollower.loop(usNow);
-	for (uint8_t i=0; i<2; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(lfos); i++)
 		lfos[i].loop(usNow);
-	ramp.loop(usNow);
-	noise.loop(usNow);
-	for (uint8_t i=0; i<2; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(ramps); i++)
+		ramps[i].loop(usNow);
+	for (uint8_t i=0; i<ARRAYSIZE(noises); i++)
+		noises[i].loop(usNow);
+	for (uint8_t i=0; i<ARRAYSIZE(freezes); i++)
 		freezes[i].loop(usNow);
-	for (uint8_t i=0; i<4; i++)
+	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
 		optos[i].loop(usNow);
 	   
-	for (uint8_t i=0; i<(sizeof(cvOutputs5V)/sizeof(CVOutput)); i++)
+	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].loop(usNow);
 	
-	//	for (uint8_t i=0; i<(sizeof(cvOutputs9V)/sizeof(CVOutput)); i++)
+	//	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
 	//		cvOutputs9V[i].loop(usNow);
 	
 	patch.loop(usNow);

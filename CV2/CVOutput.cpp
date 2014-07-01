@@ -192,12 +192,20 @@ void CVOutput::processCCMessage(const uint8_t channel,
 					pProvider = &EnvelopeFollower::instance();
 					dirty = true;
 					break;
-				case CV_OUTPUT_SOURCE_RAMP_VALUE:
-					pProvider = &Ramp::instance();
+				case CV_OUTPUT_SOURCE_RAMP1_VALUE:
+					pProvider = &Ramp::instance(0);
 					dirty = true;
 					break;
-				case CV_OUTPUT_SOURCE_NOISE_VALUE:
-					pProvider = &Noise::instance();
+				case CV_OUTPUT_SOURCE_RAMP2_VALUE:
+					pProvider = &Ramp::instance(1);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_NOISE1_VALUE:
+					pProvider = &Noise::instance(0);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_NOISE2_VALUE:
+					pProvider = &Noise::instance(1);
 					dirty = true;
 					break;
 				default:

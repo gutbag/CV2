@@ -13,7 +13,7 @@
 EnvelopeState::EnvelopeState(EnvelopeFollower& anEnv)
 : env(anEnv), lowHighThreshold(511), highLowThreshold(511), sensitivity(10),
   changeStateCount(0), onState(false),
-  enable(NULL)
+  enable(NULL), triggerInstanceCCValue(DO_NOT_SAVE_VALUE)
 {
 }
 
@@ -26,9 +26,10 @@ void EnvelopeState::setup()
 	MIDI::instance().setCCListener(this, 0, ENV_STATE_LOW_HIGH_THRESHOLD_CC);
 	MIDI::instance().setCCListener(this, 0, ENV_STATE_HIGH_LOW_THRESHOLD_CC);
 	MIDI::instance().setCCListener(this, 0, ENV_STATE_THRESHOLD_SENSITIVITY_CC);
+	MIDI::instance().setCCListener(this, 0, ENV_STATE_TRIGGER_INSTANCE_CC);
 	
-	enable = &TriggeredOnOff::instance(ENV_STATE_TRIGGER_MIDI_CHANNEL);
-	enable->setDefaultOn(true); // default is on
+//	enable = &TriggeredOnOff::instance(ENV_STATE_TRIGGER_MIDI_CHANNEL);
+//	enable->setDefaultOn(true); // default is on
 }
 
 void EnvelopeState::loop(const unsigned long usNow)
@@ -123,6 +124,18 @@ void EnvelopeState::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
+		case ENV_STATE_TRIGGER_INSTANCE_CC:
+			triggerInstanceCCValue = value;
+			if (triggerInstanceCCValue != 0)
+			{
+				enable = &TriggeredOnOff::instance(triggerInstanceCCValue - 1);
+				enable->setDefaultOn(true); // default is on
+			}
+			else
+			{
+				enable = NULL;
+			}
+			break;
 		case ENV_STATE_LOW_HIGH_THRESHOLD_CC:
 			lowHighThreshold = value << 3;
 			if (0)
@@ -146,6 +159,8 @@ uint8_t EnvelopeState::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
+		case ENV_STATE_TRIGGER_INSTANCE_CC:
+			return triggerInstanceCCValue;
 		case ENV_STATE_LOW_HIGH_THRESHOLD_CC:
 			return lowHighThreshold >> 3;
 		case ENV_STATE_HIGH_LOW_THRESHOLD_CC:

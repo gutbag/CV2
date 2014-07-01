@@ -10,8 +10,8 @@ class TriggeredOnOff;
 class Noise : public ValueProvider, public MIDICCListener
 {
 public:
-	static Noise& instance();
-	Noise();
+	static Noise& instance(const uint8_t index);
+	Noise(const uint8_t index, const uint8_t aMidiChannel);
 	virtual ~Noise();
 	virtual uint16_t getMinimum();
 	virtual uint16_t getMaximum();
@@ -30,6 +30,8 @@ private:
 	uint8_t rateCCValue;
 	uint8_t amplitudeCCValue;
 	TriggeredOnOff* enable;
+	uint8_t midiChannel;
+	uint8_t triggerInstanceCCValue;
 };
 
 #endif /* defined(__CV2__Noise__) */
