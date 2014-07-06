@@ -52,8 +52,8 @@ Footswitch footswitches[3] = {
 	{2, FSW_3, FSW_LED3}
 };
 Freeze freezes[2] = {
-	{OPTO_1, FREEZE_1_TRIGGER_MIDI_CHANNEL},
-	{OPTO_2, FREEZE_2_TRIGGER_MIDI_CHANNEL},
+	{OPTO_1, 0},
+	{OPTO_2, 1},
 };
 Opto optos[4] = {
 	{0, OPTO_3},
@@ -81,17 +81,7 @@ Noise noises[2] = {
 	{0, 0},
 	{1, 1}
 };
-TriggeredOnOff triggers[8] =
-{
-	FREEZE_1_TRIGGER_MIDI_CHANNEL,
-	FREEZE_2_TRIGGER_MIDI_CHANNEL,
-	ENV_STATE_TRIGGER_MIDI_CHANNEL,
-	EXPR_TRIGGER_MIDI_CHANNEL,
-	RAMP_TRIGGER_MIDI_CHANNEL,
-	NOISE_TRIGGER_MIDI_CHANNEL,
-	LFO1_TRIGGER_MIDI_CHANNEL,
-	LFO2_TRIGGER_MIDI_CHANNEL
-};
+TriggeredOnOff triggers[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
 void setup()
 {

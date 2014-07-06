@@ -20,19 +20,6 @@ const uint8_t TRIGGER_MODE_CC = 10;
 
 const uint8_t FREEZE_TRIGGER_INSTANCE_CC = 11;
 
-
-// the MIDI channels associated with each trigger
-// if triggers become unassigned, change these to be CC values that select the
-// trigger from the pool (and add a CC for each thing that needs a trigger)
-const uint8_t FREEZE_1_TRIGGER_MIDI_CHANNEL = 0;
-const uint8_t FREEZE_2_TRIGGER_MIDI_CHANNEL = 1;
-const uint8_t ENV_STATE_TRIGGER_MIDI_CHANNEL = 2;
-const uint8_t EXPR_TRIGGER_MIDI_CHANNEL = 3;
-const uint8_t RAMP_TRIGGER_MIDI_CHANNEL = 4;
-const uint8_t NOISE_TRIGGER_MIDI_CHANNEL = 5;
-const uint8_t LFO1_TRIGGER_MIDI_CHANNEL = 6;
-const uint8_t LFO2_TRIGGER_MIDI_CHANNEL = 7;
-
 const uint8_t ENV_STATE_LOW_HIGH_THRESHOLD_CC = 13;
 const uint8_t ENV_STATE_HIGH_LOW_THRESHOLD_CC = 14;
 const uint8_t ENV_STATE_THRESHOLD_SENSITIVITY_CC = 15;

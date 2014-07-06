@@ -2,11 +2,9 @@
 #define __CV2__LFO__
 
 #include "ValueProvider.h"
-#include "MIDICCListener.h"
+#include "OnOffTriggerable.h"
 
-class TriggeredOnOff;
-
-class LFO : public ValueProvider, public MIDICCListener
+class LFO : public OnOffTriggerable, public ValueProvider
 {
 public:
 	static LFO& instance(const uint8_t index);
@@ -32,9 +30,7 @@ private:
 	unsigned long usBetweenSamples;
 	uint8_t freqStep;
 	uint8_t freqRange;
-	TriggeredOnOff* enable;
 	uint8_t midiChannel;
-	uint8_t triggerInstanceCCValue;
 };
 
 #endif /* defined(__CV2__LFO__) */

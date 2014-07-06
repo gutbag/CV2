@@ -2,7 +2,6 @@
 #include "MIDI.h"
 #include "Footswitch.h"
 #include "EnvelopeFollower.h"
-#include "TriggeredOnOff.h"
 
 static Noise* pInstances[2] = {NULL, NULL};
 
@@ -12,17 +11,17 @@ Noise& Noise::instance(const uint8_t index)
 }
 
 Noise::Noise(const uint8_t index, const uint8_t aMidiChannel)
-: value(0),
+: OnOffTriggerable(aMidiChannel, NOISE_TRIGGER_INSTANCE_CC),
+  value(0),
   lastValueUs(0),
   valueDelayUs(1 * 1000 * 1000), // 1s
   amplitude(1),
   rateCCValue(DO_NOT_SAVE_VALUE),
   amplitudeCCValue(DO_NOT_SAVE_VALUE),
-  enable(NULL),
-  midiChannel(aMidiChannel),
-  triggerInstanceCCValue(DO_NOT_SAVE_VALUE)
+  midiChannel(aMidiChannel)
 {
 	pInstances[index] = this;
+	setDefaults(true, true);
 }
 
 Noise::~Noise()
@@ -46,19 +45,16 @@ uint16_t Noise::getValue()
 
 void Noise::setup()
 {
+	OnOffTriggerable::setup();
 	MIDI::instance().setCCListener(this, midiChannel, NOISE_RATE_CC);
 	MIDI::instance().setCCListener(this, midiChannel, NOISE_SMOOTHING_CC);
-	MIDI::instance().setCCListener(this, midiChannel, NOISE_TRIGGER_INSTANCE_CC);
-	
-//	enable = &TriggeredOnOff::instance(NOISE_TRIGGER_MIDI_CHANNEL);
-//	enable->setDefaultOn(true);
 }
 
 void Noise::loop(const unsigned long usNow)
 {
-	boolean enabled = (enable == NULL) || (enable != NULL ? enable->isOn() : true);
+	boolean triggered = isTriggered();
 	
-	if (enabled)
+	if (triggered)
 	{
 		if (usNow - lastValueUs >= valueDelayUs) // time for a new value
 		{
@@ -108,18 +104,6 @@ void Noise::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
-		case NOISE_TRIGGER_INSTANCE_CC:
-			triggerInstanceCCValue = value;
-			if (triggerInstanceCCValue != 0)
-			{
-				enable = &TriggeredOnOff::instance(triggerInstanceCCValue - 1);
-				enable->setDefaultOn(true); // default is on
-			}
-			else
-			{
-				enable = NULL;
-			}
-			break;
 		case NOISE_RATE_CC:
 			rateCCValue = value;
 			valueDelayUs = (127-rateCCValue) * 10 * 1000; // 10ms steps
@@ -129,6 +113,7 @@ void Noise::processCCMessage(const uint8_t channel,
 			amplitude = amplitudeCCValue;
 			break;
 		default:
+			OnOffTriggerable::processCCMessage(channel, controllerNumber, value);
 			break;
 	}
 }
@@ -137,13 +122,11 @@ uint8_t Noise::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
-		case NOISE_TRIGGER_INSTANCE_CC:
-			return triggerInstanceCCValue;
 		case NOISE_RATE_CC:
 			return rateCCValue;
 		case NOISE_SMOOTHING_CC:
 			return amplitudeCCValue;
 		default:
-			return DO_NOT_SAVE_VALUE;
+			return OnOffTriggerable::getControllerValue(controllerNumber);
 	}
 }

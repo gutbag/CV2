@@ -3,11 +3,9 @@
 
 #include <Arduino.h>
 #include "ValueProvider.h"
-#include "MIDICCListener.h"
+#include "OnOffTriggerable.h"
 
-class TriggeredOnOff;
-
-class Noise : public ValueProvider, public MIDICCListener
+class Noise : public OnOffTriggerable, public ValueProvider
 {
 public:
 	static Noise& instance(const uint8_t index);
@@ -29,9 +27,7 @@ private:
 	uint8_t amplitude;
 	uint8_t rateCCValue;
 	uint8_t amplitudeCCValue;
-	TriggeredOnOff* enable;
 	uint8_t midiChannel;
-	uint8_t triggerInstanceCCValue;
 };
 
 #endif /* defined(__CV2__Noise__) */

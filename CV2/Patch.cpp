@@ -492,6 +492,13 @@ void Patch::save()
 		Display::instance().displayError(PATCH_SAVE_BUFFER_TOO_SMALL);
 		return;
 	}
+	
+	if (1)
+	{
+		Serial.print(length, DEC);
+		Serial.print(" bytes to save, space available: ");
+		Serial.println(MAX_PATCH_SIZE, DEC);
+	}
 				
 	uint16_t address = PATCH_START_ADDR + patchNumber * MAX_PATCH_SIZE;
 		

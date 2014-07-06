@@ -271,10 +271,13 @@ void MIDI::transmitCC(const uint8_t channel, const uint8_t controllerNumber, con
 		Serial.print(" ");
 		Serial.println(value, DEC);
 	}
-
-	Serial1.write(channel | MIDI_CONTROL_CHANGE);
-	Serial1.write(controllerNumber);
-	Serial1.write(value);
+	
+	//if (channel == 0 && controllerNumber == 3)
+	{
+		Serial1.write(channel | MIDI_CONTROL_CHANGE);
+		Serial1.write(controllerNumber);
+		Serial1.write(value);
+	}
 	
 	lastTransmitMs = millis();
 }

@@ -3,11 +3,9 @@
 
 #include <Arduino.h>
 #include "ValueProvider.h"
-#include "MIDICCListener.h"
+#include "OnOffTriggerable.h"
 
-class TriggeredOnOff;
-
-class Ramp : public ValueProvider, public MIDICCListener
+class Ramp : public OnOffTriggerable, public ValueProvider
 {
 public:
 	static Ramp& instance(const uint8_t index);
@@ -30,7 +28,6 @@ private:
 	boolean startAtMin;
 	typedef enum {IDLE, RUNNING, FINISHED} State;
 	State state;
-	TriggeredOnOff* trigger;
 	uint8_t directionCCValue;
 	uint8_t rampTimeCCValue;
 	unsigned long lastValueUs;
@@ -38,7 +35,6 @@ private:
 	unsigned long startUs;
 	unsigned long rampTimeUs;
 	uint8_t midiChannel;
-	uint8_t triggerInstanceCCValue;
 };
 
 #endif /* defined(__CV2__Ramp__) */

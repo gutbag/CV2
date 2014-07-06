@@ -1,8 +1,5 @@
 #include "Ramp.h"
 #include "MIDI.h"
-#include "Footswitch.h"
-#include "EnvelopeFollower.h"
-#include "TriggeredOnOff.h"
 
 static Ramp* pInstances[2] = {NULL, NULL};
 
@@ -12,20 +9,20 @@ Ramp& Ramp::instance(const uint8_t index)
 }
 
 Ramp::Ramp(const uint8_t index, const uint8_t aMidiChannel)
-: value(0),
+: OnOffTriggerable(aMidiChannel, RAMP_TRIGGER_INSTANCE_CC),
+  value(0),
   startAtMin(true),
   state(IDLE),
-  trigger(NULL),
   directionCCValue(DO_NOT_SAVE_VALUE),
   rampTimeCCValue(DO_NOT_SAVE_VALUE),
   lastValueUs(0),
   valueDelayUs(0),
   startUs(0),
   rampTimeUs(2 * 1000000),
-  midiChannel(aMidiChannel),
-  triggerInstanceCCValue(DO_NOT_SAVE_VALUE)
+  midiChannel(aMidiChannel)
 {
 	pInstances[index] = this;
+	setDefaults(false, false);
 }
 
 Ramp::~Ramp()
@@ -49,11 +46,9 @@ uint16_t Ramp::getValue()
 
 void Ramp::setup()
 {
+	OnOffTriggerable::setup();
 	MIDI::instance().setCCListener(this, midiChannel, RAMP_TIME_CC);
 	MIDI::instance().setCCListener(this, midiChannel, RAMP_DIRECTION_CC);
-	MIDI::instance().setCCListener(this, midiChannel, RAMP_TRIGGER_INSTANCE_CC);
-	
-	//trigger = &TriggeredOnOff::instance(RAMP_TRIGGER_INSTANCE_CC);
 	
 	state = IDLE;
 	calcValueDelay();
@@ -62,7 +57,7 @@ void Ramp::setup()
 
 void Ramp::loop(const unsigned long usNow)
 {
-	boolean triggered = trigger != NULL ? trigger->isOn() : false;
+	boolean triggered = isTriggered();
 	
 	switch (state)
 	{
@@ -137,18 +132,6 @@ void Ramp::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
-		case RAMP_TRIGGER_INSTANCE_CC:
-			triggerInstanceCCValue = value;
-			if (triggerInstanceCCValue != 0)
-			{
-				trigger = &TriggeredOnOff::instance(triggerInstanceCCValue - 1);
-				trigger->setDefaultOn(false); // default is off
-			}
-			else
-			{
-				trigger = NULL;
-			}
-			break;
 		case RAMP_DIRECTION_CC:
 			directionCCValue = value;
 			switch (directionCCValue)
@@ -171,6 +154,7 @@ void Ramp::processCCMessage(const uint8_t channel,
 			calcValueDelay();
 			break;
 		default:
+			OnOffTriggerable::processCCMessage(channel, controllerNumber, value);
 			break;
 	}
 }
@@ -179,13 +163,11 @@ uint8_t Ramp::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
-		case RAMP_TRIGGER_INSTANCE_CC:
-			return triggerInstanceCCValue;
 		case RAMP_DIRECTION_CC:
 			return directionCCValue;
 		case RAMP_TIME_CC:
 			return rampTimeCCValue;
 		default:
-			return DO_NOT_SAVE_VALUE;
+			return OnOffTriggerable::getControllerValue(controllerNumber);
 	}
 }
