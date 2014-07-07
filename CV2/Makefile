@@ -61,7 +61,8 @@ USER_LIBS_LIST = \
 	EnvelopeState \
 	Ramp \
 	Noise \
-	OnOffTriggerable
+	OnOffTriggerable \
+	Bus
 
 # List core, application and user's libraries to be excluded
 # For example, WiFi may crash on Arduino 1.0.2, Esplora on Arduino 1.0.3, Firmata on Teensy 3.0,

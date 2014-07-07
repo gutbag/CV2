@@ -17,6 +17,7 @@
 #include "Ramp.h"
 #include "Noise.h"
 #include "TriggeredOnOff.h"
+#include "Bus.h"
 
 #define ARRAYSIZE(x) (sizeof(x)/sizeof(x[0]))
 
@@ -82,6 +83,12 @@ Noise noises[2] = {
 	{1, 1}
 };
 TriggeredOnOff triggers[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+Bus buses[4] = {
+	{0, 0},
+	{1, 1},
+	{2, 2},
+	{3, 3}
+};
 
 void setup()
 {
@@ -122,6 +129,9 @@ void setup()
 	
 	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
 		optos[i].setup();
+	
+	for (uint8_t i=0; i<ARRAYSIZE(buses); i++)
+		buses[i].setup();
 	
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].setup();
@@ -164,6 +174,8 @@ void loop()
 		freezes[i].loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
 		optos[i].loop(usNow);
+	for (uint8_t i=0; i<ARRAYSIZE(buses); i++)
+		buses[i].loop(usNow);
 	   
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].loop(usNow);

@@ -405,6 +405,7 @@
 		F6718CC31944FB08001E9B8E /* EnvelopeFollower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6718CC11944FB08001E9B8E /* EnvelopeFollower.cpp */; };
 		F6748059192165D0009550BD /* Switch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6748057192165D0009550BD /* Switch.cpp */; };
 		F67BFBE81968569A004CE778 /* DelayedState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67BFBE61968569A004CE778 /* DelayedState.cpp */; };
+		F67BFBEB1969BD4D004CE778 /* Bus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67BFBE91969BD4D004CE778 /* Bus.cpp */; };
 		F697E5DD190BA32300477901 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E5DC190BA32300477901 /* main.cpp */; };
 		F697E637190BA3DB00477901 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697E635190BA3DB00477901 /* Display.cpp */; };
 		F6B0B175190C18B300B443D3 /* DAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B173190C18B300B443D3 /* DAC.cpp */; };
@@ -833,6 +834,8 @@
 		F6748058192165D0009550BD /* Switch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Switch.h; sourceTree = "<group>"; };
 		F67BFBE61968569A004CE778 /* DelayedState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DelayedState.cpp; sourceTree = "<group>"; };
 		F67BFBE71968569A004CE778 /* DelayedState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayedState.h; sourceTree = "<group>"; };
+		F67BFBE91969BD4D004CE778 /* Bus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bus.cpp; sourceTree = "<group>"; };
+		F67BFBEA1969BD4D004CE778 /* Bus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bus.h; sourceTree = "<group>"; };
 		F697E5D9190BA32300477901 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		F697E5DC190BA32300477901 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F697E5E1190BA32300477901 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -2166,6 +2169,8 @@
 			children = (
 				F697E61A190BA32300477901 /* About */,
 				F697E5E5190BA32300477901 /* Configurations */,
+				F67BFBE91969BD4D004CE778 /* Bus.cpp */,
+				F67BFBEA1969BD4D004CE778 /* Bus.h */,
 				F630664D191EDC3B00966B66 /* CV2.h */,
 				F697E623190BA32300477901 /* CV2.ino */,
 				F6C94D8E190D779600F83CA6 /* CVOutput.cpp */,
@@ -2627,6 +2632,7 @@
 				AA2A140426092133AA000115 /* GSM3ShieldV1PinManagement.cpp in Sources */,
 				AA2A140426092133AA000116 /* GSM3ShieldV1PinManagement.h in Sources */,
 				AA2A140426092133AA000117 /* GSM3ShieldV1ScanNetworks.cpp in Sources */,
+				F67BFBEB1969BD4D004CE778 /* Bus.cpp in Sources */,
 				AA2A140426092133AA000118 /* GSM3ShieldV1ScanNetworks.h in Sources */,
 				AA2A140426092133AA000119 /* GSM3ShieldV1ServerProvider.cpp in Sources */,
 				AA2A140426092133AA00011A /* GSM3ShieldV1ServerProvider.h in Sources */,
