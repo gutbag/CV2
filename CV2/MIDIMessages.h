@@ -26,9 +26,10 @@ const uint8_t ENV_STATE_THRESHOLD_SENSITIVITY_CC = 15;
 const uint8_t ENV_STATE_TRIGGER_INSTANCE_CC = 16;
 
 const uint8_t EXPR_TRIGGER_INSTANCE_CC = 17;
+const uint8_t EXPR_INVERT_CC = 2;
 
 const uint8_t RAMP_TIME_CC = 18;
-const uint8_t RAMP_DIRECTION_CC = 19;
+const uint8_t RAMP_INVERT_CC = 19;
 const uint8_t RAMP_TRIGGER_INSTANCE_CC = 20;
 
 const uint8_t NOISE_TRIGGER_INSTANCE_CC = 21;

@@ -25,10 +25,9 @@ private:
 	void calcValueDelay();
 	
 	uint16_t value;
-	boolean startAtMin;
+	boolean invert;
 	typedef enum {IDLE, RUNNING, FINISHED} State;
 	State state;
-	uint8_t directionCCValue;
 	uint8_t rampTimeCCValue;
 	unsigned long lastValueUs;
 	unsigned long valueDelayUs;

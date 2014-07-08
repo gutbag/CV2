@@ -11,9 +11,8 @@ Ramp& Ramp::instance(const uint8_t index)
 Ramp::Ramp(const uint8_t index, const uint8_t aMidiChannel)
 : OnOffTriggerable(aMidiChannel, RAMP_TRIGGER_INSTANCE_CC),
   value(0),
-  startAtMin(true),
+  invert(false),
   state(IDLE),
-  directionCCValue(DO_NOT_SAVE_VALUE),
   rampTimeCCValue(DO_NOT_SAVE_VALUE),
   lastValueUs(0),
   valueDelayUs(0),
@@ -48,7 +47,7 @@ void Ramp::setup()
 {
 	OnOffTriggerable::setup();
 	MIDI::instance().setCCListener(this, midiChannel, RAMP_TIME_CC);
-	MIDI::instance().setCCListener(this, midiChannel, RAMP_DIRECTION_CC);
+	MIDI::instance().setCCListener(this, midiChannel, RAMP_INVERT_CC);
 	
 	state = IDLE;
 	calcValueDelay();
@@ -73,19 +72,19 @@ void Ramp::loop(const unsigned long usNow)
 			{
 				if (usNow - lastValueUs >= valueDelayUs) // time for a new value
 				{
-					if (startAtMin)
-					{
-						if (value == getMaximum())
-							state = FINISHED;
-						else
-							value++;
-					}
-					else
+					if (invert)
 					{
 						if (value == getMinimum())
 							state = FINISHED;
 						else
 							value--;
+					}
+					else
+					{
+						if (value == getMaximum())
+							state = FINISHED;
+						else
+							value++;
 					}
 					
 					lastValueUs = usNow;
@@ -108,10 +107,10 @@ void Ramp::loop(const unsigned long usNow)
 
 void Ramp::setIdleValue()
 {
-	if (startAtMin)
-		value = getMinimum();
-	else
+	if (invert)
 		value = getMaximum();
+	else
+		value = getMinimum();
 }
 
 void Ramp::calcValueDelay()
@@ -132,21 +131,9 @@ void Ramp::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
-		case RAMP_DIRECTION_CC:
-			directionCCValue = value;
-			switch (directionCCValue)
-			{
-			case RAMP_DIRECTION_UP_VALUE:
-				startAtMin = true;
-				setIdleValue();
-				break;
-			case RAMP_DIRECTION_DOWN_VALUE:
-				startAtMin = false;
-				setIdleValue();
-				break;
-			default:
-				break;
-			}
+		case RAMP_INVERT_CC:
+			invert = value == 1 ? true : false;
+			setIdleValue();
 			break;
 		case RAMP_TIME_CC:
 			rampTimeCCValue= value;
@@ -163,8 +150,8 @@ uint8_t Ramp::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
-		case RAMP_DIRECTION_CC:
-			return directionCCValue;
+		case RAMP_INVERT_CC:
+			return invert ? 1 : 0;
 		case RAMP_TIME_CC:
 			return rampTimeCCValue;
 		default:
