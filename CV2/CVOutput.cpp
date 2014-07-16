@@ -9,6 +9,7 @@
 #include "Ramp.h"
 #include "Noise.h"
 #include "Bus.h"
+#include "AWG.h"
 
 CVOutput::CVOutput(DAC& aDac, const uint8_t anOutput, const uint8_t aMidiChannel)
 : dac(aDac),
@@ -215,6 +216,22 @@ void CVOutput::processCCMessage(const uint8_t channel,
 					break;
 				case CV_OUTPUT_SOURCE_BUS2_VALUE:
 					pProvider = &Bus::instance(1);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_BUS3_VALUE:
+					pProvider = &Bus::instance(2);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_BUS4_VALUE:
+					pProvider = &Bus::instance(3);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_AWG1_VALUE:
+					pProvider = &AWG::instance(0);
+					dirty = true;
+					break;
+				case CV_OUTPUT_SOURCE_AWG2_VALUE:
+					pProvider = &AWG::instance(1);
 					dirty = true;
 					break;
 				default:
