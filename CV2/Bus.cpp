@@ -18,7 +18,7 @@ Bus::Bus(const uint8_t index, const uint8_t aMidiChannel)
   midiChannel(aMidiChannel),
   source1CCValue(0),
   source2CCValue(0),
-  mixCCValue(63),
+  mixValue(aMidiChannel, BUS_MIX_MIN_CC, BUS_MIX_MAX_CC, BUS_MIX_SOURCE_CC),
   pSource1(NULL),
   pSource2(NULL),
   value(0)
@@ -51,7 +51,10 @@ void Bus::setup()
 	OnOffTriggerable::setup();
 	MIDI::instance().setCCListener(this, midiChannel, BUS_SOURCE_1_CC);
 	MIDI::instance().setCCListener(this, midiChannel, BUS_SOURCE_2_CC);
-	MIDI::instance().setCCListener(this, midiChannel, BUS_MIX_CC);
+	//MIDI::instance().setCCListener(this, midiChannel, BUS_MIX_CC);
+	mixValue.setup();
+	mixValue.setMinimum(63); // default to 50/50 mix
+	mixValue.setMaximum(127);
 }
 
 void Bus::loop(const unsigned long usNow)
@@ -64,13 +67,13 @@ void Bus::loop(const unsigned long usNow)
 		
 		if (pSource1 != NULL)
 		{
-			long max = map(mixCCValue, 0, 127, getMinimum(), getMaximum());
+			long max = map(mixValue.getValue(), 0, 127, getMinimum(), getMaximum());
 			value += map(pSource1->getValue(), pSource1->getMinimum(), pSource1->getMaximum(), getMinimum(), max);
 		}
 		
 		if (pSource2 != NULL)
 		{
-			long max = map(127 - mixCCValue, 0, 127, getMinimum(), getMaximum());
+			long max = map(127 - mixValue.getValue(), 0, 127, getMinimum(), getMaximum());
 			value += map(pSource2->getValue(), pSource2->getMinimum(), pSource2->getMaximum(), getMinimum(), max);
 		}
 	}
@@ -126,9 +129,9 @@ void Bus::processCCMessage(const uint8_t channel,
 			source2CCValue = value;
 			pSource2 = getSource(source2CCValue);
 			break;
-		case BUS_MIX_CC:
-			mixCCValue = value;
-			break;
+//		case BUS_MIX_CC:
+//			mixCCValue = value;
+//			break;
 		default:
 			OnOffTriggerable::processCCMessage(channel, controllerNumber, value);
 			break;
@@ -143,8 +146,8 @@ uint8_t Bus::getControllerValue(const uint8_t controllerNumber)
 			return source1CCValue;
 		case BUS_SOURCE_2_CC:
 			return source2CCValue;
-		case BUS_MIX_CC:
-			return mixCCValue;
+//		case BUS_MIX_CC:
+//			return mixCCValue;
 		default:
 			return OnOffTriggerable::getControllerValue(controllerNumber);
 	}

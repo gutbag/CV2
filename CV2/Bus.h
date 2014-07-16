@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "OnOffTriggerable.h"
 #include "ValueProvider.h"
+#include "SourceValueProvider.h"
 
 class Bus : public OnOffTriggerable, public ValueProvider
 {
@@ -25,7 +26,7 @@ private:
 	uint8_t midiChannel;
 	uint8_t source1CCValue;
 	uint8_t source2CCValue;
-	uint8_t mixCCValue;
+	SourceValueProvider mixValue;
 	ValueProvider* pSource1;
 	ValueProvider* pSource2;
 	uint16_t value;
