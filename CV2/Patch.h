@@ -28,10 +28,10 @@ public:
 						  const uint8_t value);
 	uint8_t getControllerValue(const uint8_t controllerNumber);
 private:
-	static const uint8_t MAX_PATCHES = 168;
-	static const uint16_t MAX_PATCH_SIZE = 384; // space for the MIDI messages
 	static const uint16_t HEADER_START_ADDR = 0x0; // magic number here, followed by header
 	static const uint16_t PATCH_START_ADDR = 0x400; // the first patch's MIDI msgs
+	static const uint16_t MAX_PATCH_SIZE = 512; // space for the MIDI messages
+	static const uint8_t MAX_PATCHES = (65536 - PATCH_START_ADDR) / MAX_PATCH_SIZE; // divide the remaining space up
 	
 	void readEepromHeader();
 	boolean loadPatch(const uint8_t n);
