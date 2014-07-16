@@ -14,6 +14,7 @@ public:
 	void set(const char* s);
 	void setPatchNumber(const uint8_t n);
 	void displayError(const uint8_t errnum);
+	void displayNumber(const uint16_t n);
 	void setDecimalPoint(const unsigned int which, const boolean state);
     void setColon(const boolean state);
 	void flashColon();
@@ -28,7 +29,7 @@ public:
 private:
 	const char toHexDigit(const uint8_t n);
 	byte charMap[128]; // TODO: make const?
-	void setDigit(const uint8_t digitIndex, const byte value);
+	void setDigit(const uint8_t digitIndex, const uint8_t value);
 	byte digits[4];
 	uint8_t digitIndex;
 	unsigned long usLastChange;

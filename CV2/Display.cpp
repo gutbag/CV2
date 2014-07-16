@@ -126,7 +126,7 @@ void Display::loop(const unsigned long usNow)
     if ((usNow - usLastChange) >= 3000)
     {
         digitIndex++;
-        if (digitIndex > sizeof(digits))
+        if (digitIndex >= sizeof(digits))
             digitIndex = 0;
         
         setDigit(digitIndex, digits[digitIndex]);
@@ -152,7 +152,7 @@ void Display::set(const char* s)
     digits[3] = charMap[s[3]];
 }
 
-void Display::setDigit(const uint8_t digitIndex, const byte value)
+void Display::setDigit(const uint8_t digitIndex, const uint8_t value)
 {
     digitalWrite(DIG_1, HIGH);
     digitalWrite(DIG_2, HIGH);
@@ -255,8 +255,15 @@ uint8_t Display::getControllerValue(const uint8_t controllerNumber)
 const char Display::toHexDigit(const uint8_t n)
 {
 	uint8_t nibble = n & 0x0f;
-	char baseChar = nibble < 10 ? '0' : 'A';
-	return baseChar + nibble;
+	
+	char hex;
+	
+	if (nibble < 10)
+		hex = '0' + nibble;
+	else
+		hex = 'A' + (nibble - 10);
+	
+	return hex;
 }
 
 void Display::setPatchNumber(const uint8_t n)
@@ -279,3 +286,16 @@ void Display::setBrightness(const uint8_t value)
 {
 	
 }
+
+void Display::displayNumber(const uint16_t n)
+{
+	char number[] =
+	{
+		toHexDigit(n >> 12),
+		toHexDigit(n >> 8),
+		toHexDigit(n >> 4),
+		toHexDigit(n)
+	};
+	set(number);
+}
+
