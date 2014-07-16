@@ -16,8 +16,8 @@ Noise::Noise(const uint8_t index, const uint8_t aMidiChannel)
   lastValueUs(0),
   valueDelayUs(1 * 1000 * 1000), // 1s
   amplitude(1),
-  rateCCValue(DO_NOT_SAVE_VALUE),
-  amplitudeCCValue(DO_NOT_SAVE_VALUE),
+  rateCCValue(aMidiChannel, NOISE_RATE_MIN_CC, NOISE_RATE_MAX_CC, NOISE_RATE_SOURCE_CC),
+  amplitudeCCValue(aMidiChannel, NOISE_SMOOTHING_MIN_CC, NOISE_SMOOTHING_MAX_CC, NOISE_SMOOTHING_SOURCE_CC),
   midiChannel(aMidiChannel)
 {
 	pInstances[index] = this;
@@ -46,8 +46,14 @@ uint16_t Noise::getValue()
 void Noise::setup()
 {
 	OnOffTriggerable::setup();
-	MIDI::instance().setCCListener(this, midiChannel, NOISE_RATE_CC);
-	MIDI::instance().setCCListener(this, midiChannel, NOISE_SMOOTHING_CC);
+	rateCCValue.setup();
+	rateCCValue.setMinimum(0);
+	rateCCValue.setMaximum(127);
+	amplitudeCCValue.setup();
+	amplitudeCCValue.setMinimum(0);
+	amplitudeCCValue.setMaximum(127);
+//	MIDI::instance().setCCListener(this, midiChannel, NOISE_RATE_CC);
+//	MIDI::instance().setCCListener(this, midiChannel, NOISE_SMOOTHING_CC);
 }
 
 void Noise::loop(const unsigned long usNow)
@@ -87,6 +93,9 @@ void Noise::loop(const unsigned long usNow)
 			value = newValue;
 			
 			lastValueUs = usNow;
+			
+			valueDelayUs = (127-rateCCValue.getValue()) * 10 * 1000; // 10ms steps
+			amplitude = amplitudeCCValue.getValue();
 		}
 	}
 }
@@ -104,14 +113,14 @@ void Noise::processCCMessage(const uint8_t channel,
 	
 	switch (controllerNumber)
 	{
-		case NOISE_RATE_CC:
-			rateCCValue = value;
-			valueDelayUs = (127-rateCCValue) * 10 * 1000; // 10ms steps
-			break;
-		case NOISE_SMOOTHING_CC:
-			amplitudeCCValue = value;
-			amplitude = amplitudeCCValue;
-			break;
+//		case NOISE_RATE_CC:
+//			rateCCValue = value;
+//			valueDelayUs = (127-rateCCValue) * 10 * 1000; // 10ms steps
+//			break;
+//		case NOISE_SMOOTHING_CC:
+//			amplitudeCCValue = value;
+//			amplitude = amplitudeCCValue;
+//			break;
 		default:
 			OnOffTriggerable::processCCMessage(channel, controllerNumber, value);
 			break;
@@ -122,10 +131,10 @@ uint8_t Noise::getControllerValue(const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
-		case NOISE_RATE_CC:
-			return rateCCValue;
-		case NOISE_SMOOTHING_CC:
-			return amplitudeCCValue;
+//		case NOISE_RATE_CC:
+//			return rateCCValue;
+//		case NOISE_SMOOTHING_CC:
+//			return amplitudeCCValue;
 		default:
 			return OnOffTriggerable::getControllerValue(controllerNumber);
 	}

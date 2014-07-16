@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "ValueProvider.h"
 #include "OnOffTriggerable.h"
+#include "SourceValueProvider.h"
 
 class Noise : public OnOffTriggerable, public ValueProvider
 {
@@ -25,8 +26,8 @@ private:
 	unsigned long lastValueUs;
 	unsigned long valueDelayUs;
 	uint8_t amplitude;
-	uint8_t rateCCValue;
-	uint8_t amplitudeCCValue;
+	SourceValueProvider rateCCValue;
+	SourceValueProvider amplitudeCCValue;
 	uint8_t midiChannel;
 };
 
