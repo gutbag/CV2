@@ -3,6 +3,7 @@
 
 #include "ValueProvider.h"
 #include "OnOffTriggerable.h"
+#include "SourceValueProvider.h"
 
 class LFO : public OnOffTriggerable, public ValueProvider
 {
@@ -21,14 +22,15 @@ public:
 	uint8_t getControllerValue(const uint8_t controllerNumber);
 private:
 	void setFrequencyRange(const uint8_t value);
-	void setFrequency(const uint8_t aFreqStep);
+	void setFrequency(const boolean force);
 	float fMin;
 	float fMax;
 	float hertzPerStep;
 	unsigned int sampleIndex;
 	unsigned long usLastSample;
 	unsigned long usBetweenSamples;
-	uint8_t freqStep;
+	SourceValueProvider freqStep;
+	uint16_t freqStepValue;
 	uint8_t freqRange;
 	uint8_t midiChannel;
 };
