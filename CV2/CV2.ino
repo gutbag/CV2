@@ -18,6 +18,8 @@
 #include "Noise.h"
 #include "TriggeredOnOff.h"
 #include "Bus.h"
+#include "AWG.h"
+#include "CPUMeter.h"
 
 #define ARRAYSIZE(x) (sizeof(x)/sizeof(x[0]))
 
@@ -48,9 +50,9 @@ CVOutput cvOutputs9V[6] =
 	{dac9V, 5, 13}
 };
 Footswitch footswitches[3] = {
-	{0, FSW_1, FSW_LED1},
-	{1, FSW_2, FSW_LED2},
-	{2, FSW_3, FSW_LED3}
+	{0, 0, FSW_1, FSW_LED1},
+	{1, 1, FSW_2, FSW_LED2},
+	{2, 2, FSW_3, FSW_LED3}
 };
 Freeze freezes[2] = {
 	{OPTO_1, 0},
@@ -90,9 +92,18 @@ Bus buses[4] = {
 	{3, 3}
 };
 
+AWG AWGs[2] = {
+	{0, 0},
+	{1, 1}
+};
+
+CPUMeter cpuMeter;
+
 void setup()
 {
 	Serial.begin(115200);
+	
+	cpuMeter.setup();
 	
 	eeprom.setup();
 	display.setup();
@@ -120,6 +131,9 @@ void setup()
 	
 	for (uint8_t i=0; i<ARRAYSIZE(noises); i++)
 		noises[i].setup();
+	
+	for (uint8_t i=0; i<ARRAYSIZE(AWGs); i++)
+		AWGs[i].setup();
 	
 	displayTest.enable(false);
 	displayTest.setup();
@@ -149,6 +163,8 @@ void setup()
 	eeprom.writeEnable(true);
 }
 
+boolean tmp = false;
+
 void loop()
 {
     long usNow = micros();
@@ -170,6 +186,8 @@ void loop()
 		ramps[i].loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(noises); i++)
 		noises[i].loop(usNow);
+	for (uint8_t i=0; i<ARRAYSIZE(AWGs); i++)
+		AWGs[i].loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(freezes); i++)
 		freezes[i].loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
@@ -184,4 +202,9 @@ void loop()
 	//		cvOutputs9V[i].loop(usNow);
 	
 	patch.loop(usNow);
+	
+	cpuMeter.loop(usNow);
+	
+//	digitalWrite(FSW_LED1, tmp ? HIGH : LOW);
+//	tmp = !tmp;
 }
