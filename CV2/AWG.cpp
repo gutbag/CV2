@@ -16,6 +16,7 @@ AWG::AWG(const uint8_t index, const uint8_t aMidiChannel)
   running(false),
   loopEnabled(false),
   msPerTimeStep(midiChannel, AWG_MS_PER_TIME_STEP_MIN_CC, AWG_MS_PER_TIME_STEP_MAX_CC, AWG_MS_PER_TIME_STEP_SOURCE_CC),
+  invert(false),
   currentPhase(0)
 {
 	pInstances[index] = this;
@@ -50,7 +51,7 @@ uint16_t AWG::getMaximum()
 
 uint16_t AWG::getValue()
 {
-	return value;
+	return invert ? (getMaximum() - value) : value;
 }
 
 void AWG::setup()
@@ -61,6 +62,7 @@ void AWG::setup()
 	msPerTimeStep.setMaximum(127);
 	
 	MIDI::instance().setCCListener(this, midiChannel, AWG_LOOP_CC);
+	MIDI::instance().setCCListener(this, midiChannel, AWG_INVERT_CC);
 	MIDI::instance().setCCListener(this, midiChannel, AWG_PH1_SUSTAIN_CC);
 	MIDI::instance().setCCListener(this, midiChannel, AWG_PH2_SUSTAIN_CC);
 	MIDI::instance().setCCListener(this, midiChannel, AWG_PH3_SUSTAIN_CC);
@@ -85,23 +87,6 @@ void AWG::setup()
 	MIDI::instance().setCCListener(this, midiChannel, AWG_PH6_DURATION_CC);
 	MIDI::instance().setCCListener(this, midiChannel, AWG_PH7_DURATION_CC);
 	MIDI::instance().setCCListener(this, midiChannel, AWG_PH8_DURATION_CC);
-
-//	for (uint8_t i=0; i<NUM_PHASES; i++)
-//	{
-//		phases[i].valueProvider.setup();
-//	}
-	
-	// TEMP values
-//	phases[0].endPoint = 0xff;
-//	phases[1].endPoint = 0xd0;
-//	phases[2].endPoint = 0xff;
-//	phases[3].endPoint = 0x00;
-//	phases[4].endPoint = 0x40;
-//	phases[5].endPoint = 0x00;
-//	phases[6].endPoint = 0xff;
-//	phases[7].endPoint = 0;
-	
-	//loopEnabled = true;
 }
 
 // applies increment to value and returns true if the endpoint is reached
@@ -153,7 +138,7 @@ void AWG::loop(const unsigned long usNow)
 				{
 					if (currentPhase == (NUM_PHASES - 1)) // this is the last phase
 					{
-						if (loopEnabled)
+						if (loopEnabled && triggered)
 						{
 							startPhase(0, usNow);
 						}
@@ -190,7 +175,7 @@ void AWG::startPhase(const uint8_t phaseIndex, const unsigned long usNow)
 {
 	currentPhase = phaseIndex;
 	Phase& p = phases[currentPhase];
-	p.durationUs = p.duration * msPerTimeStep.getValue() * 100;
+	p.durationUs = p.duration * msPerTimeStep.getValue() * 1000;
 	p.startUs = usNow;
 	uint16_t startValue = currentPhase == 0 ? 0 : value; // start from where we are unless phase 0
 	int16_t amplDiff = p.endPoint - startValue;
@@ -250,6 +235,9 @@ void AWG::processCCMessage(const uint8_t channel,
 	{
 		case AWG_LOOP_CC:
 			loopEnabled = value != 0;
+			break;
+		case AWG_INVERT_CC:
+			invert = value != 0;
 			break;
 		case AWG_PH1_SUSTAIN_CC:
 			phases[0].sustain = value != 0;
@@ -329,6 +317,8 @@ uint8_t AWG::getControllerValue(const uint8_t controllerNumber)
 	{
 		case AWG_LOOP_CC:
 			return loopEnabled ? 1 : 0;
+		case AWG_INVERT_CC:
+			return invert ? 1 : 0;
 		case AWG_PH1_SUSTAIN_CC:
 			return phases[0].sustain ? 1 : 0;
 		case AWG_PH2_SUSTAIN_CC:

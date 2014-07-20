@@ -393,6 +393,8 @@
 		AA2A140426092133AA0001FB /* evk1105.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FB /* evk1105.h */; };
 		AA2A140426092133AA0001FC /* led.c in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FC /* led.c */; };
 		AA2A140426092133AA0001FD /* led.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA140426092133AA0001FD /* led.h */; };
+		F61FCB5019702C81006537F6 /* CPUMeter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F61FCB4E19702C81006537F6 /* CPUMeter.cpp */; };
+		F61FCB531972777F006537F6 /* AWG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F61FCB511972777F006537F6 /* AWG.cpp */; };
 		F6244F131914EA2400FBCC5F /* DisplayTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F111914EA2400FBCC5F /* DisplayTest.cpp */; };
 		F6244F161914F6F000FBCC5F /* Flasher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F141914F6F000FBCC5F /* Flasher.cpp */; };
 		F6244F1D1916347000FBCC5F /* Expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6244F1B1916347000FBCC5F /* Expression.cpp */; };
@@ -413,6 +415,7 @@
 		F6B0B17B190C255300B443D3 /* Opto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B179190C255300B443D3 /* Opto.cpp */; };
 		F6B0B17E190C626E00B443D3 /* MIDI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B0B17C190C626E00B443D3 /* MIDI.cpp */; };
 		F6B60D6819660A78005A0429 /* OnOffTriggerable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B60D6619660A78005A0429 /* OnOffTriggerable.cpp */; };
+		F6B725E9196CA097006E5BBB /* SourceValueProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6B725E7196CA097006E5BBB /* SourceValueProvider.cpp */; };
 		F6C49CD11952ECA700DA3DAD /* OnOffEdgeProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CCF1952ECA700DA3DAD /* OnOffEdgeProvider.cpp */; };
 		F6C49CD419531CE300DA3DAD /* Freeze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD219531CE300DA3DAD /* Freeze.cpp */; };
 		F6C49CD71953459700DA3DAD /* EnvelopeState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C49CD51953459700DA3DAD /* EnvelopeState.cpp */; };
@@ -810,6 +813,10 @@
 		AAAA140426092133AA0001FC /* led.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = led.c; sourceTree = "<group>"; };
 		AAAA140426092133AA0001FD /* led.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = led.h; sourceTree = "<group>"; };
 		F61DD10A192E58CF00B66B1A /* Errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
+		F61FCB4E19702C81006537F6 /* CPUMeter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPUMeter.cpp; sourceTree = "<group>"; };
+		F61FCB4F19702C81006537F6 /* CPUMeter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPUMeter.h; sourceTree = "<group>"; };
+		F61FCB511972777F006537F6 /* AWG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AWG.cpp; sourceTree = "<group>"; };
+		F61FCB521972777F006537F6 /* AWG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWG.h; sourceTree = "<group>"; };
 		F6244F111914EA2400FBCC5F /* DisplayTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayTest.cpp; sourceTree = "<group>"; };
 		F6244F121914EA2400FBCC5F /* DisplayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayTest.h; sourceTree = "<group>"; };
 		F6244F141914F6F000FBCC5F /* Flasher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Flasher.cpp; sourceTree = "<group>"; };
@@ -867,6 +874,8 @@
 		F6B0B17D190C626E00B443D3 /* MIDI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDI.h; sourceTree = "<group>"; };
 		F6B60D6619660A78005A0429 /* OnOffTriggerable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OnOffTriggerable.cpp; sourceTree = "<group>"; };
 		F6B60D6719660A78005A0429 /* OnOffTriggerable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnOffTriggerable.h; sourceTree = "<group>"; };
+		F6B725E7196CA097006E5BBB /* SourceValueProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SourceValueProvider.cpp; sourceTree = "<group>"; };
+		F6B725E8196CA097006E5BBB /* SourceValueProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceValueProvider.h; sourceTree = "<group>"; };
 		F6B7BB051917CD7900B6CD71 /* MIDICCListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDICCListener.h; sourceTree = "<group>"; };
 		F6B7BB061917D12E00B6CD71 /* MIDIPCListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIPCListener.h; sourceTree = "<group>"; };
 		F6C49CCF1952ECA700DA3DAD /* OnOffEdgeProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OnOffEdgeProvider.cpp; sourceTree = "<group>"; };
@@ -2169,8 +2178,12 @@
 			children = (
 				F697E61A190BA32300477901 /* About */,
 				F697E5E5190BA32300477901 /* Configurations */,
+				F61FCB511972777F006537F6 /* AWG.cpp */,
+				F61FCB521972777F006537F6 /* AWG.h */,
 				F67BFBE91969BD4D004CE778 /* Bus.cpp */,
 				F67BFBEA1969BD4D004CE778 /* Bus.h */,
+				F61FCB4E19702C81006537F6 /* CPUMeter.cpp */,
+				F61FCB4F19702C81006537F6 /* CPUMeter.h */,
 				F630664D191EDC3B00966B66 /* CV2.h */,
 				F697E623190BA32300477901 /* CV2.ino */,
 				F6C94D8E190D779600F83CA6 /* CVOutput.cpp */,
@@ -2222,6 +2235,8 @@
 				F6C94D92190DAC0300F83CA6 /* Patch.h */,
 				F6C49CD819546BE900DA3DAD /* Ramp.cpp */,
 				F6C49CD919546BE900DA3DAD /* Ramp.h */,
+				F6B725E7196CA097006E5BBB /* SourceValueProvider.cpp */,
+				F6B725E8196CA097006E5BBB /* SourceValueProvider.h */,
 				F6748057192165D0009550BD /* Switch.cpp */,
 				F6748058192165D0009550BD /* Switch.h */,
 				F6474F2819256ADC0068AE70 /* SwitchTrigger.cpp */,
@@ -2443,6 +2458,7 @@
 				AA2A140426092133AA00002A /* wiring_private.h in Sources */,
 				AA2A140426092133AA00002B /* wiring_pulse.c in Sources */,
 				AA2A140426092133AA00002C /* wiring_shift.c in Sources */,
+				F61FCB5019702C81006537F6 /* CPUMeter.cpp in Sources */,
 				AA2A140426092133AA00002D /* WMath.cpp in Sources */,
 				AA2A140426092133AA00002E /* WString.cpp in Sources */,
 				AA2A140426092133AA00002F /* WString.h in Sources */,
@@ -2465,6 +2481,7 @@
 				AA2A140426092133AA00004E /* pgmspace.h in Sources */,
 				AA2A140426092133AA00004F /* binary.h in Sources */,
 				AA2A140426092133AA000050 /* Client.h in Sources */,
+				F61FCB531972777F006537F6 /* AWG.cpp in Sources */,
 				AA2A140426092133AA000051 /* cortex_handlers.c in Sources */,
 				AA2A140426092133AA000052 /* cxxabi-compat.cpp in Sources */,
 				AA2A140426092133AA000053 /* HardwareSerial.h in Sources */,
@@ -2482,6 +2499,7 @@
 				AA2A140426092133AA00005F /* Reset.h in Sources */,
 				F6244F131914EA2400FBCC5F /* DisplayTest.cpp in Sources */,
 				F6B0B17E190C626E00B443D3 /* MIDI.cpp in Sources */,
+				F6B725E9196CA097006E5BBB /* SourceValueProvider.cpp in Sources */,
 				AA2A140426092133AA000060 /* RingBuffer.cpp in Sources */,
 				AA2A140426092133AA000061 /* RingBuffer.h in Sources */,
 				AA2A140426092133AA000062 /* Server.h in Sources */,

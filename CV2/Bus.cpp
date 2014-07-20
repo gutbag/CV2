@@ -5,6 +5,7 @@
 #include "EnvelopeFollower.h"
 #include "Ramp.h"
 #include "Noise.h"
+#include "AWG.h"
 
 static Bus* pInstances[4] = {NULL, NULL, NULL, NULL};
 
@@ -103,6 +104,10 @@ ValueProvider* Bus::getSource(const uint8_t sourceId)
 			return &Noise::instance(0);
 		case BUS_SOURCE_NOISE2_VALUE:
 			return &Noise::instance(1);
+		case BUS_SOURCE_AWG1_VALUE:
+			return &AWG::instance(0);
+		case BUS_SOURCE_AWG2_VALUE:
+			return &AWG::instance(1);
 		default:
 			return NULL;
 	}

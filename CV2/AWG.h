@@ -34,7 +34,6 @@ private:
 	} Phase;
 
 	boolean incrementValue(uint16_t& value, Phase& p);
-	//unsigned long getPhaseTime(const uint16_t phaseTimeCCValue);
 	void startPhase(const uint8_t phaseIndex, const unsigned long usNow);
 	uint8_t midiChannel;
 	uint16_t value;
@@ -42,6 +41,7 @@ private:
 	boolean running;
 	boolean loopEnabled;
 	SourceValueProvider msPerTimeStep;
+	boolean invert;
 	
 	static const uint8_t NUM_PHASES = 8;
 	Phase phases[NUM_PHASES];
