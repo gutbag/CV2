@@ -41,6 +41,7 @@ private:
 	void saveHeader();
 	void save();
 	void copy();
+	void refresh();
 	void erase(const uint8_t value);
 	void initHeader();
 	void dumpEEPROMHeader();

@@ -75,6 +75,17 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 		case ERASE_PATCH:
 			erase(value);
 			break;
+		case PATCH_CONTROL_CC:
+		{
+			switch (value)
+			{
+				case PATCH_REFRESH:
+					refresh();
+					break;
+				default:
+					break;
+			}
+		}
 		default:
 			break;
 	}
@@ -96,6 +107,7 @@ void Patch::setup()
 	MIDI::instance().setCCListener(this, 0, PATCH_SAVE_CC);
 	MIDI::instance().setCCListener(this, 0, PATCH_COPY_CC);
 	MIDI::instance().setCCListener(this, 0, ERASE_PATCH);
+	MIDI::instance().setCCListener(this, 0, PATCH_CONTROL_CC);
 	
 	initHeader();
 	
@@ -487,19 +499,20 @@ void Patch::save()
 	unsigned int length = 0;
 	
 	boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
-	if ( ! gotAll)
-	{
-		Display::instance().displayError(PATCH_SAVE_BUFFER_TOO_SMALL);
-		return;
-	}
-	
+
 	if (1)
 	{
 		Serial.print(length, DEC);
 		Serial.print(" bytes to save, space available: ");
 		Serial.println(MAX_PATCH_SIZE, DEC);
 	}
-				
+	
+	if ( ! gotAll)
+	{
+		Display::instance().displayError(PATCH_SAVE_BUFFER_TOO_SMALL);
+		return;
+	}
+	
 	uint16_t address = PATCH_START_ADDR + patchNumber * MAX_PATCH_SIZE;
 		
 	uint16_t nWritten = EEPROM::instance().write(address, buffer, length);
@@ -640,7 +653,18 @@ void Patch::erase(const uint8_t value)
 		loadPatch(patchNumber);
 	}
 }
-					 
+
+// get all current values, feed them back into the MIDI instance and transmit refresh GUI
+void Patch::refresh()
+{
+	uint8_t buffer[MAX_PATCH_SIZE];
+	unsigned int length = 0;
+	
+	boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
+	MIDI::instance().processBuffer(buffer, length, true);
+}
+
+
 void Patch::dumpBuffer(const uint8_t* buffer, const uint16_t length)
 {
 	 Serial.println("Patch::dumpBuffer:");

@@ -98,6 +98,9 @@ const uint8_t ERASE_PATCH = 75;
 
 const uint8_t CPU_METER_CC = 80;
 
+// TODO: could move above patch-related CCs to this (as unique values)
+const uint8_t PATCH_CONTROL_CC = 81;
+
 // the values assigned to source types -  enum?
 const uint8_t CV_OUTPUT_SOURCE_FIXED_VALUE = 1;
 const uint8_t CV_OUTPUT_SOURCE_LFO1_VALUE = 2;
@@ -171,5 +174,8 @@ const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS4_VALUE = 13;
 // values for ERASE_PATCH
 const uint8_t ERASE_ALL_VALUE = 0x7f;
 const uint8_t ERASE_CURRENT_VALUE = 0x7e;
+
+// values for PATCH_CONTROL_CC
+const uint8_t PATCH_REFRESH = 1;
 
 #endif
