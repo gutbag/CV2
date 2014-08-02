@@ -177,5 +177,6 @@ const uint8_t ERASE_CURRENT_VALUE = 0x7e;
 
 // values for PATCH_CONTROL_CC
 const uint8_t PATCH_REFRESH = 1;
+const uint8_t EEPROM_DUMP = 2;
 
 #endif

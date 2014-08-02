@@ -109,7 +109,7 @@ void setup()
 	display.setup();
 	midi.setup();
 	dac5V.setup();
-//	dac9V.setup();
+	dac9V.setup();
 	for (uint8_t i=0; i<ARRAYSIZE(footswitches); i++)
 		footswitches[i].setup();
 	patchDownSwitch.setup();
@@ -150,8 +150,8 @@ void setup()
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].setup();
 	
-//	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
-//		cvOutputs9V[i].setup();
+	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
+		cvOutputs9V[i].setup();
 
 	patch.setup();
 	
@@ -198,8 +198,8 @@ void loop()
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].loop(usNow);
 	
-	//	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
-	//		cvOutputs9V[i].loop(usNow);
+	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
+		cvOutputs9V[i].loop(usNow);
 	
 	patch.loop(usNow);
 	

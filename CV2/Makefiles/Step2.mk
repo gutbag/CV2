@@ -8,8 +8,7 @@
 # All rights reserved
 #
 #
-# Last update: Apr 19, 2014 release 150
-
+# Last update: Jul 29, 2014 release 170
 
 
 # Serial port check and selection
@@ -72,8 +71,8 @@ ifndef CORE_LIB_PATH
     CORE_LIB_PATH = $(APPLICATION_PATH)/hardware/arduino/cores/arduino
 endif
 
-s5              = $(subst .h,,$(subst $(CORE_LIB_PATH)/,,$(wildcard $(CORE_LIB_PATH)/*.h))) # */
-CORE_LIBS_LIST  = $(subst $(USER_LIB_PATH)/,,$(filter-out $(EXCLUDE_LIST),$(s5)))
+    s5              = $(subst .h,,$(subst $(CORE_LIB_PATH)/,,$(wildcard $(CORE_LIB_PATH)/*.h $(CORE_LIB_PATH)/*/*.h))) # */
+    CORE_LIBS_LIST  = $(subst $(USER_LIB_PATH)/,,$(filter-out $(EXCLUDE_LIST),$(s5)))
 
 
 # List of sources
@@ -83,12 +82,12 @@ CORE_LIBS_LIST  = $(subst $(USER_LIB_PATH)/,,$(filter-out $(EXCLUDE_LIST),$(s5))
 # CORE sources
 #
 ifdef CORE_LIB_PATH
-    CORE_C_SRCS     = $(wildcard $(CORE_LIB_PATH)/*.c) # */
+    CORE_C_SRCS     = $(wildcard $(CORE_LIB_PATH)/*.c $(CORE_LIB_PATH)/*/*.c) # */
     
     ifneq ($(strip $(NO_CORE_MAIN_FUNCTION)),)
-        CORE_CPP_SRCS = $(filter-out %main.cpp, $(wildcard $(CORE_LIB_PATH)/*.cpp $(CORE_LIB_PATH)/*/*.cpp)) # */
+CORE_CPP_SRCS = $(filter-out %main.cpp, $(wildcard $(CORE_LIB_PATH)/*.cpp $(CORE_LIB_PATH)/*/*.cpp $(CORE_LIB_PATH)/*/*/*.cpp $(CORE_LIB_PATH)/*/*/*/*.cpp))
     else
-        CORE_CPP_SRCS = $(wildcard $(CORE_LIB_PATH)/*.cpp $(CORE_LIB_PATH)/*/*.cpp) # */
+        CORE_CPP_SRCS = $(wildcard $(CORE_LIB_PATH)/*.cpp $(CORE_LIB_PATH)/*/*.cpp $(CORE_LIB_PATH)/*/*/*.cpp $(CORE_LIB_PATH)/*/*/*/*.cpp) # */
     endif
 
     CORE_OBJ_FILES  = $(CORE_C_SRCS:.c=.o) $(CORE_CPP_SRCS:.cpp=.o) $(CORE_AS_SRCS:.S=.o) 
@@ -366,46 +365,55 @@ $(OBJDIR)/libs/%.d: $(USER_LIB_PATH)/%.c
 $(OBJDIR)/%.o: %.c
 	$(call SHOW,"4.1-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: %.cc
 	$(call SHOW,"4.2-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: 	%.cpp
 	$(call SHOW,"4.3-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: %.S
 	$(call SHOW,"4.4-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CPPFLAGS) $(ASFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: %.s
 	$(call SHOW,"4.5-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CPPFLAGS) $(ASFLAGS) $< -o $@
 
 $(OBJDIR)/%.d: %.c
 	$(call SHOW,"4.6-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -MM $(CPPFLAGS) $(CFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 $(OBJDIR)/%.d: %.cpp
 	$(call SHOW,"4.7-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CXX) -MM $(CPPFLAGS) $(CXXFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 $(OBJDIR)/%.d: %.S
 	$(call SHOW,"4.8-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -MM $(CPPFLAGS) $(ASFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 $(OBJDIR)/%.d: %.s
 	$(call SHOW,"4.9-LOCAL",$@,$<)
 	$(call TRACE,"4-LOCAL",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -MM $(CPPFLAGS) $(ASFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 
@@ -462,11 +470,13 @@ $(OBJDIR)/%.d: $(VARIANT_PATH)/%.cpp
 $(OBJDIR)/%.o: $(CORE_LIB_PATH)/%.c
 	$(call SHOW,"1.1-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: $(CORE_LIB_PATH)/%.S
 	$(call SHOW,"1.2-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: $(CORE_LIB_PATH)/%.cpp
@@ -478,31 +488,37 @@ $(OBJDIR)/%.o: $(CORE_LIB_PATH)/%.cpp
 $(OBJDIR)/%.o: $(BUILD_CORE_LIB_PATH)/%.c
 	$(call SHOW,"1.4-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: $(BUILD_CORE_LIB_PATH)/%.cpp
 	$(call SHOW,"1.5-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 $(OBJDIR)/%.d: $(CORE_LIB_PATH)/%.c
 	$(call SHOW,"1.6-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -MM $(CPPFLAGS) $(CFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 $(OBJDIR)/%.d: $(CORE_LIB_PATH)/%.cpp
 	$(call SHOW,"1.7-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CXX) -MM $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 $(OBJDIR)/%.d: $(BUILD_CORE_LIB_PATH)/%.c
 	$(call SHOW,"1.8-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CC) -MM $(CPPFLAGS) $(CFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 $(OBJDIR)/%.d: $(BUILD_CORE_LIB_PATH)/%.cpp
 	$(call SHOW,"1.9-CORE",$@,$<)
 	$(call TRACE,"1-CORE",$@,$<)
+	@mkdir -p $(dir $@)
 	$(CXX) -MM $(CPPFLAGS) $(CXXFLAGS) $< -MF $@ -MT $(@:.d=.o)
 
 
@@ -599,12 +615,16 @@ else ifeq ($(TARGET_HEXBIN),$(TARGET_BIN))
     BINSIZE = $(SIZE) --target=binary --totals $(CURRENT_DIR)/$(TARGET_BIN) | grep TOTALS | tr '\t' . | cut -d. -f2 | tr -d ' '
 endif
 
-ifndef MAX_FLASH_SIZE
+ifeq ($(MAX_FLASH_SIZE),)
   MAX_FLASH_SIZE = $(call PARSE_BOARD,$(BOARD_TAG),upload.maximum_size)
 endif
-ifndef MAX_RAM_SIZE
+ifeq ($(MAX_RAM_SIZE),)
   MAX_RAM_SIZE = $(call PARSE_BOARD,$(BOARD_TAG),upload.maximum_data_size)
 endif
+ifeq ($(MAX_RAM_SIZE),)
+  MAX_RAM_SIZE = $(call PARSE_BOARD,$(BOARD_TAG),upload.maximum_ram_size)
+endif
+
 ELFSIZE = $(SIZE) $(CURRENT_DIR)/$(TARGET_ELF)
 RAMSIZE = $(SIZE) $(CURRENT_DIR)/$(TARGET_ELF) | sed '1d' | awk '{t=$$3 + $$2} END {print t}'
 
@@ -768,7 +788,7 @@ endif
 # Release management
 # ----------------------------------
 #
-RELEASE_NOW   := 150
+RELEASE_NOW   := 168
 
 
 # Rules
@@ -993,7 +1013,7 @@ boards:
 		@if [ -d $(DIGISPARK_APP) ];  then echo "---- $(notdir $(basename $(DIGISPARK_APP))) ---- ";  \
 			grep .name $(DIGISPARK_PATH)/hardware/digispark/boards.txt;  echo; fi
 		@if [ -d $(ENERGIA_APP) ]; then echo "---- $(notdir $(basename $(ENERGIA_APP))) MSP430 ---- "; \
-			grep .name $(ENERGIA_PATH)/hardware/msp430/boards.txt;  echo; fi
+			grep .name $(ENERGIA_PATH)/hardware/msp430/boards.txt | grep -v '^#';  echo; fi
 		@if [ -d $(ENERGIA_PATH)/hardware/lm4f ]; then echo "---- $(notdir $(basename $(ENERGIA_APP))) LM4F ---- ";  \
 			grep .name $(ENERGIA_PATH)/hardware/lm4f/boards.txt;  echo; fi
 		@if [ -d $(MAPLE_APP) ];   then echo "---- $(notdir $(basename $(MAPLE_APP))) ---- ";    \

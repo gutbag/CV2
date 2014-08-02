@@ -8,7 +8,7 @@
 # All rights reserved
 #
 #
-# Last update: Dec 06, 2013 release 119
+# Last update: Jul 09, 2014 release 166
 
 
 
@@ -117,7 +117,15 @@ ifeq ($(wildcard $(ARDUINO_APP)),)
     endif
 endif
 
-ARDUINO_PATH    = $(ARDUINO_APP)/Contents/Resources/Java
+# Arduino 1.5.7 nightmare with Java folder locations
+# Another example of Arduino's quick and dirty job
+#
+ifeq ($(wildcard $(ARDUINO_APP)/Contents/Resources/Java),)
+    ARDUINO_PATH   := $(ARDUINO_APP)/Contents/Java
+else
+    ARDUINO_PATH   := $(ARDUINO_APP)/Contents/Resources/Java
+endif
+
 MPIDE_PATH      = $(MPIDE_APP)/Contents/Resources/Java
 WIRING_PATH     = $(WIRING_APP)/Contents/Resources/Java
 ENERGIA_PATH    = $(ENERGIA_APP)/Contents/Resources/Java
@@ -170,8 +178,8 @@ endif
 # Identification and switch
 # ----------------------------------
 # Look if BOARD_TAG is listed as a Arduino/Arduino board
-# Look if BOARD_TAG is listed as a Arduino/Arduino/avr board *1.5
-# Look if BOARD_TAG is listed as a Arduino/Arduino/sam board *1.5
+# Look if BOARD_TAG is listed as a Arduino/arduino/avr board *1.5
+# Look if BOARD_TAG is listed as a Arduino/arduino/sam board *1.5
 # Look if BOARD_TAG is listed as a Mpide/PIC32 board
 # Look if BOARD_TAG is listed as a Wiring/Wiring board
 # Look if BOARD_TAG is listed as a Energia/MPS430 board
