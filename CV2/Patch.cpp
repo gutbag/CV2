@@ -58,16 +58,16 @@ void Patch::processPCMessage(const uint8_t channel, const uint8_t programNumber)
 
 void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumber, const uint8_t value)
 {
-	Serial.print("Patch CC Message, ch: ");
-	Serial.print(channel, DEC);
-	Serial.print(" No: ");
-	Serial.print(controllerNumber, DEC);
-	Serial.print(" Val: ");
-	Serial.println(value, DEC);
+//	Serial.print("Patch CC Message, ch: ");
+//	Serial.print(channel, DEC);
+//	Serial.print(" No: ");
+//	Serial.print(controllerNumber, DEC);
+//	Serial.print(" Val: ");
+//	Serial.println(value, DEC);
 	
 	switch (controllerNumber)
 	{
-		case PATCH_SAVE_CC:
+		case PATCH_SAVE_CC: // TODO: use PATCH_CONTROL_CC instead
 			save();
 			break;
 		case PATCH_COPY_CC:
@@ -81,6 +81,9 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 			{
 				case PATCH_REFRESH:
 					refresh();
+					break;
+				case EEPROM_DUMP:
+					dumpEeprom();
 					break;
 				default:
 					break;
@@ -701,4 +704,19 @@ uint16_t Patch::calcChecksum(const uint8_t* buffer, const unsigned int length)
 uint16_t Patch::calcHeaderChecksum()
 {
 	return calcChecksum((uint8_t*)&(eepromHeader.displayBrightness), sizeof(eepromHeader) - sizeof(eepromHeader.checksum));
+}
+
+void Patch::dumpEeprom()
+{
+	uint8_t blockSize = 64;
+	uint8_t buffer[blockSize];
+	uint32_t address = 0;
+	while (address < 0xFFFF)
+	{
+		EEPROM::instance().read(address, buffer, blockSize);
+		Serial.write(buffer, blockSize);
+//		Serial.print("addr ");
+//		Serial.println(address, HEX);
+		address += blockSize;
+	}
 }

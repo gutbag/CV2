@@ -30,7 +30,7 @@ public:
 private:
 	static const uint16_t HEADER_START_ADDR = 0x0; // magic number here, followed by header
 	static const uint16_t PATCH_START_ADDR = 0x400; // the first patch's MIDI msgs
-	static const uint16_t MAX_PATCH_SIZE = 512; // space for the MIDI messages
+	static const uint16_t MAX_PATCH_SIZE = 1024; // space for the MIDI messages
 	static const uint8_t MAX_PATCHES = (65536 - PATCH_START_ADDR) / MAX_PATCH_SIZE; // divide the remaining space up
 	
 	void readEepromHeader();
@@ -42,6 +42,7 @@ private:
 	void save();
 	void copy();
 	void refresh();
+	void dumpEeprom();
 	void erase(const uint8_t value);
 	void initHeader();
 	void dumpEEPROMHeader();
