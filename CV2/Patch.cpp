@@ -85,6 +85,9 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 				case EEPROM_DUMP:
 					dumpEeprom();
 					break;
+				case PATCH_DISPLAY_NUMBER:
+					Display::instance().setPatchNumber(patchNumber);
+					break;
 				default:
 					break;
 			}

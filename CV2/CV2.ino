@@ -125,6 +125,8 @@ void setup()
 
 	for (uint8_t i=0; i<ARRAYSIZE(lfos); i++)
 		lfos[i].setup();
+	
+	lfos[0].addSlave(&lfos[1]);
 
 	for (uint8_t i=0; i<ARRAYSIZE(ramps); i++)
 		ramps[i].setup();

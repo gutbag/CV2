@@ -20,6 +20,9 @@ const uint8_t TRIGGER_MODE_CC = 10;
 
 const uint8_t FREEZE_TRIGGER_INSTANCE_CC = 11;
 
+const uint8_t ENV_FOLLOWER_GAIN_CC = 39;
+const uint8_t ENV_FOLLOWER_TRIGGER_INSTANCE_CC = 41;
+
 const uint8_t ENV_STATE_LOW_HIGH_THRESHOLD_CC = 13;
 const uint8_t ENV_STATE_HIGH_LOW_THRESHOLD_CC = 14;
 const uint8_t ENV_STATE_THRESHOLD_SENSITIVITY_CC = 15;
@@ -46,6 +49,7 @@ const uint8_t LFO_FREQUENCY_MAX_CC = 31;
 const uint8_t LFO_FREQUENCY_SOURCE_CC = 32;
 const uint8_t LFO_FREQUENCY_RANGE_CC = 25;
 const uint8_t LFO_TRIGGER_INSTANCE_CC = 26;
+const uint8_t LFO_PHASE_OFFSET_CC = 12;
 
 // Bus
 const uint8_t BUS_SOURCE_1_CC = 27;
@@ -178,5 +182,6 @@ const uint8_t ERASE_CURRENT_VALUE = 0x7e;
 // values for PATCH_CONTROL_CC
 const uint8_t PATCH_REFRESH = 1;
 const uint8_t EEPROM_DUMP = 2;
+const uint8_t PATCH_DISPLAY_NUMBER = 3;
 
 #endif

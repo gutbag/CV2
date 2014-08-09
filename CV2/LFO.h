@@ -20,6 +20,8 @@ public:
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
 	uint8_t getControllerValue(const uint8_t controllerNumber);
+	void addSlave(LFO* pLFO);
+	void setSampleIndex(const uint16_t i); // TODO: generalise? interface class?
 private:
 	void setFrequencyRange(const uint8_t value);
 	void setFrequency(const boolean force);
@@ -33,6 +35,8 @@ private:
 	uint16_t freqStepValue;
 	uint8_t freqRange;
 	uint8_t midiChannel;
+	LFO* slave;
+	uint8_t phaseOffsetIndex; // MIDI value
 };
 
 #endif /* defined(__CV2__LFO__) */

@@ -2,6 +2,7 @@
 #include "MIDICCListener.h"
 #include "MIDIPCListener.h"
 #include "Display.h"
+#include "Errors.h"
 
 static MIDI* pInstance = NULL;
 
@@ -98,6 +99,12 @@ void MIDI::setCCListener(MIDICCListener* pAListener, const uint8_t channel, cons
 //		Serial.print(channel, DEC);
 //		Serial.print(" ");
 //		Serial.println(controllerNumber, DEC);
+		
+		if (ccListeners[channel][controllerNumber] != NULL)
+		{
+			Display::instance().displayError(DUPLICATE_CC_LISTENER);
+		}
+		
 		ccListeners[channel][controllerNumber] = pAListener;
 	}
 }

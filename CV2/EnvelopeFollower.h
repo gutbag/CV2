@@ -6,8 +6,9 @@
 #include "MIDICCListener.h"
 #include "OnOffStateProvider.h"
 #include "EnvelopeState.h"
+#include "OnOffTriggerable.h"
 
-class EnvelopeFollower : public ValueProvider, public MIDICCListener, public OnOffStateProvider
+class EnvelopeFollower : public ValueProvider, public OnOffStateProvider, public OnOffTriggerable
 {
 public:
 	static EnvelopeFollower& instance();
@@ -32,6 +33,8 @@ private:
 	uint16_t value;
 	unsigned long lastSampleUs;
 	EnvelopeState envState;
+	uint8_t gainCCValue;
+	uint16_t gainMapMax;
 };
 
 #endif /* defined(__CV2__EnvelopeFollower__) */

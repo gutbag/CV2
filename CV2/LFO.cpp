@@ -1,8 +1,9 @@
 #include "LFO.h"
 #include "MIDI.h"
 
+#define ARRAYSIZE(x) (sizeof(x)/sizeof(x[0]))
+
 static uint8_t sinSamples[] = {
-	0,
 	0,
 	0,
 	0,
@@ -377,8 +378,20 @@ static const RangeValues rangeValues[] =
 	{0.01, 0.05},
 	{0.05, 0.1},
 	{0.1, 1.0},
-	{1.0, 5.0},
-	{0.1, 5.0}
+	{1.0, 10.0},
+	{0.1, 10.0}
+};
+
+static const uint16_t phaseOffsets[] =
+{
+	0, // CC value 0
+	45, // 1
+	90, // 2
+	135,// 3
+	180,// 4
+	225,// 5
+	270,// 6
+	315 // 7
 };
 
 static LFO* pInstances[2] = {NULL, NULL};
@@ -393,7 +406,9 @@ LFO::LFO(const uint8_t index, const uint8_t aMidiChannel)
   sampleIndex(0), usLastSample(0), usBetweenSamples(0),
   freqStep(aMidiChannel, LFO_FREQUENCY_MIN_CC, LFO_FREQUENCY_MAX_CC, LFO_FREQUENCY_SOURCE_CC),
   freqRange(0), freqStepValue(0),
-  midiChannel(aMidiChannel)
+  midiChannel(aMidiChannel),
+  slave(NULL),
+  phaseOffsetIndex(0)
 {
 	pInstances[index] = this;
 	setDefaults(true, true);
@@ -423,6 +438,7 @@ void LFO::setup()
 	OnOffTriggerable::setup();
 	freqStep.setup();
 	MIDI::instance().setCCListener(this, midiChannel, LFO_FREQUENCY_RANGE_CC);
+	MIDI::instance().setCCListener(this, midiChannel, LFO_PHASE_OFFSET_CC);
 	
 	freqStep.setMinimum(0);
 	freqStep.setMaximum(127);
@@ -433,20 +449,36 @@ void LFO::setup()
 
 void LFO::loop(const unsigned long usNow)
 {
-	if (usNow - usLastSample >= usBetweenSamples)
+	if (phaseOffsetIndex == 0) // otherwise, we're a slave
 	{
-		boolean triggered = isTriggered();
-		
-		if (triggered)
+		if (usNow - usLastSample >= usBetweenSamples)
 		{
-			sampleIndex++;
-			if (sampleIndex > sizeof(sinSamples)) // TODO: sample width?
-				sampleIndex = 0;
+			boolean triggered = isTriggered();
 			
-			usLastSample = usNow;
-			
-			setFrequency(false);
+			if (triggered)
+			{
+				sampleIndex++;
+				if (sampleIndex >= sizeof(sinSamples)) // TODO: sample width?
+					sampleIndex = 0;
+				
+				usLastSample = usNow;
+				
+				setFrequency(false);
+				
+				if (slave != NULL)
+					slave->setSampleIndex(sampleIndex);
+			}
 		}
+	}
+}
+
+void LFO::setSampleIndex(const uint16_t i)
+{
+	if (isTriggered() && phaseOffsetIndex > 0) // we're a slave
+	{
+		sampleIndex = i + phaseOffsets[phaseOffsetIndex];
+		if (sampleIndex >=ARRAYSIZE(sinSamples))
+			sampleIndex -= ARRAYSIZE(sinSamples);
 	}
 }
 
@@ -498,6 +530,11 @@ void LFO::setFrequencyRange(const uint8_t value)
 	hertzPerStep = (fMax - fMin) / 128.0;
 }
 
+void LFO::addSlave(LFO* pLFO)
+{
+	slave = pLFO;
+}
+
 void LFO::processCCMessage(const uint8_t channel,
 							   const uint8_t controllerNumber,
 							   const uint8_t value)
@@ -507,13 +544,18 @@ void LFO::processCCMessage(const uint8_t channel,
 	//	Serial.print(" No: ");
 	//	Serial.print(controllerNumber, DEC);
 	//	Serial.print(" Val: ");
-	//	Serial.println(pvalue, DEC);
+	//	Serial.println(value, DEC);
 	
 	switch (controllerNumber)
 	{
 		case LFO_FREQUENCY_RANGE_CC:
 			setFrequencyRange(value);
 			setFrequency(true);
+			break;
+		case LFO_PHASE_OFFSET_CC:
+			phaseOffsetIndex = value;
+			if (phaseOffsetIndex > ARRAYSIZE(phaseOffsets) - 1)
+				phaseOffsetIndex = ARRAYSIZE(phaseOffsets) - 1;
 			break;
 		default:
 			OnOffTriggerable::processCCMessage(channel, controllerNumber, value);
@@ -528,6 +570,8 @@ uint8_t LFO::getControllerValue(const uint8_t controllerNumber)
 	{
 		case LFO_FREQUENCY_RANGE_CC:
 			return freqRange;
+		case LFO_PHASE_OFFSET_CC:
+			return phaseOffsetIndex;
 		default:
 			return OnOffTriggerable::getControllerValue(controllerNumber);
 	}
