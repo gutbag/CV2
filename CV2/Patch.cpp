@@ -67,14 +67,6 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 	
 	switch (controllerNumber)
 	{
-		case PATCH_SAVE_CC: // TODO: use PATCH_CONTROL_CC instead
-			save();
-			break;
-		case PATCH_COPY_CC:
-			copy();
-		case ERASE_PATCH:
-			erase(value);
-			break;
 		case PATCH_CONTROL_CC:
 		{
 			switch (value)
@@ -82,11 +74,23 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 				case PATCH_REFRESH:
 					refresh();
 					break;
-				case EEPROM_DUMP:
+				case PATCH_EEPROM_DUMP:
 					dumpEeprom();
 					break;
 				case PATCH_DISPLAY_NUMBER:
 					Display::instance().setPatchNumber(patchNumber);
+					break;
+				case PATCH_COPY:
+					copy();
+					break;
+				case PATCH_SAVE:
+					save();
+					break;
+				case PATCH_ERASE_ALL:
+					erase(PATCH_ERASE_ALL);
+					break;
+				case PATCH_ERASE_CURRENT:
+					erase(PATCH_ERASE_CURRENT);
 					break;
 				default:
 					break;
@@ -110,9 +114,6 @@ void Patch::setup()
 	upSwitchEdgeProvider.setup();
 	
 	MIDI::instance().setPCListener(this);
-	MIDI::instance().setCCListener(this, 0, PATCH_SAVE_CC);
-	MIDI::instance().setCCListener(this, 0, PATCH_COPY_CC);
-	MIDI::instance().setCCListener(this, 0, ERASE_PATCH);
 	MIDI::instance().setCCListener(this, 0, PATCH_CONTROL_CC);
 	
 	initHeader();
@@ -635,7 +636,7 @@ void Patch::initHeader()
 
 void Patch::erase(const uint8_t value)
 {
-	if (value == ERASE_ALL_VALUE) // erase all
+	if (value == PATCH_ERASE_ALL) // erase all
 	{
 		Serial.println("Patch::erase ALL");
 		
@@ -646,7 +647,7 @@ void Patch::erase(const uint8_t value)
 		patchNumber = 0;
 		loadPatch(patchNumber);
 	}
-	else if (value == ERASE_CURRENT_VALUE) // erase current patch
+	else if (value == PATCH_ERASE_CURRENT) // erase current patch
 	{
 		Serial.println("Patch::erase CURRENT");
 		

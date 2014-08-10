@@ -96,9 +96,6 @@ const uint8_t AWG_PH8_DURATION_CC = 97;
 
 const uint8_t DISPLAY_RESET_CC = 71;
 const uint8_t DISPLAY_TEST_CC = 72;
-const uint8_t PATCH_SAVE_CC = 73;
-const uint8_t PATCH_COPY_CC = 74;
-const uint8_t ERASE_PATCH = 75;
 
 const uint8_t CPU_METER_CC = 80;
 
@@ -175,13 +172,14 @@ const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS2_VALUE = 11;
 const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS3_VALUE = 12;
 const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS4_VALUE = 13;
 
-// values for ERASE_PATCH
-const uint8_t ERASE_ALL_VALUE = 0x7f;
-const uint8_t ERASE_CURRENT_VALUE = 0x7e;
-
 // values for PATCH_CONTROL_CC
 const uint8_t PATCH_REFRESH = 1;
-const uint8_t EEPROM_DUMP = 2;
+const uint8_t PATCH_EEPROM_DUMP = 2;
 const uint8_t PATCH_DISPLAY_NUMBER = 3;
+const uint8_t PATCH_COPY = 4;
+const uint8_t PATCH_SAVE = 5;
+// erase values deliberately away from other to reduce risk of accidents
+const uint8_t PATCH_ERASE_ALL = 0x7f;
+const uint8_t PATCH_ERASE_CURRENT = 0x7e;
 
 #endif
