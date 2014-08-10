@@ -40,14 +40,16 @@ CVOutput cvOutputs5V[8] =
 	{dac5V, 6, 6},
 	{dac5V, 7, 7}
 };
-CVOutput cvOutputs9V[6] =
+CVOutput cvOutputs9V[8] =
 {
 	{dac9V, 0, 8},
 	{dac9V, 1, 9},
 	{dac9V, 2, 10},
 	{dac9V, 3, 11},
 	{dac9V, 4, 12},
-	{dac9V, 5, 13}
+	{dac9V, 5, 13},
+	{dac9V, 6, 14}, // 5V - for testing
+	{dac9V, 7, 15} // 5V - for testing
 };
 Footswitch footswitches[3] = {
 	{0, 0, FSW_1, FSW_LED1},
