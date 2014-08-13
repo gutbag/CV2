@@ -7,13 +7,20 @@ const uint8_t MIDI_CONTROL_CHANGE = 0xb0;
 const uint8_t MIDI_PROGRAM_CHANGE = 0xc0;
 
 // Control Change controller numbers
-const uint8_t CV_OUTPUT_MIN_CC = 0;
-const uint8_t CV_OUTPUT_MAX_CC = 1;
+//const uint8_t CV_OUTPUT_MIN_CC = 0;
+//const uint8_t CV_OUTPUT_MAX_CC = 1;
+//const uint8_t CV_OUTPUT_SOURCE_CC = 3;
+//const uint8_t CV_OUTPUT_SIDE_CHAIN_SOURCE_CC = 5;
+//const uint8_t CV_OUTPUT_SIDE_CHAIN_MIN_CC = 6;
+//const uint8_t CV_OUTPUT_SIDE_CHAIN_MAX_CC = 7;
+//const uint8_t CV_OUTPUT_SIDE_CHAIN_MODE_CC = 8;
 const uint8_t CV_OUTPUT_SOURCE_CC = 3;
-const uint8_t CV_OUTPUT_SIDE_CHAIN_SOURCE_CC = 5;
-const uint8_t CV_OUTPUT_SIDE_CHAIN_MIN_CC = 6;
-const uint8_t CV_OUTPUT_SIDE_CHAIN_MAX_CC = 7;
-const uint8_t CV_OUTPUT_SIDE_CHAIN_MODE_CC = 8;
+const uint8_t CV_OUTPUT_LOW_MIN_CC = 0; // SourceValueProvider CCs
+const uint8_t CV_OUTPUT_LOW_MAX_CC = 5;
+const uint8_t CV_OUTPUT_LOW_SOURCE_CC = 6;
+const uint8_t CV_OUTPUT_HIGH_MIN_CC = 1; // SourceValueProvider CCs
+const uint8_t CV_OUTPUT_HIGH_MAX_CC = 7;
+const uint8_t CV_OUTPUT_HIGH_SOURCE_CC = 8;
 
 const uint8_t TRIGGER_CONTROL_TYPE_CC = 9;
 const uint8_t TRIGGER_MODE_CC = 10;
@@ -171,6 +178,8 @@ const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS1_VALUE = 10;
 const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS2_VALUE = 11;
 const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS3_VALUE = 12;
 const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_BUS4_VALUE = 13;
+const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_AWG1_VALUE = 14;
+const uint8_t SOURCE_VALUE_PROVIDER_SOURCE_AWG2_VALUE = 15;
 
 // values for PATCH_CONTROL_CC
 const uint8_t PATCH_REFRESH = 1;
