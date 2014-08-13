@@ -6,6 +6,7 @@
 #include "Ramp.h"
 #include "Noise.h"
 #include "Bus.h"
+#include "AWG.h"
 
 SourceValueProvider::SourceValueProvider(const uint8_t aMidiChannel, const uint8_t aMinCC, const uint8_t aMaxCC, const uint8_t aSourceCC)
 : midiChannel(aMidiChannel), minCC(aMinCC), maxCC(aMaxCC), sourceCC(aSourceCC), pSource(NULL), sourceId(DO_NOT_SAVE_VALUE)
@@ -94,6 +95,12 @@ void SourceValueProvider::processCCMessage(const uint8_t channel,
 				break;
 			case SOURCE_VALUE_PROVIDER_SOURCE_BUS4_VALUE:
 				pSource = &Bus::instance(3);
+				break;
+			case SOURCE_VALUE_PROVIDER_SOURCE_AWG1_VALUE:
+				pSource = &AWG::instance(0);
+				break;
+			case SOURCE_VALUE_PROVIDER_SOURCE_AWG2_VALUE:
+				pSource = &AWG::instance(1);
 				break;
 			default:
 				break;
