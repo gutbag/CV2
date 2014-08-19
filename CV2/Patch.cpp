@@ -12,7 +12,8 @@ Patch::Patch(Switch& aDownSwitch, Switch& anUpSwitch)
   upSwitchEdgeProvider(&anUpSwitch),
   patchNumber(0),
   pendingPatchNumber(0),
-  state(IDLE)
+  state(IDLE),
+  transmitMIDI(false)
 {
 	// write fake header info
 //	uint16_t checksum = 0;
@@ -91,6 +92,12 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 					break;
 				case PATCH_ERASE_CURRENT:
 					erase(PATCH_ERASE_CURRENT);
+					break;
+				case PATCH_TRANSMIT_ENABLE:
+					transmitMIDI = true;
+					break;
+				case PATCH_TRANSMIT_DISABLE:
+					transmitMIDI = false;
 					break;
 				default:
 					break;
@@ -434,7 +441,7 @@ boolean Patch::loadPatch(const uint8_t n)
 		}
 		else
 		{
-			MIDI::instance().processBuffer(buffer, lengthInBytes, true);
+			MIDI::instance().processBuffer(buffer, lengthInBytes, transmitMIDI);
 		}
 	}
 	else // get the default MIDI messages and transmit
@@ -443,8 +450,10 @@ boolean Patch::loadPatch(const uint8_t n)
 		unsigned int length = 0;
 		
 		boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
-		MIDI::instance().processBuffer(buffer, length, true);
+		MIDI::instance().processBuffer(buffer, length, transmitMIDI);
 	}
+	
+	MIDI::instance().resetMessageCount();
 		
 	if (ok)
 		Display::instance().setPatchNumber(n);

@@ -82,6 +82,8 @@ private:
 		WAIT_CONFIRM_COPY
 	} State;
 	State state;
+	
+	boolean transmitMIDI;
 };
 
 #endif /* defined(__CV2__Patch__) */
