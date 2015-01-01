@@ -681,26 +681,47 @@ void Patch::refresh()
 }
 
 
+/*
+ void Patch::dumpBuffer(const uint8_t* buffer, const uint16_t length)
+{
+	Serial.println("Patch::dumpBuffer:");
+	Serial.print("  length ");
+	Serial.print(length, DEC);
+	Serial.println(":");
+	unsigned int i = 0;
+	while (i < length)
+	{
+		Serial.print(buffer[i++], HEX);
+		Serial.print(" ");
+		Serial.print(buffer[i++], DEC);
+		Serial.print(" 0x");
+		Serial.print(buffer[i++], HEX);
+		Serial.print(" | ");
+		if (i % 16 == 0)
+			Serial.println();
+		delay(10);
+	}
+	Serial.println("---");
+}
+*/
+
 void Patch::dumpBuffer(const uint8_t* buffer, const uint16_t length)
 {
-	 Serial.println("Patch::dumpBuffer:");
-	 Serial.print("  length ");
-	 Serial.print(length, DEC);
-	 Serial.println(":");
-	 unsigned int i = 0;
-	 while (i < length)
-	 {
-		 Serial.print(buffer[i++], HEX);
-		 Serial.print(" ");
-		 Serial.print(buffer[i++], DEC);
-		 Serial.print(" 0x");
-		 Serial.print(buffer[i++], HEX);
-		 Serial.print(" | ");
-		 if (i % 16 == 0)
-			 Serial.println();
-		 delay(10);
-	 }
-	 Serial.println("---");
+//	Serial.println("Patch::dumpBuffer:");
+//	Serial.print("  length ");
+//	Serial.print(length, DEC);
+//	Serial.println(":");
+	unsigned int i = 0;
+	while (i < length)
+	{
+		if (buffer[i] < 0x10) // pad with 0
+			Serial.print("0");
+		Serial.print(buffer[i++], HEX);
+		Serial.print(" ");
+		if (i % 16 == 0)
+			Serial.println();
+	}
+//	Serial.println("---");
 }
 
 // simple checksum for now
@@ -719,17 +740,105 @@ uint16_t Patch::calcHeaderChecksum()
 	return calcChecksum((uint8_t*)&(eepromHeader.displayBrightness), sizeof(eepromHeader) - sizeof(eepromHeader.checksum));
 }
 
+
 void Patch::dumpEeprom()
 {
+	Serial.println("Patch::dumpEeprom()");
+	
 	uint8_t blockSize = 64;
 	uint8_t buffer[blockSize];
+	
+	uint8_t i = 0;
+//	buffer[i++] = 0x4D;
+//	buffer[i++] = 0x54;
+//	buffer[i++] = 0x68;
+//	buffer[i++] = 0x64;
+//	buffer[i++] = 0x00;
+//	buffer[i++] = 0x00;
+//	buffer[i++] = 0x00;
+//	buffer[i++] = 0x06; // header length
+//	buffer[i++] = 0x00;
+//	buffer[i++] = 0x01; // format
+//	buffer[i++] = 0x00;
+//	buffer[i++] = 0x01; // no of track chunks
+//	buffer[i++] = 0x01;
+//	buffer[i++] = 0xA4; // division
+//	buffer[i++] = 0x4D;
+//	buffer[i++] = 0x54;
+//	buffer[i++] = 0x72;
+//	buffer[i++] = 0x6b;
+//	buffer[i++] = 0x00; // track length MSB
+//	buffer[i++] = 0x01;
+//	buffer[i++] = 0x00;
+//	buffer[i++] = 0x00; // track length LSB
+//	buffer[i++] = 0x00; // v time
+	buffer[i++] = 0xF0; // sysex start
+	buffer[i++] = 0x41; // Roland Mfr ID
+
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+	buffer[i++] = 0x12;
+	buffer[i++] = 0x34;
+
+	buffer[i++] = 0xF7; // sysex end
+	
+	for (uint8_t q=0; q<i; q++)
+	{
+		Serial1.write(&buffer[q], 1);
+		//Serial1.flush();
+	}
+//
+//	for (i=0; i<0xff; i++)
+//	{
+//		buffer[0] = i;
+//		Serial1.write(buffer, 1);
+//		Serial1.flush();
+//	}
+	
+//	uint32_t address = 0;
+//	while (address < 0xFFFF)
+//	{
+//		EEPROM::instance().read(address, buffer, blockSize);
+//		Serial1.write(buffer, blockSize);
+//		Serial1.flush();
+//		address += blockSize;
+//	}
+	
+//	Serial1.write(0xF7); // sysex end
+//	Serial1.flush();
+}
+
+
+/*
+ void Patch::dumpEeprom()
+{
+	Serial.println("Patch::dumpEeprom()");
+	
+	uint8_t blockSize = 64;
+	uint8_t buffer[blockSize];
+
 	uint32_t address = 0;
-	while (address < 0xFFFF)
+	//while (address < (PATCH_START_ADDR + MAX_PATCH_SIZE))
+	while (address < 0xffff)
 	{
 		EEPROM::instance().read(address, buffer, blockSize);
-		Serial.write(buffer, blockSize);
-//		Serial.print("addr ");
-//		Serial.println(address, HEX);
+		dumpBuffer(buffer, blockSize);
+//		Serial.write(buffer, blockSize);
+//		Serial.flush();
 		address += blockSize;
 	}
+	Serial.println("Patch::dumpEeprom() - finished");
 }
+ */
