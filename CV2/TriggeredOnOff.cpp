@@ -75,7 +75,7 @@ void TriggeredOnOff::setProvider(OnOffStateProvider* pOnOffStateProvider)
 {
 	pProvider = pOnOffStateProvider;
 	edgeProvider.setOnOffProvider(pProvider);
-	on = false;
+//	on = false;
 }
 
 void TriggeredOnOff::setOn(const boolean state)
@@ -122,13 +122,16 @@ void TriggeredOnOff::processCCMessage(const uint8_t channel,
 				setOn(defaultOn);
 				break;
 			case TRIGGER_CONTROL_FSW_1_VALUE:
+				Footswitch::instance(0).setOn(defaultOn);
 				setProvider(&Footswitch::instance(0));
 					debugFlag = true;
 				break;
 			case TRIGGER_CONTROL_FSW_2_VALUE:
+				Footswitch::instance(1).setOn(defaultOn);
 				setProvider(&Footswitch::instance(1));
 				break;
 			case TRIGGER_CONTROL_FSW_3_VALUE:
+				Footswitch::instance(2).setOn(defaultOn);
 				setProvider(&Footswitch::instance(2));
 				break;
 			case TRIGGER_CONTROL_ENV_VALUE:
