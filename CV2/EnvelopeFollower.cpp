@@ -14,7 +14,7 @@ EnvelopeFollower::EnvelopeFollower(const int anEnvPin)
   envPin(anEnvPin), value(0), lastSampleUs(0), envState(*this), gainCCValue(DO_NOT_SAVE_VALUE), gainMapMax(1023)
 {
 	theInstance = this;
-	setDefaults(true, false);
+	setDefaults(true, true);
 }
 
 EnvelopeFollower::~EnvelopeFollower()
