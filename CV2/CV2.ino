@@ -20,6 +20,7 @@
 #include "Bus.h"
 #include "AWG.h"
 #include "CPUMeter.h"
+#include "Tempo.h"
 
 #define ARRAYSIZE(x) (sizeof(x)/sizeof(x[0]))
 
@@ -100,6 +101,7 @@ AWG AWGs[2] = {
 };
 
 CPUMeter cpuMeter;
+Tempo tempo;
 
 void setup()
 {
@@ -156,6 +158,8 @@ void setup()
 	
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
 		cvOutputs9V[i].setup();
+	
+	tempo.setup();
 
 	patch.setup();
 	
@@ -204,6 +208,8 @@ void loop()
 	
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
 		cvOutputs9V[i].loop(usNow);
+	
+	tempo.loop(usNow);
 	
 	patch.loop(usNow);
 	
