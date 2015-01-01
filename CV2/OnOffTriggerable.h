@@ -4,13 +4,15 @@
 #include <Arduino.h>
 #include "TriggeredOnOff.h"
 #include "MIDICCListener.h"
+#include "OnOffStateProvider.h"
 
-class OnOffTriggerable : public MIDICCListener
+class OnOffTriggerable : public MIDICCListener, public OnOffStateProvider
 {
 public:
 	OnOffTriggerable(const uint8_t aTriggerInstanceCCValue, const uint8_t aMidiChannel);
 	virtual ~OnOffTriggerable();
 	virtual boolean isTriggered();
+	virtual boolean isOn(); // OnOffStateProvider impl
 	virtual void setup();
 	virtual void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,

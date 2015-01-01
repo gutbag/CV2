@@ -24,6 +24,11 @@ boolean OnOffTriggerable::isTriggered()
 		return trigger->isOn();
 }
 
+boolean OnOffTriggerable::isOn()
+{
+	return isTriggered();
+}
+
 void OnOffTriggerable::setup()
 {
 //	Serial.print("OnOffTriggerable::setup, ch: ");
