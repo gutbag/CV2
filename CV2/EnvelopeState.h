@@ -7,7 +7,7 @@
 
 class EnvelopeFollower;
 
-class EnvelopeState : public OnOffTriggerable, public OnOffStateProvider
+class EnvelopeState : public OnOffTriggerable
 {
 public:
 	EnvelopeState(EnvelopeFollower& anEnv);
