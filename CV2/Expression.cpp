@@ -13,7 +13,8 @@ Expression::Expression(const uint8_t aPin, const uint8_t index, const uint8_t aM
   pin(aPin), value(0), midiChannel(aMidiChannel), invert(false)
 {
 	pInstances[index] = this;
-	setDefaults(true, false);
+	//setDefaults(true, false);
+	setDefaults(true, true);
 }
 
 Expression::~Expression()
