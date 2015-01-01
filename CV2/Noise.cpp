@@ -1,7 +1,5 @@
 #include "Noise.h"
 #include "MIDI.h"
-#include "Footswitch.h"
-#include "EnvelopeFollower.h"
 
 static Noise* pInstances[2] = {NULL, NULL};
 
