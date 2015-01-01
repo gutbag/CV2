@@ -82,3 +82,9 @@ uint8_t Footswitch::getControllerValue(const uint8_t controllerNumber)
 			return DO_NOT_SAVE_VALUE;
 	}
 }
+
+void Footswitch::setOn(const boolean state)
+{
+	if (pOnOff != NULL)
+		pOnOff->setOn(state);
+}
