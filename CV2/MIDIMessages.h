@@ -102,6 +102,7 @@ const uint8_t AWG_PH7_DURATION_CC = 96;
 const uint8_t AWG_PH8_DURATION_CC = 97;
 
 const uint8_t TEMPO_BPM_CC = 98;
+const uint8_t TEMPO_TRIGGER_INSTANCE_CC = 102;
 
 const uint8_t DISPLAY_RESET_CC = 71;
 const uint8_t DISPLAY_TEST_CC = 72;

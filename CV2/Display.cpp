@@ -27,7 +27,7 @@ Display& Display::instance()
 }
 
 Display::Display()
-: usLastChange(0), digitIndex(0), colonFlasher(80000, 100000), apostropheFlasher(80000, 100000)
+: usLastChange(0), usLastMainAltSwitch(0), digitIndex(0), mainAltIndex(MAIN), altSet(false), colonFlasher(80000, 100000), apostropheFlasher(80000, 100000)
 {
     charMap['?'] = 0xCB;
 
@@ -40,7 +40,8 @@ Display::Display()
     charMap[' '] = 0x00;
     charMap['-'] = 0x02;
     charMap['_'] = 0x10;
-    charMap['1'] = 0x60;
+	charMap['1'] = 0x60;
+	charMap['^'] = 0xC4;
     charMap['2'] = 0xDA;
     charMap['3'] = 0xF2;
     charMap['4'] = 0x66;
@@ -119,19 +120,26 @@ void Display::setup()
 	
 	colonFlasher.setup();
 	apostropheFlasher.setup();
+	
+	set("    ");
+	setAlternateDisplay("\0\0\0\0");
 }
 
 void Display::loop(const unsigned long usNow)
 {
-    if ((usNow - usLastChange) >= 3000)
+	if ((usNow - usLastChange) >= 3000)
     {
         digitIndex++;
         if (digitIndex >= sizeof(digits))
             digitIndex = 0;
-        
-        setDigit(digitIndex, digits[digitIndex]);
-//        setDigit(0, 0x80);
-        
+		
+		uint8_t actualMainAltIndex = MAIN;
+		
+		if (mainAltIndex == ALT && digits[digitIndex][ALT] != '\0')
+			actualMainAltIndex = ALT;
+		
+		writeDigit(digitIndex, digits[digitIndex][actualMainAltIndex]);
+		
         usLastChange = usNow;
     }
 	
@@ -141,18 +149,44 @@ void Display::loop(const unsigned long usNow)
 	// TODO: only set if changed
 	setColon(colonFlasher.getState());
 	setApostophe(apostropheFlasher.getState());
+	
+	if (altSet)
+	{
+		mainAltIndex = ALT;
+		usLastMainAltSwitch = usNow;
+		altSet = false;
+	}
+	
+	if (mainAltIndex == ALT && (usNow - usLastMainAltSwitch) >= 3000000) // hit ALT timeout
+	{
+		mainAltIndex = MAIN;
+	}
+
+//	// code to alternate between main and alt every 500ms
+//	if ((usNow - usLastMainAltSwitch) >= 500000)
+//	{
+//		//if (digits[digitIndex][ALT] != '\0') // only switch if there is an ALT digit
+//		{
+//			if (mainAltIndex == MAIN)
+//				mainAltIndex = ALT;
+//			else
+//				mainAltIndex = MAIN;
+//		}
+//		
+//		usLastMainAltSwitch = usNow;
+//	}
 }
 
 // display the 4 chars from s
 void Display::set(const char* s)
 {
-    digits[0] = charMap[s[0]];
-    digits[1] = charMap[s[1]];
-    digits[2] = charMap[s[2]];
-    digits[3] = charMap[s[3]];
+    digits[0][MAIN] = charMap[s[0]];
+    digits[1][MAIN] = charMap[s[1]];
+	digits[2][MAIN] = charMap[s[2]];
+    digits[3][MAIN] = charMap[s[3]];
 }
 
-void Display::setDigit(const uint8_t digitIndex, const uint8_t value)
+void Display::writeDigit(const uint8_t digitIndex, const uint8_t value)
 {
     digitalWrite(DIG_1, HIGH);
     digitalWrite(DIG_2, HIGH);
@@ -192,9 +226,9 @@ void Display::setDecimalPoint(const unsigned int which, const boolean state)
 	if (which < sizeof(digits))
 	{
 		if (state)
-			digits[which] |= 1;
+			digits[which][MAIN] |= 1;
 		else
-			digits[which] &= 0xfe;
+			digits[which][MAIN] &= 0xfe;
 	}
 }
 
@@ -221,6 +255,7 @@ void Display::flashApostrophe()
 void Display::clear()
 {
 	set("    ");
+	setAlternateDisplay("\0\0\0\0");
 	for (unsigned int i=0; i<4; i++)
 		setDecimalPoint(i, false);
 }
@@ -274,6 +309,26 @@ void Display::setPatchNumber(const uint8_t n)
 	set(patchNumber);
 }
 
+// expects 4 chars
+// \0 in any char position to disable alt display
+void Display::setAlternateDisplay(const char* s)
+{
+	digits[0][ALT] = s[0] ? charMap[s[0]] : 0;
+	digits[1][ALT] = s[1] ? charMap[s[1]] : 0;
+	digits[2][ALT] = s[2] ? charMap[s[2]] : 0;
+	digits[3][ALT] = s[3] ? charMap[s[3]] : 0;
+
+	altSet = true;
+}
+
+void Display::setDigit(const unsigned int which, const char c)
+{
+	if (which < sizeof(digits))
+	{
+		digits[which][MAIN] = charMap[c];
+	}
+}
+
 void Display::displayError(const uint8_t errnum)
 {
 	char high = toHexDigit(errnum >> 4);
@@ -298,4 +353,24 @@ void Display::displayNumber(const uint16_t n)
 	};
 	set(number);
 }
+
+// populate s with the string to represent the given value n
+void Display::format(const uint16_t n, char* s)
+{
+	uint16_t thousands = n/1000;
+	uint16_t hundreds = (n - thousands*1000)/100;
+	uint16_t tens = (n - thousands*1000 - hundreds*100)/10;
+	uint16_t units = n - thousands*1000 - hundreds*100 - tens*10;
+	
+	for (uint8_t i=0; i<4; i++)
+		s[i] = '\0';
+	
+	s[3] = '0' + units;
+	s[2] = '0' + tens;
+	s[1] = '0' + hundreds;
+	
+	if (thousands > 0) // TEMP - need proper handling of padding etc.
+		s[0] = '0' + thousands;
+}
+
 
