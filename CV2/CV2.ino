@@ -21,6 +21,7 @@
 #include "AWG.h"
 #include "CPUMeter.h"
 #include "Tempo.h"
+#include "PitchFork.h"
 
 #define ARRAYSIZE(x) (sizeof(x)/sizeof(x[0]))
 
@@ -102,13 +103,14 @@ AWG AWGs[2] = {
 
 CPUMeter cpuMeter;
 Tempo tempo;
+PitchFork pitchfork(0);
 
 void setup()
 {
 	Serial.begin(115200);
-	
+
 	cpuMeter.setup();
-	
+
 	eeprom.setup();
 	display.setup();
 	midi.setup();
@@ -118,55 +120,56 @@ void setup()
 		footswitches[i].setup();
 	patchDownSwitch.setup();
 	patchUpSwitch.setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(exprs); i++)
 		exprs[i].setup();
 
 	envelopeFollower.setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(triggers); i++)
 		triggers[i].setup();
 
 	for (uint8_t i=0; i<ARRAYSIZE(lfos); i++)
 		lfos[i].setup();
-	
+
 	lfos[0].addSlave(&lfos[1]);
 
 	for (uint8_t i=0; i<ARRAYSIZE(ramps); i++)
 		ramps[i].setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(noises); i++)
 		noises[i].setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(AWGs); i++)
 		AWGs[i].setup();
-	
+
 	displayTest.enable(false);
 	displayTest.setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(freezes); i++)
 		freezes[i].setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
 		optos[i].setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(buses); i++)
 		buses[i].setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].setup();
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
 		cvOutputs9V[i].setup();
-	
+
 	tempo.setup();
+	pitchfork.setup();
 
 	patch.setup();
-	
+
 	pinMode(D_SPARE_1, INPUT_PULLUP);
 	pinMode(D_SPARE_2, INPUT_PULLUP);
 	pinMode(D_SPARE_3, INPUT_PULLUP);
-	
+
 	// for now, enable permanently
 	eeprom.writeEnable(true);
 }
@@ -175,8 +178,8 @@ boolean tmp = false;
 
 void loop()
 {
-    long usNow = micros();
-    display.loop(usNow);
+	long usNow = micros();
+	display.loop(usNow);
 	displayTest.loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(footswitches); i++)
 		footswitches[i].loop(usNow);
@@ -202,19 +205,20 @@ void loop()
 		optos[i].loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(buses); i++)
 		buses[i].loop(usNow);
-	   
+
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs5V); i++)
 		cvOutputs5V[i].loop(usNow);
-	
+
 	for (uint8_t i=0; i<ARRAYSIZE(cvOutputs9V); i++)
 		cvOutputs9V[i].loop(usNow);
-	
+
 	tempo.loop(usNow);
-	
+	pitchfork.loop(usNow);
+
 	patch.loop(usNow);
-	
+
 	cpuMeter.loop(usNow);
-	
+
 //	digitalWrite(FSW_LED1, tmp ? HIGH : LOW);
 //	tmp = !tmp;
 }
