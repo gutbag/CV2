@@ -8,7 +8,7 @@
 #include "EnvelopeState.h"
 #include "OnOffTriggerable.h"
 
-class EnvelopeFollower : public ValueProvider, public OnOffStateProvider, public OnOffTriggerable
+class EnvelopeFollower : public ValueProvider, public OnOffTriggerable
 {
 public:
 	static EnvelopeFollower& instance();
@@ -24,7 +24,7 @@ public:
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
 	uint8_t getControllerValue(const uint8_t controllerNumber);
-	boolean isOn();
+	//boolean isOn();
 	EnvelopeState& getEnvelopeState();
 private:
 	static const unsigned long SAMPLE_PERIOD_US = 1000;
