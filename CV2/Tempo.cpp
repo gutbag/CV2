@@ -109,14 +109,14 @@ void Tempo::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t Tempo::getControllerValue(const uint8_t controllerNumber)
+uint8_t Tempo::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
 		case TEMPO_BPM_CC:
 			return bpm - MIN_BPM;
 		default:
-			return OnOffTriggerable::getControllerValue(controllerNumber);
+			return OnOffTriggerable::getControllerValue(channel, controllerNumber);
 	}
 }
 

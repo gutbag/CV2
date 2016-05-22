@@ -18,7 +18,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 								  const uint8_t controllerNumber,
 								  const uint8_t value);
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 	void setMinimum(const uint8_t value);
 	void setMaximum(const uint8_t value);
 	uint16_t getMinimum();

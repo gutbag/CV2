@@ -26,7 +26,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 private:
 	static const uint16_t HEADER_START_ADDR = 0x0; // magic number here, followed by header
 	static const uint16_t PATCH_START_ADDR = 0x400; // the first patch's MIDI msgs
@@ -60,7 +60,7 @@ private:
 	class PatchInfo {
 	public:
 		PatchInfo() : numCCMessages(0), checksum(0) {}
-		uint8_t numCCMessages; // not bytes, 0 if patch is unused
+		uint16_t numCCMessages; // not bytes, 0 if patch is unused
 		uint16_t checksum;
 	};
 	class EEPROMHeader {

@@ -25,7 +25,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 								  const uint8_t controllerNumber,
 								  const uint8_t value);
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 	void clear();
 	
 	// TODO - should this be here?

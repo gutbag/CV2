@@ -17,7 +17,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 	void setOn(const boolean state);
 private:
 	void setLed(const boolean on, const boolean force=false);

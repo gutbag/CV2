@@ -290,7 +290,7 @@ void MIDI::transmitCC(const uint8_t channel, const uint8_t controllerNumber, con
 }
 
 // return true if the buffer is complete
-boolean MIDI::getListenerSettingMessages(uint8_t* buffer, const unsigned int maxLength, unsigned int& length)
+boolean MIDI::getListenerSettingMessages(uint8_t* buffer, const uint16_t maxLength, uint16_t& length)
 {
 	length = 0;
 	
@@ -301,7 +301,7 @@ boolean MIDI::getListenerSettingMessages(uint8_t* buffer, const unsigned int max
 			MIDICCListener* pListener = ccListeners[ch][i];
 			if (pListener != NULL)
 			{
-				uint8_t value = pListener->getControllerValue(i);
+				uint8_t value = pListener->getControllerValue(ch, i);
 				if (value != DO_NOT_SAVE_VALUE)
 				{
 					buffer[length++] = MIDI_CONTROL_CHANGE | ch;

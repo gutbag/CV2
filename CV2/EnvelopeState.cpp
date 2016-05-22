@@ -142,7 +142,7 @@ void EnvelopeState::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t EnvelopeState::getControllerValue(const uint8_t controllerNumber)
+uint8_t EnvelopeState::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
@@ -153,7 +153,7 @@ uint8_t EnvelopeState::getControllerValue(const uint8_t controllerNumber)
 		case ENV_STATE_THRESHOLD_SENSITIVITY_CC:
 			return sensitivity;
 		default:
-			return OnOffTriggerable::getControllerValue(controllerNumber);
+			return OnOffTriggerable::getControllerValue(channel, controllerNumber);
 	}
 }
 

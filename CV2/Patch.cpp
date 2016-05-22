@@ -24,11 +24,11 @@ Patch::Patch(Switch& aDownSwitch, Switch& anUpSwitch)
 //	EEPROM::instance().write(3, (uint8_t*)&selectedPatch, sizeof(selectedPatch));
 //
 //	// fake info for first two patches
-//	uint8_t numCCMessages = 1;
-//	EEPROM::instance().write(4, (uint8_t*)&numCCMessages, sizeof(numCCMessages));
-//	EEPROM::instance().write(5, (uint8_t*)&checksum, sizeof(checksum));
-//	EEPROM::instance().write(7, (uint8_t*)&numCCMessages, sizeof(numCCMessages));
-//	EEPROM::instance().write(8, (uint8_t*)&checksum, sizeof(checksum));
+//	uint16_t numCCMessages = 1;
+//	EEPROM::instance().write(4, (uint16_t*)&numCCMessages, sizeof(numCCMessages));
+//	EEPROM::instance().write(5, (uint16_t*)&checksum, sizeof(checksum));
+//	EEPROM::instance().write(7, (uint16_t*)&numCCMessages, sizeof(numCCMessages));
+//	EEPROM::instance().write(8, (uint16_t*)&checksum, sizeof(checksum));
 //
 //	uint8_t cc0[] = {0xb0, CV_OUTPUT_SOURCE_CC, CV_OUTPUT_SOURCE_FIXED_VALUE};
 //	EEPROM::instance().write(PATCH_START_ADDR + MAX_PATCH_SIZE * 0, cc0, 3);
@@ -108,7 +108,7 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 	}
 }
 
-uint8_t Patch::getControllerValue(const uint8_t controllerNumber)
+uint8_t Patch::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	return DO_NOT_SAVE_VALUE;
 }
@@ -165,8 +165,8 @@ void Patch::loop(const unsigned long usNow)
 			else if (downPressed)
 			{
 				Serial.println("--> down");
-				Serial.print(MIDI::instance().getMessageCount(false), DEC);
-				Serial.println(" msgs");
+//				Serial.print(MIDI::instance().getMessageCount(false), DEC);
+//				Serial.println(" msgs");
 				
 				uint8_t nextPatchNumber = getNextPatchNumber(patchNumber, false);
 				if (nextPatchNumber != patchNumber)
@@ -188,10 +188,10 @@ void Patch::loop(const unsigned long usNow)
 			else if (upPressed)
 			{
 				Serial.println("--> up");
-				Serial.print(MIDI::instance().getMessageCount(false), DEC);
-				Serial.println(" msgs");
+//				Serial.print(MIDI::instance().getMessageCount(false), DEC);
+//				Serial.println(" msgs");
 				
-				dumpEEPROMHeader();
+				//dumpEEPROMHeader();
 
 				uint8_t nextPatchNumber = getNextPatchNumber(patchNumber, true);
 				if (nextPatchNumber != patchNumber)
@@ -405,7 +405,7 @@ boolean Patch::loadPatch(const uint8_t n)
 {
 	boolean ok = true;
 	
-	if (1)
+	if (0)
 	{
 		Serial.print("Patch::loadPatch ");
 		Serial.print(n, HEX);
@@ -447,7 +447,7 @@ boolean Patch::loadPatch(const uint8_t n)
 	else // get the default MIDI messages and transmit
 	{
 		uint8_t buffer[MAX_PATCH_SIZE];
-		unsigned int length = 0;
+		uint16_t length = 0;
 		
 		boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
 		MIDI::instance().processBuffer(buffer, length, transmitMIDI);
@@ -475,7 +475,7 @@ void Patch::saveHeader()
 		eepromHeader.magicNumber = MAGIC_NUMBER;
 		eepromHeader.checksum = headerChecksum;
 		
-		if (1)
+		if (0)
 		{
 			Serial.print("Patch::saveHeader header checksum ");
 			Serial.print(eepromHeader.checksum, HEX);
@@ -512,11 +512,12 @@ void Patch::save()
 	//dumpEEPROMHeader();
 
 	uint8_t buffer[MAX_PATCH_SIZE];
-	unsigned int length = 0;
+	//unsigned int length = 0;
+	uint16_t length = 0;
 	
 	boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
 
-	if (1)
+	if (0)
 	{
 		Serial.print(length, DEC);
 		Serial.print(" bytes to save, space available: ");
@@ -545,7 +546,7 @@ void Patch::save()
 	saveHeader();
 	
 	//dumpBuffer(buffer, length);
-	dumpEEPROMHeader();
+	//dumpEEPROMHeader();
 	
 	if (0)
 	{
@@ -674,7 +675,7 @@ void Patch::erase(const uint8_t value)
 void Patch::refresh()
 {
 	uint8_t buffer[MAX_PATCH_SIZE];
-	unsigned int length = 0;
+	uint16_t length = 0;
 	
 	boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
 	MIDI::instance().processBuffer(buffer, length, true);
@@ -717,7 +718,7 @@ void Patch::dumpBuffer(const uint8_t* buffer, const uint16_t length)
 		if (buffer[i] < 0x10) // pad with 0
 			Serial.print("0");
 		Serial.print(buffer[i++], HEX);
-		Serial.print(" ");
+		//Serial.print(" ");
 		if (i % 16 == 0)
 			Serial.println();
 	}
@@ -740,7 +741,7 @@ uint16_t Patch::calcHeaderChecksum()
 	return calcChecksum((uint8_t*)&(eepromHeader.displayBrightness), sizeof(eepromHeader) - sizeof(eepromHeader.checksum));
 }
 
-
+/*
 void Patch::dumpEeprom()
 {
 	Serial.println("Patch::dumpEeprom()");
@@ -819,7 +820,32 @@ void Patch::dumpEeprom()
 //	Serial1.write(0xF7); // sysex end
 //	Serial1.flush();
 }
+*/
 
+// ascii hex
+void Patch::dumpEeprom()
+{
+	Serial.flush();
+	
+	uint8_t blockSize = 64;
+	uint8_t buffer[blockSize];
+	
+	uint32_t address = 0;
+	while (address < 0xffff)
+	{
+		if (address % 1024 == 0)
+		{
+			Serial.print(address, HEX);
+			Serial.println();
+		}
+		
+		EEPROM::instance().read(address, buffer, blockSize);
+		dumpBuffer(buffer, blockSize);
+		address += blockSize;
+	}
+
+	Serial.flush();
+}
 
 /*
  void Patch::dumpEeprom()

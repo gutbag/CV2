@@ -17,7 +17,7 @@ public:
 	virtual void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
-	virtual uint8_t getControllerValue(const uint8_t controllerNumber);
+	virtual uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 	void setDefaults(const boolean aNullTriggerOnState, const boolean aTriggerDefaultOn);
 private:
 	TriggeredOnOff* trigger;

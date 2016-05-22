@@ -125,7 +125,7 @@ void Noise::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t Noise::getControllerValue(const uint8_t controllerNumber)
+uint8_t Noise::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
@@ -134,6 +134,6 @@ uint8_t Noise::getControllerValue(const uint8_t controllerNumber)
 //		case NOISE_SMOOTHING_CC:
 //			return amplitudeCCValue;
 		default:
-			return OnOffTriggerable::getControllerValue(controllerNumber);
+			return OnOffTriggerable::getControllerValue(channel, controllerNumber);
 	}
 }

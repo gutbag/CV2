@@ -86,14 +86,14 @@ void EnvelopeFollower::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t EnvelopeFollower::getControllerValue(const uint8_t controllerNumber)
+uint8_t EnvelopeFollower::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
 		case ENV_FOLLOWER_GAIN_CC:
 			return gainCCValue;
 		default:
-			return OnOffTriggerable::getControllerValue(controllerNumber);
+			return OnOffTriggerable::getControllerValue(channel, controllerNumber);
 	}
 }
 

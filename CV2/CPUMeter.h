@@ -14,7 +14,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 private:
 	static const unsigned long MEAS_PERIOD_US = 1000000; // 1s
 //	static const unsigned long MAX_COUNTS = 220000; // TODO: the number of counts for 0% utilisation

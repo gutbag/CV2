@@ -1668,7 +1668,7 @@ void LFO::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t LFO::getControllerValue(const uint8_t controllerNumber)
+uint8_t LFO::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
@@ -1677,6 +1677,6 @@ uint8_t LFO::getControllerValue(const uint8_t controllerNumber)
 		case LFO_PHASE_OFFSET_CC:
 			return phaseOffsetIndex;
 		default:
-			return OnOffTriggerable::getControllerValue(controllerNumber);
+			return OnOffTriggerable::getControllerValue(channel, controllerNumber);
 	}
 }

@@ -112,6 +112,7 @@ const uint8_t CPU_METER_CC = 80;
 // TODO: could move above patch-related CCs to this (as unique values)
 const uint8_t PATCH_CONTROL_CC = 81;
 
+// values sent on channel 0, feature enable/disable on channel 1
 const uint8_t PITCHFORK_TRIGGER_INSTANCE_CC = 82;
 const uint8_t PITCHFORK_SHIFT_CC = 83;
 const uint8_t PITCHFORK_LATCH_CC = 84;

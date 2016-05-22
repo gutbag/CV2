@@ -311,7 +311,7 @@ void AWG::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t AWG::getControllerValue(const uint8_t controllerNumber)
+uint8_t AWG::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
@@ -364,6 +364,6 @@ uint8_t AWG::getControllerValue(const uint8_t controllerNumber)
 		case AWG_PH8_DURATION_CC:
 			return phases[7].duration;
 		default:
-			return OnOffTriggerable::getControllerValue(controllerNumber);
+			return OnOffTriggerable::getControllerValue(channel, controllerNumber);
 	}
 }

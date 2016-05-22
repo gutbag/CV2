@@ -17,7 +17,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 private:
 	static const uint8_t MIN_BPM = 59; // actually one below the min - this value disabled tempo display
 	static const unsigned int BEAT_DISPLAY_INDEX = 0;

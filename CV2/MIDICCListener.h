@@ -15,7 +15,7 @@ public:
 	 * set in the return value, it should not be saved (TODO: review whether
 	 * this should be controlled separately).
 	 */
-	virtual uint8_t getControllerValue(const uint8_t controllerNumber) = 0;
+	virtual uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber) = 0;
 };
 
 #endif

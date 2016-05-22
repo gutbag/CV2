@@ -163,7 +163,7 @@ void CPUMeter::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t CPUMeter::getControllerValue(const uint8_t controllerNumber)
+uint8_t CPUMeter::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	// nothing is saved
 	return DO_NOT_SAVE_VALUE;

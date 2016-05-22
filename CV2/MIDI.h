@@ -21,7 +21,7 @@ public:
 	uint16_t processBuffer(const uint8_t* pBuffer, const uint16_t length, const boolean transmit = false);
 	unsigned int getMessageCount(boolean reset);
 	void resetMessageCount();
-	boolean getListenerSettingMessages(uint8_t* buffer, const unsigned int maxLength, unsigned int& length);
+	boolean getListenerSettingMessages(uint8_t* buffer, const uint16_t maxLength, uint16_t& length);
 private:
 	static const unsigned int BUFFER_SIZE = 256;
 	static const unsigned long IGNORE_RX_PERIOD_MS = 500;

@@ -19,7 +19,7 @@ public:
 								  const uint8_t controllerNumber,
 								  const uint8_t value);
 	
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 private:
 	EnvelopeFollower& env;
 	uint16_t lowHighThreshold;

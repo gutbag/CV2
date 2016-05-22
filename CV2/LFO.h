@@ -19,7 +19,7 @@ public:
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
-	uint8_t getControllerValue(const uint8_t controllerNumber);
+	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 	void addSlave(LFO* pLFO);
 	void setSampleIndex(const uint16_t i); // TODO: generalise? interface class?
 private:

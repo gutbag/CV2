@@ -62,12 +62,12 @@ Freeze freezes[2] = {
 	{OPTO_1, 0},
 	{OPTO_2, 1},
 };
-Opto optos[4] = {
-	{0, OPTO_3},
-	{1, OPTO_4},
-	{2, OPTO_5},
-	{3, OPTO_6}
-};
+//Opto optos[4] = {
+//	{0, OPTO_3},
+//	{1, OPTO_4},
+//	{2, OPTO_5},
+//	{3, OPTO_6}
+//};
 LFO lfos[2] = {
 	{0, 0},
 	{1, 1}
@@ -103,12 +103,12 @@ AWG AWGs[2] = {
 
 CPUMeter cpuMeter;
 Tempo tempo;
-PitchFork pitchfork(0);
+PitchFork pitchfork;
 
 void setup()
 {
 	Serial.begin(115200);
-
+	
 	cpuMeter.setup();
 
 	eeprom.setup();
@@ -149,8 +149,8 @@ void setup()
 	for (uint8_t i=0; i<ARRAYSIZE(freezes); i++)
 		freezes[i].setup();
 
-	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
-		optos[i].setup();
+//	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
+//		optos[i].setup();
 
 	for (uint8_t i=0; i<ARRAYSIZE(buses); i++)
 		buses[i].setup();
@@ -175,6 +175,7 @@ void setup()
 }
 
 boolean tmp = false;
+boolean optoOn = false;
 
 void loop()
 {
@@ -201,8 +202,8 @@ void loop()
 		AWGs[i].loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(freezes); i++)
 		freezes[i].loop(usNow);
-	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
-		optos[i].loop(usNow);
+//	for (uint8_t i=0; i<ARRAYSIZE(optos); i++)
+//		optos[i].loop(usNow);
 	for (uint8_t i=0; i<ARRAYSIZE(buses); i++)
 		buses[i].loop(usNow);
 

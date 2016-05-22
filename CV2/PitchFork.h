@@ -5,11 +5,12 @@
 #include "MIDICCListener.h"
 #include "MIDIMessages.h"
 #include "OnOffTriggerable.h"
+//#include "SoftMIDIOut.h"
 
 class PitchFork : public OnOffTriggerable
 {
 public:
-	PitchFork(const uint8_t aMidiChannel);
+	PitchFork();
 	virtual ~PitchFork();
 	void setup();
 	void loop(const unsigned long usNow);
@@ -22,17 +23,23 @@ public:
 	 * set in the return value, it should not be saved (TODO: review whether
 	 * this should be controlled separately).
 	 */
-	virtual uint8_t getControllerValue(const uint8_t controllerNumber);
+	virtual uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 private:
-	void txCCMessage(const uint8_t cc, const uint8_t value) const;
+	void txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const;
 	
 	uint8_t shift;
-	boolean latchEnabled;
+	boolean latch;
 	typedef enum {UP, DOWN, BOTH } Octave;
 	Octave octave;
 	uint8_t blend;
-	uint8_t midiChannel;
 	boolean triggeredState;
+//	SoftMIDIOut midiOut;
+	boolean shiftEnabled;
+	boolean latchEnabled;
+	boolean octaveEnabled;
+	typedef enum {LOCAL, MIDI, CV} BlendControl;
+	BlendControl blendControl;
+	boolean footswitchEnabled;
 };
 
 #endif // __CV2__PitchFork__

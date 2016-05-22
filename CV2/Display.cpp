@@ -281,7 +281,7 @@ void Display::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t Display::getControllerValue(const uint8_t controllerNumber)
+uint8_t Display::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	return DO_NOT_SAVE_VALUE; // nothing to save
 }

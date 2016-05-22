@@ -143,7 +143,7 @@ void Bus::processCCMessage(const uint8_t channel,
 	}
 }
 
-uint8_t Bus::getControllerValue(const uint8_t controllerNumber)
+uint8_t Bus::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
 {
 	switch (controllerNumber)
 	{
@@ -154,6 +154,6 @@ uint8_t Bus::getControllerValue(const uint8_t controllerNumber)
 //		case BUS_MIX_CC:
 //			return mixCCValue;
 		default:
-			return OnOffTriggerable::getControllerValue(controllerNumber);
+			return OnOffTriggerable::getControllerValue(channel, controllerNumber);
 	}
 }
