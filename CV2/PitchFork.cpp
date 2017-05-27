@@ -1,68 +1,6 @@
 #include "PitchFork.h"
 #include "MIDI.h"
 
-/*
- CC n values:
-  footswitch off
-  footswitch on
-  shift r/c disabled
-  shift r/c enabled
-  shift 0
-  shift 1
-  shift 2
-  shift 3
-  shift 4
-  shift 5
-  shift 6
-  shift 7
-  shift 8
-  shift 9
-  shift 10
-  latch r/c enable
-  latch on
-  latch off (momentary)
-  oct r/c disable
-  oct r/c enable
-  oct up
-  oct down
-  oct both
-  blend r/c disabled
-  blend r/c enabled
- */
-
-// CV2 values for CC 
-/*
- enum
-{
-	FOOTSWITCH_OFF,
-	FOOTSWITCH_ON,
-	SHIFT_RC_DISABLE,
-	SHIFT_RC_ENABLE,
-	SHIFT_0,
-	SHIFT_1,
-	SHIFT_2,
-	SHIFT_3,
-	SHIFT_4,
-	SHIFT_5,
-	SHIFT_6,
-	SHIFT_7,
-	SHIFT_8,
-	SHIFT_9,
-	SHIFT_10,
-	LATCH_RC_DISABLE,
-	LATCH_RC_ENABLE,
-	LATCH_ON,
-	LATCH_OFF,
-	OCTAVE_RC_DISABLE,
-	OCTAVE_RC_ENABLE,
-	OCTAVE_UP,
-	OCTAVE_DOWN,
-	OCTAVE_BOTH,
-	BLEND_RC_DISABLE,
-	BLEND_RC_ENABLE
-};
- */
-
 // the CC numbers implemented in the Pitch Fork Remote Control firmware
 enum
 {
@@ -84,7 +22,9 @@ PitchFork::PitchFork()
   shiftEnabled(false),
   latchEnabled(true),
   octaveEnabled(false),
-  blendControl(LOCAL)
+  blendControl(LOCAL),
+  startupUs(0),
+  startupTxDone(false)
 {
 	triggeredState = isTriggered();
 }
@@ -107,13 +47,18 @@ void PitchFork::setup()
 	MIDI::instance().setCCListener(this, 1, PITCHFORK_BLEND_CC);
 	
 	Serial2.begin(31250);
-//	midiOut.setup();
 
 	OnOffTriggerable::setup();
 }
 
 void PitchFork::loop(const unsigned long usNow)
 {
+	if ( !startupTxDone && usNow - startupUs >= STARTUP_TX_DELAY_US)
+	{
+		txAllValues();
+		startupTxDone = true;
+	}
+	
 	boolean newTriggeredState = isTriggered();
 	
 	if (footswitchEnabled)
@@ -126,8 +71,6 @@ void PitchFork::loop(const unsigned long usNow)
 			Serial.println(triggeredState ? 1: 0, DEC);
 		}
 	}
-	
-//	midiOut.loop(usNow);
 }
 
 void PitchFork::txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const
@@ -138,6 +81,20 @@ void PitchFork::txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t va
 	Serial2.write(ch | MIDI_CONTROL_CHANGE);
 	Serial2.write(cc);
 	Serial2.write(value);
+}
+
+void PitchFork::txAllValues() const
+{
+	txCCMessage(0, RC_SHIFT_CC, shift);
+	txCCMessage(1, RC_SHIFT_CC, shiftEnabled ? 1 : 0);
+	txCCMessage(0, RC_LATCH_CC, latch ? 1 : 0);
+	txCCMessage(1, RC_LATCH_CC, latchEnabled ? 1 : 0);
+	txCCMessage(0, RC_OCTAVE_CC, (uint8_t)octave);
+	txCCMessage(1, RC_OCTAVE_CC, octaveEnabled ? 1 : 0);
+	txCCMessage(0, RC_BLEND_CC, blend);
+	txCCMessage(1, RC_BLEND_CC, (uint8_t)blendControl);
+	// no FSW value
+	txCCMessage(1, RC_FOOTSWITCH_CC, footswitchEnabled ? 1 : 0);
 }
 
 void PitchFork::processCCMessage(const uint8_t channel,
