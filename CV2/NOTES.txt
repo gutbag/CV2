@@ -1,4 +1,16 @@
-Wire.h
-======
+Change BUFFER_LENGTH from 32 to (128 + 2) in latest version of Wire.h, e.g.:
 
-Change BUFFER_LENGTH from 32 to (128 + 2)
+/Users/marklamb/Library/Arduino15/packages/arduino/hardware/sam/1.6.11/libraries/Wire/src/Wire.h
+
+Need to do this when Arduino board package updated.
+
+A compile-time check in EEPROM.cpp should enforce this
+
+-----------------
+If embedXcode updated, if the project doesn't build, create a new embedXcode project, build it and copy the following dirs to this project:
+
+Makefiles
+Configurations
+Utilities
+
+Compare main.cpp in the new project with the old one, copy if changed.
