@@ -16,6 +16,11 @@ EEPROM::EEPROM()
 : lastWriteUs(0)
 #endif
 {
+	// check that the Arduino board package has been modified with the larger buffer
+#if BUFFER_LENGTH != (128 + 2)
+#error "BUFFER_LENGTH must be (128+2) - change /Users/marklamb/Library/Arduino15/packages/arduino/hardware/sam/?.?.?/libraries/Wire/src/Wire.h"
+#endif
+	
 	pInstance = this;
 	
 #if defined RAM_EEPROM

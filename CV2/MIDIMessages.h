@@ -119,6 +119,18 @@ const uint8_t PITCHFORK_LATCH_CC = 84;
 const uint8_t PITCHFORK_OCTAVE_CC = 85; // up/down/both
 const uint8_t PITCHFORK_BLEND_CC = 86;
 
+// Axoloti CCs - prefixed with CV2_ to differentiate them from the Axo's own CCs
+const uint8_t CV2_AXOLOTI_PATCH_NO_CC = 87; // ch 0
+const uint8_t CV2_AXOLOTI_PRESET_NO_CC = 88; // ch 0
+const uint8_t CV2_AXOLOTI_VAR_SOURCE_CC = 105;
+// multi-channel CCs
+const uint8_t CV2_AXOLOTI_VAR_LOW_MIN_CC = 89; // SourceValueProvider CCs
+const uint8_t CV2_AXOLOTI_VAR_LOW_MAX_CC = 99;
+const uint8_t CV2_AXOLOTI_VAR_LOW_SOURCE_CC = 100;
+const uint8_t CV2_AXOLOTI_VAR_HIGH_MIN_CC = 101; // SourceValueProvider CCs
+const uint8_t CV2_AXOLOTI_VAR_HIGH_MAX_CC = 103;
+const uint8_t CV2_AXOLOTI_VAR_HIGH_SOURCE_CC = 104;
+
 // the values assigned to source types -  enum?
 const uint8_t CV_OUTPUT_SOURCE_FIXED_VALUE = 1;
 const uint8_t CV_OUTPUT_SOURCE_LFO1_VALUE = 2;

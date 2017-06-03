@@ -8,7 +8,12 @@ enum
 	RC_SHIFT_CC = 1,
 	RC_LATCH_CC = 2,
 	RC_OCTAVE_CC = 3,
-	RC_BLEND_CC = 4
+	RC_BLEND_CC = 4,
+	RC_BLEND_CONTROL_TYPE_CC = 5,
+	RC_LATCH_ENABLE_CC = 6,
+	RC_OCTAVE_ENABLE_CC = 7,
+	RC_SHIFT_ENABLE_CC = 8,
+	RC_FOOTSWITCH_ENABLE_CC = 9
 };
 
 PitchFork::PitchFork()
@@ -46,8 +51,6 @@ void PitchFork::setup()
 	MIDI::instance().setCCListener(this, 1, PITCHFORK_OCTAVE_CC);
 	MIDI::instance().setCCListener(this, 1, PITCHFORK_BLEND_CC);
 	
-	Serial2.begin(31250);
-
 	OnOffTriggerable::setup();
 }
 
@@ -66,7 +69,7 @@ void PitchFork::loop(const unsigned long usNow)
 		if (newTriggeredState != triggeredState)
 		{
 			triggeredState = newTriggeredState;
-			txCCMessage(0, RC_FOOTSWITCH_CC, triggeredState ? 1 : 0);
+			txCCMessage(MIDI_CHANNEL, RC_FOOTSWITCH_CC, triggeredState ? 1 : 0);
 			Serial.print("FSW trig: ");
 			Serial.println(triggeredState ? 1: 0, DEC);
 		}
@@ -85,16 +88,16 @@ void PitchFork::txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t va
 
 void PitchFork::txAllValues() const
 {
-	txCCMessage(0, RC_SHIFT_CC, shift);
-	txCCMessage(1, RC_SHIFT_CC, shiftEnabled ? 1 : 0);
-	txCCMessage(0, RC_LATCH_CC, latch ? 1 : 0);
-	txCCMessage(1, RC_LATCH_CC, latchEnabled ? 1 : 0);
-	txCCMessage(0, RC_OCTAVE_CC, (uint8_t)octave);
-	txCCMessage(1, RC_OCTAVE_CC, octaveEnabled ? 1 : 0);
-	txCCMessage(0, RC_BLEND_CC, blend);
-	txCCMessage(1, RC_BLEND_CC, (uint8_t)blendControl);
-	// no FSW value
-	txCCMessage(1, RC_FOOTSWITCH_CC, footswitchEnabled ? 1 : 0);
+	txCCMessage(MIDI_CHANNEL, RC_SHIFT_CC, shift);
+	txCCMessage(MIDI_CHANNEL, RC_SHIFT_ENABLE_CC, shiftEnabled ? 1 : 0);
+	txCCMessage(MIDI_CHANNEL, RC_LATCH_CC, latch ? 1 : 0);
+	txCCMessage(MIDI_CHANNEL, RC_LATCH_ENABLE_CC, latchEnabled ? 1 : 0);
+	txCCMessage(MIDI_CHANNEL, RC_OCTAVE_CC, (uint8_t)octave);
+	txCCMessage(MIDI_CHANNEL, RC_OCTAVE_ENABLE_CC, octaveEnabled ? 1 : 0);
+	txCCMessage(MIDI_CHANNEL, RC_BLEND_CC, blend);
+	txCCMessage(MIDI_CHANNEL, RC_BLEND_CONTROL_TYPE_CC, (uint8_t)blendControl);
+	// no FSW value support (yet?)
+	txCCMessage(MIDI_CHANNEL, RC_FOOTSWITCH_ENABLE_CC, footswitchEnabled ? 1 : 0);
 }
 
 void PitchFork::processCCMessage(const uint8_t channel,
@@ -109,24 +112,24 @@ void PitchFork::processCCMessage(const uint8_t channel,
 			if (channel == 0)
 			{
 				shift = value; // shift ID 0-11
-				txCCMessage(0, RC_SHIFT_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_SHIFT_CC, value);
 			}
 			else if (channel == 1) // feature enable/disable
 			{
 				shiftEnabled = value > 0 ? true : false;
-				txCCMessage(1, RC_SHIFT_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_SHIFT_ENABLE_CC, value);
 			}
 			break;
 		case PITCHFORK_LATCH_CC:
 			if (channel == 0)
 			{
 				latch = value ? true : false;
-				txCCMessage(0, RC_LATCH_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_LATCH_CC, value);
 			}
 			else if (channel == 1) // feature enable/disable
 			{
 				latchEnabled = value ? true : false;
-				txCCMessage(1, RC_LATCH_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_LATCH_ENABLE_CC, value);
 			}
 			break;
 		case PITCHFORK_OCTAVE_CC:
@@ -147,24 +150,24 @@ void PitchFork::processCCMessage(const uint8_t channel,
 					octave = BOTH;
 					break;
 				}
-				txCCMessage(0, RC_OCTAVE_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_OCTAVE_CC, value);
 			}
 			else if (channel == 1) // feature enable/disable
 			{
 				octaveEnabled = value ? true : false;
-				txCCMessage(1, RC_OCTAVE_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_OCTAVE_ENABLE_CC, value);
 			}
 			break;
 		case PITCHFORK_BLEND_CC:
 			if (channel == 0)
 			{
 				blend = value;
-				txCCMessage(0, RC_BLEND_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_BLEND_CC, value);
 			}
 			else if (channel == 1) // feature enable/disable
 			{
 				blendControl = (BlendControl)value;
-				txCCMessage(1, RC_BLEND_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_BLEND_CONTROL_TYPE_CC, value);
 			}
 			break;
 		case PITCHFORK_TRIGGER_INSTANCE_CC:
@@ -175,7 +178,7 @@ void PitchFork::processCCMessage(const uint8_t channel,
 			else if (channel == 1) // feature enable/disable
 			{
 				footswitchEnabled = value ? true : false;
-				txCCMessage(1, RC_FOOTSWITCH_CC, value);
+				txCCMessage(MIDI_CHANNEL, RC_FOOTSWITCH_ENABLE_CC, value);
 			}
 			break;
 		default:

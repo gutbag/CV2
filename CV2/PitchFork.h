@@ -27,6 +27,7 @@ public:
 private:
 	
 	static const unsigned long STARTUP_TX_DELAY_US = 1000000; // 1s
+	static const uint8_t MIDI_CHANNEL = 0; // the channel for messages *to* the Pitchfork
 	
 	void txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const;
 	void txAllValues() const;

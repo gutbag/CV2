@@ -22,6 +22,7 @@
 #include "CPUMeter.h"
 #include "Tempo.h"
 #include "PitchFork.h"
+#include "Axoloti.h"
 
 #define ARRAYSIZE(x) (sizeof(x)/sizeof(x[0]))
 
@@ -104,10 +105,12 @@ AWG AWGs[2] = {
 CPUMeter cpuMeter;
 Tempo tempo;
 PitchFork pitchfork;
+Axoloti axoloti;
 
 void setup()
 {
 	Serial.begin(115200);
+	Serial2.begin(31250); // for MIDI output
 	
 	cpuMeter.setup();
 
@@ -163,6 +166,7 @@ void setup()
 
 	tempo.setup();
 	pitchfork.setup();
+	axoloti.setup();
 
 	patch.setup();
 
@@ -173,9 +177,6 @@ void setup()
 	// for now, enable permanently
 	eeprom.writeEnable(true);
 }
-
-boolean tmp = false;
-boolean optoOn = false;
 
 void loop()
 {
@@ -215,11 +216,9 @@ void loop()
 
 	tempo.loop(usNow);
 	pitchfork.loop(usNow);
+	axoloti.loop(usNow);
 
 	patch.loop(usNow);
 
 	cpuMeter.loop(usNow);
-
-//	digitalWrite(FSW_LED1, tmp ? HIGH : LOW);
-//	tmp = !tmp;
 }

@@ -6,8 +6,8 @@
 #include "SourceValueProvider.h"
 
 class DAC;
-class ValueProvider;
-class MIDI;
+//class ValueProvider;
+//class MIDI;
 
 class CVOutput : public MIDICCListener
 {
@@ -16,9 +16,9 @@ public:
 	virtual ~CVOutput();
 	void setup();
 	void loop(const unsigned int usNow);
-	void setValueProvider(ValueProvider* aValueProvider);
-	void setMinimum(const uint8_t value);
-	void setMaximum(const uint8_t value);
+//	void setValueProvider(ValueProvider* aValueProvider);
+//	void setMinimum(const uint8_t value);
+//	void setMaximum(const uint8_t value);
 	void processCCMessage(const uint8_t channel,
 						  const uint8_t controllerNumber,
 						  const uint8_t value);
@@ -33,17 +33,6 @@ private:
 	
 	SourceValueProvider lowValue;
 	SourceValueProvider highValue;
-	
-//	uint8_t sideChainMinimum;
-//	uint8_t sideChainMaximum;
-//	uint16_t lastProviderValue;
-//	ValueProvider* pSideChainProvider;
-//	uint8_t sideChainSourceTypeId;
-	
-	boolean dirty;
-//	enum SideChainMode {MIN, MAX, RANGE};
-//	SideChainMode sideChainMode;
-//	uint8_t sideChainModeId;
 };
 
 #endif /* defined(__CV2__CVOutput__) */
