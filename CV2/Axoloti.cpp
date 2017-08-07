@@ -14,7 +14,10 @@
 enum
 {
 	AXOLOTI_PRESET_NO_CC = 0,
-	AXOLOTI_VAR_CC = 1
+	AXOLOTI_VAR_CC = 1,
+	AXOLOTI_CTRL_1_CC = 2,
+	AXOLOTI_CTRL_2_CC = 3,
+	AXOLOTI_CTRL_3_CC = 4
 };
 
 Axoloti::Axoloti()
@@ -27,7 +30,10 @@ Axoloti::Axoloti()
   patchNumber(0),
   presetNumber(0),
   varValue(0),
-  lastUpdateUs(0)
+  lastUpdateUs(0),
+  axolotiMIDIValue1(0, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_1_CC),
+  axolotiMIDIValue2(1, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_2_CC),
+  axolotiMIDIValue3(2, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_3_CC)
 {
 }
 
@@ -47,6 +53,10 @@ void Axoloti::setup()
 	highValue.setup();
 	highValue.setMinimum(0);
 	highValue.setMaximum(127);
+	
+	axolotiMIDIValue1.setup();
+	axolotiMIDIValue2.setup();
+	axolotiMIDIValue3.setup();
 }
 
 void Axoloti::loop(const unsigned long usNow)
@@ -76,6 +86,10 @@ void Axoloti::loop(const unsigned long usNow)
 		
 		lastUpdateUs = usNow;
 	}
+	
+	axolotiMIDIValue1.loop(usNow);
+	axolotiMIDIValue2.loop(usNow);
+	axolotiMIDIValue3.loop(usNow);
 }
 
 void Axoloti::txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const

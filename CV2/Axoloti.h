@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "MIDICCListener.h"
 #include "SourceValueProvider.h"
+#include "AxolotiMIDIValue.hpp"
 
 class ValueProvider;
 
@@ -27,7 +28,7 @@ public:
 private:
 	
 	static const unsigned long STARTUP_TX_DELAY_US = 3000000; // 3s
-	static const uint8_t AXOLOTI_MIDI_CHANNEL = 1; // the channel for messages *to* the Axoloti
+	static const uint8_t AXOLOTI_MIDI_CHANNEL = 1; // the channel for messages *to* the Axoloti (0-indexed)
 	static const unsigned long MIN_UPDATE_PERIOD_US = 2000; // much smaller and we can't keep up with the expr pedal
 	
 	void txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const;
@@ -47,6 +48,10 @@ private:
 	uint8_t varValue;
 	
 	unsigned long lastUpdateUs;
+	
+	AxolotiMIDIValue axolotiMIDIValue1;
+	AxolotiMIDIValue axolotiMIDIValue2;
+	AxolotiMIDIValue axolotiMIDIValue3;
 };
 
 #endif // __CV2__Axoloti__

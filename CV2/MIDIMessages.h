@@ -131,6 +131,9 @@ const uint8_t CV2_AXOLOTI_VAR_HIGH_MIN_CC = 101; // SourceValueProvider CCs
 const uint8_t CV2_AXOLOTI_VAR_HIGH_MAX_CC = 103;
 const uint8_t CV2_AXOLOTI_VAR_HIGH_SOURCE_CC = 104;
 
+const uint8_t CV2_AXOLOTI_MIDI_OUTPUT_ON_VALUE_CC = 106;
+const uint8_t CV2_AXOLOTI_MIDI_OUTPUT_TRIGGER_INSTANCE_CC = 107;
+
 // the values assigned to source types -  enum?
 const uint8_t CV_OUTPUT_SOURCE_FIXED_VALUE = 1;
 const uint8_t CV_OUTPUT_SOURCE_LFO1_VALUE = 2;
