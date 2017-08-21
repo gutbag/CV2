@@ -52,6 +52,8 @@ private:
 	AxolotiMIDIValue axolotiMIDIValue1;
 	AxolotiMIDIValue axolotiMIDIValue2;
 	AxolotiMIDIValue axolotiMIDIValue3;
+	
+	boolean debug;
 };
 
 #endif // __CV2__Axoloti__

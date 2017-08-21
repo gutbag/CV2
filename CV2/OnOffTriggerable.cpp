@@ -7,7 +7,8 @@ OnOffTriggerable::OnOffTriggerable(const uint8_t aMidiChannel, const uint8_t aTr
   triggerInstanceCC(aTriggerInstanceCC),
   triggerInstanceCCValue(DO_NOT_SAVE_VALUE),
   nullTriggerOnState(false),
-  triggerDefaultOn(false)
+  triggerDefaultOn(false),
+  debug(false)
 {
 	
 }
@@ -59,6 +60,16 @@ void OnOffTriggerable::processCCMessage(const uint8_t channel,
 		{
 			trigger = &TriggeredOnOff::instance(triggerInstanceCCValue - 1);
 			trigger->setDefaultOn(triggerDefaultOn);
+			
+			if (debug)
+			{
+				Serial.print("OOT 0x");
+				Serial.print((unsigned int)this, HEX);
+				Serial.print(" def: ");
+				Serial.print(triggerDefaultOn, DEC);
+				Serial.print(" on: ");
+				Serial.println(trigger->isOn(), DEC);
+			}
 		}
 		else
 		{

@@ -33,7 +33,8 @@ Axoloti::Axoloti()
   lastUpdateUs(0),
   axolotiMIDIValue1(0, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_1_CC),
   axolotiMIDIValue2(1, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_2_CC),
-  axolotiMIDIValue3(2, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_3_CC)
+  axolotiMIDIValue3(2, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_3_CC),
+  debug(false)
 {
 }
 
@@ -109,6 +110,10 @@ void Axoloti::txPCMessage(const uint8_t ch, const uint8_t programNumber) const
 	
 	Serial2.write(ch | MIDI_PROGRAM_CHANGE);
 	Serial2.write(programNumber);
+	
+	// have to allow the Axoloti time to respond to the PC to stop the following
+	// CCs being lost
+	delay(100);
 }
 
 void Axoloti::txAllValues() const

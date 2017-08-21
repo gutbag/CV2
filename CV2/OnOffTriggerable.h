@@ -26,6 +26,7 @@ private:
 	uint8_t triggerInstanceCCValue;
 	boolean nullTriggerOnState;
 	boolean triggerDefaultOn;
+	boolean debug;
 };
 
 #endif /* defined(__CV2__OnOffTriggerable__) */

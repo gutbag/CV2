@@ -10,7 +10,9 @@ AxolotiMIDIValue::AxolotiMIDIValue(const uint8_t aCV2MidiChannel, const uint8_t 
   axolotiMidiChannel(anAxolotiMidiChannel),
   controllerNumber(aControllerNumber),
   onValue(1),
-  onState(false)
+  onState(false),
+  triggered(false),
+  debug(false)
 {
 	setDefaults(false, false);
 }
@@ -25,32 +27,58 @@ void AxolotiMIDIValue::setup()
 	MIDI::instance().setCCListener(this, cv2MidiChannel, CV2_AXOLOTI_MIDI_OUTPUT_ON_VALUE_CC);
 
 	onValue = 1;
-	onState = true; // so that off works
-	off();
+	off(true);
+	
+//	Serial.print("AMV ch ");
+//	Serial.println(cv2MidiChannel, DEC);
 }
 
 void AxolotiMIDIValue::loop(const unsigned long usNow)
 {
-	boolean triggered = isTriggered();
+	//boolean triggered = isTriggered();
+	boolean newTriggered = isTriggered();
+
+	if (debug && triggered != newTriggered)
+	{
+		Serial.print("AMV ch ");
+		Serial.print(cv2MidiChannel, DEC);
+		Serial.print(" trig: ");
+		Serial.println(newTriggered, DEC);
+	}
+	
+	triggered = newTriggered;
+
 	if (triggered)
 		on();
 	else
 		off();
 }
 
-void AxolotiMIDIValue::on()
+void AxolotiMIDIValue::on(const boolean force /*= false*/)
 {
-	if ( ! onState)
+	if ( ! onState || force)
 	{
+		if (debug)
+		{
+			Serial.print("AMV ch ");
+			Serial.print(cv2MidiChannel, DEC);
+			Serial.println(" on");
+		}
 		txCCMessage(axolotiMidiChannel, controllerNumber, onValue);
 		onState = true;
 	}
 }
 
-void AxolotiMIDIValue::off()
+void AxolotiMIDIValue::off(const boolean force /*= false*/)
 {
-	if (onState)
+	if (onState || force)
 	{
+		if (debug)
+		{
+			Serial.print("AMV ch ");
+			Serial.print(cv2MidiChannel, DEC);
+			Serial.println(" off");
+		}
 		txCCMessage(axolotiMidiChannel, controllerNumber, 0);
 		onState = false;
 	}
@@ -58,8 +86,15 @@ void AxolotiMIDIValue::off()
 
 void AxolotiMIDIValue::txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const
 {
-	//	Serial.print("Axo txCCMessage value: ");
-	//	Serial.println(value, HEX);
+	if (debug)
+	{
+		Serial.print("AMV Axo ch ");
+		Serial.print(ch, DEC);
+		Serial.print(" cc ");
+		Serial.print(cc, DEC);
+		Serial.print(" tx ");
+		Serial.println(value, DEC);
+	}
 	
 	Serial2.write(ch | MIDI_CONTROL_CHANGE);
 	Serial2.write(cc);
@@ -70,23 +105,27 @@ void AxolotiMIDIValue::processCCMessage(const uint8_t channel,
 							const uint8_t controllerNumber,
 							const uint8_t value)
 {
-	//	Serial.print("AxolotiMIDIValue Message, ch: ");
-	//	Serial.print(channel, DEC);
-	//	Serial.print(" No: ");
-	//	Serial.print(controllerNumber, DEC);
-	//	Serial.print(" Val: ");
-	//	Serial.println(value, DEC);
+	if (debug)
+	{
+		Serial.print("AxolotiMIDIValue Message, ch: ");
+		Serial.print(channel, DEC);
+		Serial.print(" No: ");
+		Serial.print(controllerNumber, DEC);
+		Serial.print(" Val: ");
+		Serial.println(value, DEC);
+	}
 	
 	switch (controllerNumber)
 	{
 		case CV2_AXOLOTI_MIDI_OUTPUT_ON_VALUE_CC:
 			onValue = value;
-			off();
 			break;
 		default:
 			OnOffTriggerable::processCCMessage(channel, controllerNumber, value);
 			break;
 	}
+
+	off(true);
 }
 
 uint8_t AxolotiMIDIValue::getControllerValue(const uint8_t channel, const uint8_t controllerNumber)
