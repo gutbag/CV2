@@ -42,6 +42,7 @@ private:
 	void save();
 	void copy();
 	void refresh();
+	void dumpPatch();
 	void dumpEeprom();
 	void erase(const uint8_t value);
 	void initHeader();

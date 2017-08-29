@@ -214,6 +214,7 @@ const uint8_t PATCH_COPY = 4;
 const uint8_t PATCH_SAVE = 5;
 const uint8_t PATCH_TRANSMIT_DISABLE = 6;
 const uint8_t PATCH_TRANSMIT_ENABLE = 7;
+const uint8_t PATCH_DUMP_PATCH = 8;
 // erase values deliberately away from other to reduce risk of accidents
 const uint8_t PATCH_ERASE_ALL = 0x7f;
 const uint8_t PATCH_ERASE_CURRENT = 0x7e;

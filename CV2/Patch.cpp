@@ -78,6 +78,9 @@ void Patch::processCCMessage(const uint8_t channel, const uint8_t controllerNumb
 				case PATCH_EEPROM_DUMP:
 					dumpEeprom();
 					break;
+				case PATCH_DUMP_PATCH:
+					dumpPatch();
+					break;
 				case PATCH_DISPLAY_NUMBER:
 					Display::instance().setPatchNumber(patchNumber);
 					break;
@@ -681,6 +684,25 @@ void Patch::refresh()
 	MIDI::instance().processBuffer(buffer, length, true);
 }
 
+/**
+ * Dumps the current patch to the serial port.
+ */
+void Patch::dumpPatch()
+{
+	uint8_t buffer[MAX_PATCH_SIZE];
+	uint16_t length = 0;
+	
+	boolean gotAll = MIDI::instance().getListenerSettingMessages(buffer, MAX_PATCH_SIZE, length);
+	
+	Serial.print("Patch 0x");
+	if (patchNumber < 16)
+		Serial.print("0");
+	Serial.print(patchNumber, HEX);
+	Serial.print(" (");
+	Serial.print(length, DEC);
+	Serial.println(")");
+	dumpBuffer(buffer, length);
+}
 
 /*
  void Patch::dumpBuffer(const uint8_t* buffer, const uint16_t length)
