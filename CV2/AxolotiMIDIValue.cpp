@@ -9,12 +9,12 @@ AxolotiMIDIValue::AxolotiMIDIValue(const uint8_t aCV2MidiChannel, const uint8_t 
   cv2MidiChannel(aCV2MidiChannel),
   axolotiMidiChannel(anAxolotiMidiChannel),
   controllerNumber(aControllerNumber),
-  onValue(1),
+  onValue(0), // same as off, by default
   onState(false),
   triggered(false),
   debug(false)
 {
-	setDefaults(false, false);
+	setDefaults(true, false);
 }
 
 AxolotiMIDIValue::~AxolotiMIDIValue()
@@ -26,7 +26,7 @@ void AxolotiMIDIValue::setup()
 	OnOffTriggerable::setup();
 	MIDI::instance().setCCListener(this, cv2MidiChannel, CV2_AXOLOTI_MIDI_OUTPUT_ON_VALUE_CC);
 
-	onValue = 1;
+	onValue = 0;
 	off(true);
 	
 //	Serial.print("AMV ch ");
