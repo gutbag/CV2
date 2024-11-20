@@ -148,7 +148,7 @@ void Display::loop(const unsigned long usNow)
 
 	// TODO: only set if changed
 	setColon(colonFlasher.getState());
-	setApostophe(apostropheFlasher.getState());
+	setApostrophe(apostropheFlasher.getState());
 	
 	if (altSet)
 	{
@@ -242,7 +242,7 @@ void Display::flashColon()
 	colonFlasher.flash();
 }
 
-void Display::setApostophe(const boolean state)
+void Display::setApostrophe(const boolean state)
 {
 	digitalWrite(LED_3, state ? HIGH : LOW);
 }

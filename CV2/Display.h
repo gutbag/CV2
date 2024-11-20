@@ -20,7 +20,7 @@ public:
 	void setDecimalPoint(const unsigned int which, const boolean state);
     void setColon(const boolean state);
 	void flashColon();
-	void setApostophe(const boolean state);
+	void setApostrophe(const boolean state);
 	void flashApostrophe();
 	void processCCMessage(const uint8_t channel,
 								  const uint8_t controllerNumber,
