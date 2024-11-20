@@ -6,12 +6,12 @@
 #include "Errors.h"
 
 Patch::Patch(Switch& aDownSwitch, Switch& anUpSwitch)
-//: downSwitchTrigger(aDownSwitch),
-//upSwitchTrigger(anUpSwitch),
 : downSwitchEdgeProvider(&aDownSwitch),
   upSwitchEdgeProvider(&anUpSwitch),
   patchNumber(0),
   pendingPatchNumber(0),
+  patchChangePending(false),
+  patchChangeRequestUs(0),
   state(IDLE),
   transmitMIDI(false)
 {
@@ -118,8 +118,6 @@ uint8_t Patch::getControllerValue(const uint8_t channel, const uint8_t controlle
 
 void Patch::setup()
 {
-//	downSwitchTrigger.setup();
-//	upSwitchTrigger.setup();
 	downSwitchEdgeProvider.setup();
 	upSwitchEdgeProvider.setup();
 	
@@ -128,30 +126,13 @@ void Patch::setup()
 	
 	initHeader();
 	
-//	downSwitchTrigger.loop(usNow);
-//	boolean downPressed = downSwitchTrigger.triggered();
-//	upSwitchTrigger.loop(usNow);
-//	boolean upPressed = upSwitchTrigger.triggered();
-//
-//	if ( ! downPressed && ! upPressed)
-//	{
-		readEepromHeader();
-		//dumpEEPROMHeader();
-		loadPatch(patchNumber);
-//	}
-//	else
-//	{
-//		Serial.println("NOT reading from EEPROM!!!!");
-//	}
+	readEepromHeader();
+	//dumpEEPROMHeader();
+	loadPatch(patchNumber);
 }
 
 void Patch::loop(const unsigned long usNow)
 {
-//	downSwitchTrigger.loop(usNow);
-//	boolean downPressed = downSwitchTrigger.triggered();
-//	upSwitchTrigger.loop(usNow);
-//	boolean upPressed = upSwitchTrigger.triggered();
-	
 	downSwitchEdgeProvider.loop(usNow);
 	boolean downPressed = downSwitchEdgeProvider.getEdge() == OnOffEdgeProvider::OFF_ON;
 	upSwitchEdgeProvider.loop(usNow);
@@ -181,10 +162,12 @@ void Patch::loop(const unsigned long usNow)
 						Display::instance().set("Sav!");
 						state = WAIT_CONFIRM_SWITCH_CHANGE;
 					}
-					else
+					else // wait until the timeout has elapsed
 					{
-						patchNumber = pendingPatchNumber;
-						loadPatch(patchNumber);
+						patchChangeRequestUs = usNow;
+						patchChangePending = true;
+						Display::instance().setPatchNumber(pendingPatchNumber);
+						Display::instance().setApostrophe(true);
 					}
 				}
 			}
@@ -206,11 +189,23 @@ void Patch::loop(const unsigned long usNow)
 						Display::instance().set("Sav!");
 						state = WAIT_CONFIRM_SWITCH_CHANGE;
 					}
-					else
+					else // wait until the timeout has elapsed
 					{
-						patchNumber = pendingPatchNumber;
-						loadPatch(patchNumber);
+						patchChangeRequestUs = usNow;
+						patchChangePending = true;
+						Display::instance().setPatchNumber(pendingPatchNumber);
+						Display::instance().setApostrophe(true);
 					}
+				}
+			}
+			else if (patchChangePending) // is it time to actually load the patch?
+			{
+				if (usNow - patchChangeRequestUs >= PATCH_CHANGE_TIMEOUT_US)
+				{
+					patchNumber = pendingPatchNumber;
+					Display::instance().setApostrophe(false);
+					loadPatch(patchNumber);
+					patchChangePending = false;
 				}
 			}
 		}

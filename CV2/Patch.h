@@ -51,12 +51,13 @@ private:
 	uint16_t calcChecksum(const uint8_t* buffer, const unsigned int length);
 	uint16_t calcHeaderChecksum();
 	
-//	SwitchTrigger downSwitchTrigger;
-//	SwitchTrigger upSwitchTrigger;
 	OnOffEdgeProvider downSwitchEdgeProvider;
 	OnOffEdgeProvider upSwitchEdgeProvider;
 	uint8_t patchNumber;
 	uint8_t pendingPatchNumber;
+	boolean patchChangePending;
+	unsigned long patchChangeRequestUs;
+	static const unsigned long PATCH_CHANGE_TIMEOUT_US = 1000000; // 1s
 	
 	class PatchInfo {
 	public:
@@ -69,7 +70,6 @@ private:
 		uint16_t magicNumber;
 		uint16_t checksum; // of header, excluding this checksum member
 		uint8_t displayBrightness;
-		//uint8_t selectedPatch;
 		PatchInfo patchInfo[MAX_PATCHES]; // index is patch number
 	};
 	static const uint16_t MAGIC_NUMBER = 0xf00d;
