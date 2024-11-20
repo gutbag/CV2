@@ -1,0 +1,6 @@
+CV2/Configurations/
+CV2/Makefiles/
+CV2/Utilities/
+.vscode/
+Builds/
+CV2.xcodeproj/
