@@ -152,7 +152,7 @@ void Patch::loop(const unsigned long usNow)
 //				Serial.print(MIDI::instance().getMessageCount(false), DEC);
 //				Serial.println(" msgs");
 				
-				uint8_t nextPatchNumber = getNextPatchNumber(patchNumber, false);
+				uint8_t nextPatchNumber = getNextPatchNumber(patchChangePending ? pendingPatchNumber : patchNumber, false);
 				if (nextPatchNumber != patchNumber)
 				{
 					pendingPatchNumber = nextPatchNumber;
@@ -167,7 +167,6 @@ void Patch::loop(const unsigned long usNow)
 						patchChangeRequestUs = usNow;
 						patchChangePending = true;
 						Display::instance().setPatchNumber(pendingPatchNumber);
-						Display::instance().setApostrophe(true);
 					}
 				}
 			}
@@ -179,7 +178,7 @@ void Patch::loop(const unsigned long usNow)
 				
 				//dumpEEPROMHeader();
 
-				uint8_t nextPatchNumber = getNextPatchNumber(patchNumber, true);
+				uint8_t nextPatchNumber = getNextPatchNumber(patchChangePending ? pendingPatchNumber : patchNumber, true);
 				if (nextPatchNumber != patchNumber)
 				{
 					pendingPatchNumber = nextPatchNumber;
@@ -194,7 +193,6 @@ void Patch::loop(const unsigned long usNow)
 						patchChangeRequestUs = usNow;
 						patchChangePending = true;
 						Display::instance().setPatchNumber(pendingPatchNumber);
-						Display::instance().setApostrophe(true);
 					}
 				}
 			}
@@ -203,7 +201,6 @@ void Patch::loop(const unsigned long usNow)
 				if (usNow - patchChangeRequestUs >= PATCH_CHANGE_TIMEOUT_US)
 				{
 					patchNumber = pendingPatchNumber;
-					Display::instance().setApostrophe(false);
 					loadPatch(patchNumber);
 					patchChangePending = false;
 				}
