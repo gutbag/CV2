@@ -55,6 +55,10 @@ private:
 	AxolotiMIDIValue axolotiMIDIValue4;
 	AxolotiMIDIValue axolotiMIDIValue5;
 	AxolotiMIDIValue axolotiMIDIValue6;
+	AxolotiMIDIValue axolotiMIDIValue7;
+	AxolotiMIDIValue axolotiMIDIValue8;
+	AxolotiMIDIValue axolotiMIDIValue9;
+	AxolotiMIDIValue axolotiMIDIValue10;
 	
 	boolean debug;
 };
