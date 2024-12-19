@@ -16,8 +16,6 @@ public:
 						  const uint8_t value);
 	uint8_t getControllerValue(const uint8_t channel, const uint8_t controllerNumber);
 private:
-	static const uint8_t AXOLOTI_CTRL_CC = 2; // TODO: get in ctor from parent Axoloti class
-
 	void txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const;
 	void on(const boolean force = false);
 	void off(const boolean force = false);

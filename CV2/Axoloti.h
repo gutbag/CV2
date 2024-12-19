@@ -30,6 +30,7 @@ private:
 	static const unsigned long STARTUP_TX_DELAY_US = 3000000; // 3s
 	static const uint8_t AXOLOTI_MIDI_CHANNEL = 1; // the channel for messages *to* the Axoloti (0-indexed)
 	static const unsigned long MIN_UPDATE_PERIOD_US = 2000; // much smaller and we can't keep up with the expr pedal
+	static const unsigned int NUM_AXOLOTI_MIDI_VALUES = 10;
 	
 	void txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const;
 	void txPCMessage(const uint8_t ch, const uint8_t programNumber) const;
@@ -49,16 +50,7 @@ private:
 	
 	unsigned long lastUpdateUs;
 	
-	AxolotiMIDIValue axolotiMIDIValue1;
-	AxolotiMIDIValue axolotiMIDIValue2;
-	AxolotiMIDIValue axolotiMIDIValue3;
-	AxolotiMIDIValue axolotiMIDIValue4;
-	AxolotiMIDIValue axolotiMIDIValue5;
-	AxolotiMIDIValue axolotiMIDIValue6;
-	AxolotiMIDIValue axolotiMIDIValue7;
-	AxolotiMIDIValue axolotiMIDIValue8;
-	AxolotiMIDIValue axolotiMIDIValue9;
-	AxolotiMIDIValue axolotiMIDIValue10;
+	AxolotiMIDIValue axolotiMIDIValues[NUM_AXOLOTI_MIDI_VALUES];
 	
 	boolean debug;
 };

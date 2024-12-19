@@ -38,16 +38,18 @@ Axoloti::Axoloti()
   presetNumber(0),
   varValue(0),
   lastUpdateUs(0),
-  axolotiMIDIValue1(0, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_1_CC),
-  axolotiMIDIValue2(1, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_2_CC),
-  axolotiMIDIValue3(2, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_3_CC),
-  axolotiMIDIValue4(3, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_4_CC),
-  axolotiMIDIValue5(4, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_5_CC),
-  axolotiMIDIValue6(5, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_6_CC),
-  axolotiMIDIValue7(6, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_7_CC),
-  axolotiMIDIValue8(7, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_8_CC),
-  axolotiMIDIValue9(8, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_9_CC),
-  axolotiMIDIValue10(9, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_10_CC),
+  axolotiMIDIValues{
+	{0, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_1_CC},
+	{1, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_2_CC},
+	{2, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_3_CC},
+	{3, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_4_CC},
+	{4, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_5_CC},
+	{5, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_6_CC},
+	{6, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_7_CC},
+	{7, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_8_CC},
+	{8, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_9_CC},
+	{9, AXOLOTI_MIDI_CHANNEL, AXOLOTI_CTRL_10_CC}
+  },
   debug(false)
 {
 }
@@ -69,16 +71,8 @@ void Axoloti::setup()
 	highValue.setMinimum(0);
 	highValue.setMaximum(127);
 	
-	axolotiMIDIValue1.setup();
-	axolotiMIDIValue2.setup();
-	axolotiMIDIValue3.setup();
-	axolotiMIDIValue4.setup();
-	axolotiMIDIValue5.setup();
-	axolotiMIDIValue6.setup();
-	axolotiMIDIValue7.setup();
-	axolotiMIDIValue8.setup();
-	axolotiMIDIValue9.setup();
-	axolotiMIDIValue10.setup();
+	for (unsigned int i=0; i<NUM_AXOLOTI_MIDI_VALUES; i++)
+		axolotiMIDIValues[i].setup();
 }
 
 void Axoloti::loop(const unsigned long usNow)
@@ -109,16 +103,8 @@ void Axoloti::loop(const unsigned long usNow)
 		lastUpdateUs = usNow;
 	}
 	
-	axolotiMIDIValue1.loop(usNow);
-	axolotiMIDIValue2.loop(usNow);
-	axolotiMIDIValue3.loop(usNow);
-	axolotiMIDIValue4.loop(usNow);
-	axolotiMIDIValue5.loop(usNow);
-	axolotiMIDIValue6.loop(usNow);
-	axolotiMIDIValue7.loop(usNow);
-	axolotiMIDIValue8.loop(usNow);
-	axolotiMIDIValue9.loop(usNow);
-	axolotiMIDIValue10.loop(usNow);
+	for (unsigned int i=0; i<NUM_AXOLOTI_MIDI_VALUES; i++)
+		axolotiMIDIValues[i].loop(usNow);
 }
 
 void Axoloti::txCCMessage(const uint8_t ch, const uint8_t cc, const uint8_t value) const
