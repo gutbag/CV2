@@ -1,7 +1,7 @@
 #include "Footswitch.h"
 #include "MIDI.h"
 
-static Footswitch* pInstances[3] = {NULL, NULL, NULL};
+static Footswitch* pInstances[6] = {NULL, NULL, NULL, NULL, NULL, NULL};
 
 Footswitch& Footswitch::instance(const uint8_t index)
 {

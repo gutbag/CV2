@@ -134,6 +134,18 @@ void TriggeredOnOff::processCCMessage(const uint8_t channel,
 				Footswitch::instance(2).setOn(defaultOn);
 				setProvider(&Footswitch::instance(2));
 				break;
+			case TRIGGER_CONTROL_FSW_4_VALUE:
+				Footswitch::instance(3).setOn(defaultOn);
+				setProvider(&Footswitch::instance(3));
+				break;
+			case TRIGGER_CONTROL_FSW_5_VALUE:
+				Footswitch::instance(4).setOn(defaultOn);
+				setProvider(&Footswitch::instance(4));
+				break;
+			case TRIGGER_CONTROL_FSW_6_VALUE:
+				Footswitch::instance(5).setOn(defaultOn);
+				setProvider(&Footswitch::instance(5));
+				break;
 			case TRIGGER_CONTROL_ENV_VALUE:
 				setProvider(&EnvelopeFollower::instance().getEnvelopeState());
 				break;

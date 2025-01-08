@@ -15,6 +15,13 @@
 #define FSW_LED2 34
 #define FSW_LED3 32
 
+#define FSW_4 56
+#define FSW_5 55
+#define FSW_6 54
+#define FSW_LED4 51
+#define FSW_LED5 50
+#define FSW_LED6 49
+
 #define PATCH_DOWN_SW 52
 #define PATCH_UP_SW 53
 

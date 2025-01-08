@@ -54,10 +54,13 @@ CVOutput cvOutputs9V[8] =
 	{dac9V, 6, 14}, // 5V - for testing
 	{dac9V, 7, 15} // 5V - for testing
 };
-Footswitch footswitches[3] = {
+Footswitch footswitches[6] = {
 	{0, 0, FSW_1, FSW_LED1},
 	{1, 1, FSW_2, FSW_LED2},
-	{2, 2, FSW_3, FSW_LED3}
+	{2, 2, FSW_3, FSW_LED3},
+	{3, 3, FSW_4, FSW_LED4},
+	{4, 4, FSW_5, FSW_LED5},
+	{5, 5, FSW_6, FSW_LED6}
 };
 Freeze freezes[2] = {
 	{OPTO_1, 0},
