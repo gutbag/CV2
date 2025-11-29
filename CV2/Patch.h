@@ -57,7 +57,17 @@ private:
 	uint8_t pendingPatchNumber;
 	boolean patchChangePending;
 	unsigned long patchChangeRequestUs;
+	// Don't actually change the patch until this timeout has elapsed since 
+	// the last key press. Prevents clicks etc. caused by changing the patch
+	// immediately on every key press.
 	static const unsigned long PATCH_CHANGE_TIMEOUT_US = 1000000; // 1s
+	// Don't allow another patch change until this time has elapsed. This is 
+	// to allow the Axoloti to complete a patch change before getting a new
+	// one. This was added as a possible solution to the Axo locking up when 
+	// changing patches a lot, but it turned out not to be the problem 
+	// (seemed to be a corrupted patch). Left in but set to a low value.
+	static const unsigned long PATCH_CHANGE_LOCKOUT_US = 100000; // 100ms
+	unsigned long patchChangedAtUs;
 	
 	class PatchInfo {
 	public:
@@ -77,6 +87,7 @@ private:
 	
 	typedef enum {
 		IDLE,
+		WAIT_PATCH_CHANGE_LOCKOUT,
 		WAIT_CONFIRM_SWITCH_CHANGE,
 		WAIT_CONFIRM_MIDI_CHANGE,
 		WAIT_CONFIRM_NEW,

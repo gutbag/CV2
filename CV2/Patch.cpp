@@ -12,6 +12,7 @@ Patch::Patch(Switch& aDownSwitch, Switch& anUpSwitch)
   pendingPatchNumber(0),
   patchChangePending(false),
   patchChangeRequestUs(0),
+  patchChangedAtUs(0),
   state(IDLE),
   transmitMIDI(false)
 {
@@ -203,7 +204,24 @@ void Patch::loop(const unsigned long usNow)
 					patchNumber = pendingPatchNumber;
 					loadPatch(patchNumber);
 					patchChangePending = false;
+
+					// now need to wait before allowing another change
+					patchChangedAtUs = usNow;
+					state = WAIT_PATCH_CHANGE_LOCKOUT;
+					//Serial.print(usNow/1000, DEC);
+					//Serial.println(" - lockout starting");
 				}
+			}
+		}
+			break;
+		case WAIT_PATCH_CHANGE_LOCKOUT:
+		{
+			if (usNow - patchChangedAtUs >= PATCH_CHANGE_LOCKOUT_US)
+			{
+				// go back to waiting for key presses
+				state = IDLE;
+				//Serial.print(usNow/1000, DEC);
+				//Serial.println(" - lockout ended");
 			}
 		}
 			break;
